@@ -37,8 +37,12 @@ public class LabTest extends User implements LabTestInterface, Serializable {
         this.type = type;
         this.date = date;
         this.status = "Pending";
+        this.result = "";   // initially empty
     }
 
+    // ---------- UML Logic ----------
+    public void recordTestResult(String resultValue) {
+        this.result = resultValue;
     // ---------- RMI Interface Methods ----------
     // Salma
     

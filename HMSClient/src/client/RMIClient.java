@@ -44,5 +44,16 @@ public class RMIClient {
         // Our remote object g is binded to the name "grade"
 //        AdminInterface admin = (AdminInterface) registry.lookup("admin");
 //        admin.print();
+
+        try {
+            Registry registry = LocateRegistry.getRegistry(1099);
+
+            AddPatientRecord gui = new AddPatientRecord();
+            AddPatientRecordController controller = new AddPatientRecordController(gui, registry);
+            gui.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

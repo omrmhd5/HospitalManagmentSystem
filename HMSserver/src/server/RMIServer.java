@@ -11,6 +11,7 @@ import model.Patient;
 import model.Prescription;
 import model.LabTest;
 
+import model.Admin;
 import rmi.AdminInterface;
 import rmi.AppointmentInterface;
 import rmi.PatientRecordInterface;
@@ -47,6 +48,28 @@ public class RMIServer {
         
         // Our remote object labtest is binded to the name "labtest"
         registry.bind("labtest", labTest);
+      
+        PharmacistInterface pharmacistInterface = new PharmacistInterface() {
+
+            @Override
+            public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity)
+                    throws RemoteException {
+                return db.requestMedicineRefill(pharmacistID, medicineName, quantity);
+            }
+        };
+
+        registry.bind("pharmacist", pharmacistInterface);
+
+       
+        LabTechnicianInterface labTechInterface = new LabTechnicianInterface() {
+
+            @Override
+            public String recordLabTestResult(int testID, String result) throws RemoteException {
+                return db.recordLabTestResult(testID, result);
+            }
+        };
+
+        registry.bind("labtech", labTechInterface);
         
         System.out.println("The server is ready");
     }
