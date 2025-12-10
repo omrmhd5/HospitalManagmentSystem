@@ -91,4 +91,30 @@ public class DB {
                   System.err.println("Error saving lab test: " + e.getMessage());
               }
           }
+          
+          // Salma
+          // User management methods
+          public void saveUser(int userID, String fullName, String email, String role) {
+              try {
+                  MongoCollection<Document> userCollection = database.getCollection("Users");
+                  Document doc = new Document("userID", userID)
+                      .append("fullName", fullName)
+                      .append("email", email)
+                      .append("role", role);
+                  userCollection.insertOne(doc);
+                  System.out.println("User saved to database: " + fullName);
+              } catch (Exception e) {
+                  System.err.println("Error saving user: " + e.getMessage());
+              }
+          }
+          
+          public void deleteUserById(int userID) {
+              try {
+                  MongoCollection<Document> userCollection = database.getCollection("Users");
+                  userCollection.deleteOne(Filters.eq("userID", userID));
+                  System.out.println("User deleted from database with ID: " + userID);
+              } catch (Exception e) {
+                  System.err.println("Error deleting user: " + e.getMessage());
+              }
+          }
 }

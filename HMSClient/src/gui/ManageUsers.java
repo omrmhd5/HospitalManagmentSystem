@@ -4,6 +4,10 @@
  */
 package gui;
 
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
 /**
  *
  * @author salma
@@ -15,6 +19,29 @@ public class ManageUsers extends javax.swing.JFrame {
      */
     public ManageUsers() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    
+    // Getters for GUI components
+    public JTable getUsersTable() {
+        return jTable1;
+    }
+    
+    public JTextField getFullNameField() {
+        return jTextField2;
+    }
+    
+    public JTextField getEmailField() {
+        return jTextField1;
+    }
+    
+    public JTextField getRoleField() {
+        return jTextField3;
+    }
+    
+    public JButton getAddButton() {
+        return jButton1;
     }
 
     /**
@@ -38,7 +65,6 @@ public class ManageUsers extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setEnabled(false);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
