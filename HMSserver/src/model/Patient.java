@@ -1,10 +1,15 @@
 package model;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import rmi.PatientRecordInterface;
+import rmi.PatientInterface;
+import rmi.AppointmentInterface;
+import rmi.PrescriptionInterface;
+import server.DB;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
-import rmi.PatientInterface;
 
-public class Patient extends User implements PatientInterface, Serializable {
+public class Patient extends User implements PatientRecordInterface, PatientInterface, AppointmentInterface, PrescriptionInterface {
 
     private int patientID;
     private String contactInfo;
@@ -14,17 +19,22 @@ public class Patient extends User implements PatientInterface, Serializable {
     private String dateOfBirth;
     private String address;
     private String phoneNumber;
+    private final DB db;
 
     // Read-only prescription view (UML)
     private Prescription readOnly;
 
-    public Patient() throws RemoteException { }
+    // Mahmoud
+    public Patient(DB db) throws RemoteException {
+        this.db = db;
+    }
 
     public Patient(int userID, String name, String email, String password,
                    int patientID, String contactInfo, String gender, int age, 
-                   String medicalHistory, String dateOfBirth, String address, String phoneNumber) 
+                   String medicalHistory, String dateOfBirth, String address, String phoneNumber, DB db) 
                    throws RemoteException {
         super(userID, name, email, password, "Patient");
+        this.db = db;
         this.patientID = patientID;
         this.contactInfo = contactInfo;
         this.gender = gender;
@@ -58,6 +68,30 @@ public class Patient extends User implements PatientInterface, Serializable {
 
     public void updateAppointment(Appointment appointment, String message) {
         appointment.updateStatus(message);
+    }
+    
+    // Mahmoud
+    @Override
+    public String viewPatientRecord(String patientName) throws RemoteException {
+        if (patientName == null || patientName.isEmpty()) {
+            return "Patient name is required";
+        }
+        
+        Patient patient = db.getPatientByName(patientName);
+        
+        if (patient == null) {
+            return "Patient not found: " + patientName;
+        }
+        
+        String record = "Patient Record\n" +
+                        "====================\n" +
+                        "Name: " + patientName + "\n" +
+                        "Contact: " + patient.getContactInfo() + "\n" +
+                        "Gender: " + patient.getGender() + "\n" +
+                        "Age: " + patient.getAge() + "\n" +
+                        "Medical History: " + patient.getMedicalHistory() + "\n";
+        
+        return record;
     }
 
     // RMI Interface Methods
