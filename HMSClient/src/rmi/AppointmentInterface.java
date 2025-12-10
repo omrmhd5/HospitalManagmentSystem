@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import model.Appointment;
 
 public interface AppointmentInterface extends Remote {
+    // Mahmoud
+    String bookAppointment(String patientName, String doctorName, String date, String time) throws RemoteException;
 
     // Get appointment by ID
     Appointment getAppointmentByID(int appointmentID) throws RemoteException;

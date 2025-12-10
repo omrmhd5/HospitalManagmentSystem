@@ -1,8 +1,15 @@
 package model;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import rmi.PatientRecordInterface;
+import rmi.PatientInterface;
+import rmi.AppointmentInterface;
+import rmi.PrescriptionInterface;
+import server.DB;
 
 import java.io.Serializable;
 
-public class Patient implements Serializable {
+public class Patient extends User implements PatientRecordInterface, PatientInterface, AppointmentInterface, PrescriptionInterface {
 
     private int patientID;
     private String contactInfo;
@@ -10,18 +17,33 @@ public class Patient implements Serializable {
     private int age;
     private String medicalHistory;
     private String name;
+    private String dateOfBirth;
+    private String address;
+    private String phoneNumber;
+    private final DB db;
 
     // Read-only prescription view (UML)
     private Prescription readOnly;
 
-    public Patient() { }
+    // Mahmoud
+    public Patient(DB db) throws RemoteException {
+        this.db = db;
+    }
 
-    public Patient(int patientID, String contactInfo, String gender, int age, String medicalHistory) {
+    public Patient(int userID, String name, String email, String password,
+                   int patientID, String contactInfo, String gender, int age, 
+                   String medicalHistory, String dateOfBirth, String address, String phoneNumber, DB db) 
+                   throws RemoteException {
+        super(userID, name, email, password, "Patient");
+        this.db = db;
         this.patientID = patientID;
         this.contactInfo = contactInfo;
         this.gender = gender;
         this.age = age;
         this.medicalHistory = medicalHistory;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
     // ---------- Domain Logic From UML ----------
@@ -48,6 +70,69 @@ public class Patient implements Serializable {
     public void updateAppointment(Appointment appointment, String message) {
         appointment.updateStatus(message);
     }
+    
+    // Mahmoud
+    @Override
+    public String viewPatientRecord(String patientName) throws RemoteException {
+        if (patientName == null || patientName.isEmpty()) {
+            return "Patient name is required";
+        }
+        
+        Patient patient = db.getPatientByName(patientName);
+        
+        if (patient == null) {
+            return "Patient not found: " + patientName;
+        }
+        
+        String record = "Patient Record\n" +
+                        "====================\n" +
+                        "Name: " + patientName + "\n" +
+                        "Contact: " + patient.getContactInfo() + "\n" +
+                        "Gender: " + patient.getGender() + "\n" +
+                        "Age: " + patient.getAge() + "\n" +
+                        "Medical History: " + patient.getMedicalHistory() + "\n";
+        
+        return record;
+    }
+
+    // RMI Interface Methods
+    // Salma
+    
+    @Override
+    public String getProfileName() throws RemoteException {
+        return this.name;
+    }
+    
+    @Override
+    public String getProfileDateOfBirth() throws RemoteException {
+        return this.dateOfBirth;
+    }
+    
+    @Override
+    public String getProfileGender() throws RemoteException {
+        return this.gender;
+    }
+    
+    @Override
+    public String getProfileAddress() throws RemoteException {
+        return this.address;
+    }
+    
+    @Override
+    public String getProfilePhoneNumber() throws RemoteException {
+        return this.phoneNumber;
+    }
+    
+    @Override
+    public void updateProfile(String name, String dateOfBirth, String gender, 
+                             String address, String phoneNumber) throws RemoteException {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        System.out.println("Profile updated for: " + this.name);
+    }
 
     // ---------- Getters & Setters ----------
 
@@ -72,4 +157,13 @@ public class Patient implements Serializable {
 
     public Prescription getReadOnlyPrescription() { return readOnly; }
     public void setReadOnlyPrescription(Prescription readOnly) { this.readOnly = readOnly; }
+    
+    public String getDateOfBirth() { return dateOfBirth; }
+    public void setDateOfBirth(String dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+    
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+    
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 }

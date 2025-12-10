@@ -1,3 +1,22 @@
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+build/
+
+# Client
 /HMSClient/nbproject/private/
 /HMSClient/build/
+/HMSClient/dist/
+
+# Server
+/HMSserver/nbproject/private/
+/HMSserver/build/
 /HMSserver/dist/
+
+# Java compiled files
+*.class
+
+# OS junk
+.DS_Store
+Thumbs.db
