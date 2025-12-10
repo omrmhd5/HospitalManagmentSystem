@@ -9,10 +9,14 @@ import model.Admin;
 import model.Appointment;
 import model.Patient;
 import model.Prescription;
+import model.LabTest;
+
 import rmi.AdminInterface;
 import rmi.AppointmentInterface;
 import rmi.PatientRecordInterface;
-import rmi.PrescriptionInterface;
+import rmi.PrescriptionInterface;import rmi.PatientInterface;
+import rmi.LabTestInterface;
+
 public class RMIServer {
     // Mahmoud
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
@@ -20,10 +24,16 @@ public class RMIServer {
         mongoLogger.setLevel(Level.SEVERE);
         DB db = new DB();
         
+        // Here we create our remote objects
         AdminInterface admin = new Admin();
         AppointmentInterface appointmentService = new Appointment(db);
         PrescriptionInterface prescriptionService = new Prescription(db);
         PatientRecordInterface patientRecordService = new Patient(db);
+        
+        PatientInterface patient = new Patient(db);
+        
+        // Create lab test service
+        LabTestInterface labTest = new LabTest(db);
         
         Registry registry = LocateRegistry.createRegistry(1099);
         
@@ -31,6 +41,12 @@ public class RMIServer {
         registry.bind("appointment", appointmentService);
         registry.bind("prescription", prescriptionService);
         registry.bind("patientRecord", patientRecordService);
+        
+        // Our remote object patient is binded to the name "patient"
+        registry.bind("patient", patient);
+        
+        // Our remote object labtest is binded to the name "labtest"
+        registry.bind("labtest", labTest);
         
         System.out.println("The server is ready");
     }

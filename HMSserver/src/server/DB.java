@@ -83,4 +83,66 @@ public class DB {
     public void close() {
         mongoClient.close();
     }
+          // Salma
+          // Get patient profile by user ID
+          public Document getPatientById(int userID) {
+              // Collection for patients (update collection name as needed)
+              MongoCollection<Document> patientCollection = database.getCollection("Patients");
+              
+              // Find patient by userID
+              Document patient = patientCollection.find(Filters.eq("userID", userID)).first();
+              
+              if (patient != null) {
+                  System.out.println("Patient found: " + patient.toJson());
+              } else {
+                  System.out.println("No patient found with userID: " + userID);
+              }
+              
+              return patient;
+          }
+          
+          // Salma
+          // Save lab test to database
+          public void saveLabTest(model.LabTest labTest) {
+              try {
+                  MongoCollection<Document> labTestCollection = database.getCollection("LabTests");
+                  
+                  // Convert LabTest to JSON Document
+                  String json = gson.toJson(labTest);
+                  Document doc = Document.parse(json);
+                  
+                  // Insert into database
+                  labTestCollection.insertOne(doc);
+                  System.out.println("Lab test saved to database with ID: " + labTest.getTestID());
+                  
+              } catch (Exception e) {
+                  System.err.println("Error saving lab test: " + e.getMessage());
+              }
+          }
+          
+          // Salma
+          // User management methods
+          public void saveUser(int userID, String fullName, String email, String role) {
+              try {
+                  MongoCollection<Document> userCollection = database.getCollection("Users");
+                  Document doc = new Document("userID", userID)
+                      .append("fullName", fullName)
+                      .append("email", email)
+                      .append("role", role);
+                  userCollection.insertOne(doc);
+                  System.out.println("User saved to database: " + fullName);
+              } catch (Exception e) {
+                  System.err.println("Error saving user: " + e.getMessage());
+              }
+          }
+          
+          public void deleteUserById(int userID) {
+              try {
+                  MongoCollection<Document> userCollection = database.getCollection("Users");
+                  userCollection.deleteOne(Filters.eq("userID", userID));
+                  System.out.println("User deleted from database with ID: " + userID);
+              } catch (Exception e) {
+                  System.err.println("Error deleting user: " + e.getMessage());
+              }
+          }
 }
