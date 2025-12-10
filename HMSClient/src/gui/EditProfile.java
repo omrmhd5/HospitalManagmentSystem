@@ -4,6 +4,11 @@
  */
 package gui;
 
+import javax.swing.JButton;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import com.toedter.calendar.JDateChooser;
+
 /**
  *
  * @author salma
@@ -15,6 +20,37 @@ public class EditProfile extends javax.swing.JFrame {
      */
     public EditProfile() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    
+    // Getters for GUI components
+    public JTextField getNameField() {
+        return jTextField1;
+    }
+    
+    public JDateChooser getDateOfBirthChooser() {
+        return jDateChooser1;
+    }
+    
+    public JRadioButton getMaleRadioButton() {
+        return jRadioButton1;
+    }
+    
+    public JRadioButton getFemaleRadioButton() {
+        return jRadioButton2;
+    }
+    
+    public JTextField getAddressField() {
+        return jTextField2;
+    }
+    
+    public JTextField getPhoneNumberField() {
+        return jTextField3;
+    }
+    
+    public JButton getSaveButton() {
+        return jButton1;
     }
 
     /**
@@ -26,6 +62,7 @@ public class EditProfile extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        genderButtonGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -57,6 +94,7 @@ public class EditProfile extends javax.swing.JFrame {
 
         jTextField1.setText("jTextField1");
 
+        genderButtonGroup.add(jRadioButton1);
         jRadioButton1.setText("Male");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +102,7 @@ public class EditProfile extends javax.swing.JFrame {
             }
         });
 
+        genderButtonGroup.add(jRadioButton2);
         jRadioButton2.setText("Female");
 
         jTextField2.setText("jTextField2");
@@ -179,6 +218,7 @@ public class EditProfile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup genderButtonGroup;
     private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;

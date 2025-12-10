@@ -4,6 +4,9 @@
  */
 package gui;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author salma
@@ -14,7 +17,34 @@ public class ViewProfile extends javax.swing.JFrame {
      * Creates new form ViewProfile
      */
     public ViewProfile() {
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
         initComponents();
+    }
+    
+    // Getters for GUI components
+    public JTextField getNameField() {
+        return jTextField1;
+    }
+    
+    public JTextField getDateOfBirthField() {
+        return jTextField2;
+    }
+    
+    public JTextField getGenderField() {
+        return jTextField3;
+    }
+    
+    public JTextField getAddressField() {
+        return jTextField4;
+    }
+    
+    public JTextField getPhoneNumberField() {
+        return jTextField5;
+    }
+    
+    public JButton getEditButton() {
+        return jButton1;
     }
 
     /**

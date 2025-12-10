@@ -55,4 +55,21 @@ public class DB {
     {
         mongoClient.close();
     }
+         // Salma
+         // Get patient profile by user ID
+         public Document getPatientById(int userID) {
+             // Collection for patients (update collection name as needed)
+             MongoCollection<Document> patientCollection = database.getCollection("Patients");
+             
+             // Find patient by userID
+             Document patient = patientCollection.find(Filters.eq("userID", userID)).first();
+             
+             if (patient != null) {
+                 System.out.println("Patient found: " + patient.toJson());
+             } else {
+                 System.out.println("No patient found with userID: " + userID);
+             }
+             
+             return patient;
+         }
 }
