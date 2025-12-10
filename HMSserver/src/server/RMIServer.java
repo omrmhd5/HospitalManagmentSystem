@@ -8,9 +8,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Admin;
 import model.Patient;
+import model.LabTest;
 
 import rmi.AdminInterface;
 import rmi.PatientInterface;
+import rmi.LabTestInterface;
 
 public class RMIServer {
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
@@ -26,6 +28,9 @@ public class RMIServer {
         
         PatientInterface patient = new Patient();
         
+        // Create lab test service
+        LabTestInterface labTest = new LabTest();
+        
         // An RMI Registry initialized on port 1099
         Registry registry = LocateRegistry.createRegistry(1099);
         
@@ -34,6 +39,9 @@ public class RMIServer {
         
         // Our remote object patient is binded to the name "patient"
         registry.bind("patient", patient);
+        
+        // Our remote object labtest is binded to the name "labtest"
+        registry.bind("labtest", labTest);
         
         // Outputs that the server is ready
         System.out.println("The server is ready");

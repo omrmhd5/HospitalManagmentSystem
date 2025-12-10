@@ -3,9 +3,11 @@ package client;
 import controllers.LoginController;
 import controllers.ViewProfileController;
 import controllers.EditProfileController;
+import controllers.RequestLabTestController;
 import gui.Login;
 import gui.ViewProfile;
 import gui.EditProfile;
+import gui.RequestLabTest;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -28,6 +30,10 @@ public class RMIClient {
         // Create EditProfile GUI and its controller
 //        EditProfile ep = new EditProfile();
 //        EditProfileController epc = new EditProfileController(ep, registry);
+        
+        // Create RequestLabTest GUI and its controller
+//        RequestLabTest rlt = new RequestLabTest();
+//        RequestLabTestController rltc = new RequestLabTestController(rlt, registry);
         
         // Our remote object g is binded to the name "grade"
 //        AdminInterface admin = (AdminInterface) registry.lookup("admin");
