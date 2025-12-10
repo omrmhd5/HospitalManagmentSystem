@@ -7,8 +7,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Admin;
 import model.Appointment;
+import model.Prescription;
 import rmi.AdminInterface;
 import rmi.AppointmentInterface;
+import rmi.PrescriptionInterface;
 public class RMIServer {
     // Mahmoud
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
@@ -18,11 +20,13 @@ public class RMIServer {
         
         AdminInterface admin = new Admin();
         AppointmentInterface appointmentService = new Appointment(db);
+        PrescriptionInterface prescriptionService = new Prescription(db);
         
         Registry registry = LocateRegistry.createRegistry(1099);
         
         registry.bind("admin", admin);
         registry.bind("appointment", appointmentService);
+        registry.bind("prescription", prescriptionService);
         
         System.out.println("The server is ready");
     }
