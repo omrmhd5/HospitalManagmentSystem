@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import java.awt.Button;
+
 /**
  *
  * @author salma
@@ -14,6 +16,8 @@ public class BookAppointment extends javax.swing.JFrame {
      * Creates new form BookAppointment
      */
     public BookAppointment() {
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
         initComponents();
     }
 
@@ -179,39 +183,48 @@ public class BookAppointment extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_button3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BookAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    public Button getConfirmButton() {
+        return button1;
+    }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BookAppointment().setVisible(true);
-            }
-        });
+    public javax.swing.JComboBox<String> getDoctorCombo() {
+        return jComboBox1;
+    }
+
+    public com.toedter.calendar.JDateChooser getDateChooser() {
+        return jDateChooser1;
+    }
+
+    public Button getButton2() {
+        return button2;
+    }
+
+    public Button getButton3() {
+        return button3;
+    }
+
+    public Button getButton4() {
+        return button4;
+    }
+
+    public Button getButton5() {
+        return button5;
+    }
+
+    public Button getButton6() {
+        return button6;
+    }
+
+    public Button getButton7() {
+        return button7;
+    }
+
+    public Button getButton8() {
+        return button8;
+    }
+
+    public Button getButton9() {
+        return button9;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
