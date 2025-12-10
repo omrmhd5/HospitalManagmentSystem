@@ -141,6 +141,25 @@ public List<Diagnosis> getDiagnosesForPatient(int patientID) {
     return list;
 }
 
+MongoCollection<Document> drugCollection;
+drugCollection = database.getCollection("Drugs");
+
+public void addDrug(Drug d) {
+    drugCollection.insertOne(Document.parse(gson.toJson(d)));
+}
+
+public Drug getDrugByID(int drugID) {
+    Document doc = drugCollection.find(Filters.eq("drugID", drugID)).first();
+    return doc == null ? null : gson.fromJson(doc.toJson(), Drug.class);
+}
+
+public boolean updateDrug(Drug d) {
+    drugCollection.replaceOne(
+        Filters.eq("drugID", d.getDrugID()),
+        Document.parse(gson.toJson(d))
+    );
+    return true;
+}
 
 
 
