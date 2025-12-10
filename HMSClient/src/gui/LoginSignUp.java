@@ -16,6 +16,8 @@ public class LoginSignUp extends javax.swing.JFrame {
      * Creates new form LoginSignUp
      */
     public LoginSignUp() {
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
         initComponents();
     }
 

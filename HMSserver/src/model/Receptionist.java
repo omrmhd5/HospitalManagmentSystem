@@ -1,16 +1,17 @@
 package model;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 public class Receptionist extends User implements Serializable {
 
     private int receptionistID;
     private String department;
 
-    public Receptionist() {}
+    public Receptionist() throws RemoteException{}
 
     public Receptionist(int userID, String name, String email, String password,
-                         int receptionistID, String department) {
+                         int receptionistID, String department) throws RemoteException {
         super(userID, name, email, password, "Receptionist");
         this.receptionistID = receptionistID;
         this.department = department;

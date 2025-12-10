@@ -1,8 +1,9 @@
 package model;
 
-import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public abstract class User implements Serializable {
+public abstract class User extends UnicastRemoteObject {
 
     protected int userID;
     protected String name;
@@ -10,9 +11,9 @@ public abstract class User implements Serializable {
     protected String password;
     protected String role;
 
-    public User() {}
+    public User() throws RemoteException {}
 
-    public User(int userID, String name, String email, String password, String role) {
+    public User(int userID, String name, String email, String password, String role) throws RemoteException {
         this.userID = userID;
         this.name = name;
         this.email = email;
@@ -22,7 +23,7 @@ public abstract class User implements Serializable {
 
     // ---------- UML Methods ----------
 
-    public boolean login(String email, String password) {
+    public boolean login(String email, String password) throws RemoteException {
         return this.email.equals(email) && this.password.equals(password);
     }
 

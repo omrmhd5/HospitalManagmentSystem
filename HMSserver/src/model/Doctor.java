@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Doctor extends User implements Serializable {
@@ -14,10 +15,10 @@ public class Doctor extends User implements Serializable {
 
     private ArrayList<Appointment> appointments = new ArrayList<>();
 
-    public Doctor() {}
+    public Doctor() throws RemoteException{}
 
     public Doctor(int userID, String name, String email, String password,
-                  int doctorID, String specialization, String availabilitySchedule) {
+                  int doctorID, String specialization, String availabilitySchedule) throws RemoteException {
         super(userID, name, email, password, "Doctor");
         this.doctorID = doctorID;
         this.specialization = specialization;
