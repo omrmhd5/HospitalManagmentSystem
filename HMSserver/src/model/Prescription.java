@@ -42,7 +42,7 @@ public class Prescription extends UnicastRemoteObject implements PrescriptionInt
         if (patientName == null || patientName.isEmpty() || doctorName == null || doctorName.isEmpty()) {
             return "Missing prescription details";
         }
-        Patient patient = new Patient(0, patientName, "", 0, "");
+        Patient patient = new Patient(0, patientName, "", 0, "",db);
         Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
         Prescription prescription = new Prescription(0, patient, doctor, medicine, dosage, diagnosis, db);
         

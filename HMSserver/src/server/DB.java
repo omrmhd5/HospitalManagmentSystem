@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Appointment;
+import model.Patient;
 import model.Prescription;
 import org.bson.Document;
 
@@ -31,6 +32,8 @@ public class DB {
    MongoCollection<Document> appointment;
    //Mahmoud
    MongoCollection<Document> prescription;
+   //Mahmoud
+   MongoCollection<Document> patient;
   
    public DB() 
     {
@@ -47,6 +50,8 @@ public class DB {
         appointment = database.getCollection("appointment");
         // Collection for the prescriptions
         prescription = database.getCollection("prescription");
+        // Collection for the patients
+        patient = database.getCollection("patient");
     }
     
     // Mahmoud
@@ -59,6 +64,20 @@ public class DB {
     public void insertPrescription (Prescription p) {
         prescription.insertOne(Document.parse(gson.toJson(p)));
         System.out.println("Prescription is inserted.");
+    }
+    
+    // Mahmoud
+    public void insertPatient (Patient p) {
+        patient.insertOne(Document.parse(gson.toJson(p)));
+        System.out.println("Patient is inserted.");
+    }
+    
+    // Mahmoud
+    public Patient getPatientByName(String patientName) {
+        Document query = new Document("contactInfo", patientName);
+        Document doc = patient.find(query).first();
+        
+        return gson.fromJson(doc.toJson(), Patient.class);
     }
     
     public void close() {

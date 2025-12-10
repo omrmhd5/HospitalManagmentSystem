@@ -46,7 +46,7 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         if (doctorName == null || doctorName.isEmpty() || date == null || date.isEmpty() || time == null || time.isEmpty()) {
             return "Missing appointment details";
         }
-        Patient patient = new Patient(0, patientName, "", 0, "");
+        Patient patient = new Patient(0, patientName, "", 0, "",db);
         Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
         Appointment appointment = new Appointment(0, patient, doctor, date, time, db);
         
