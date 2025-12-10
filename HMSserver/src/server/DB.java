@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import org.bson.Document;
 import model.Appointment;
 import model.AvailableReservation;
+import model.Diagnosis;
 import model.ICURequest;
 
 /**
@@ -122,6 +123,25 @@ public List<AvailableReservation> getAvailableReservations(String doctorName, St
 
     return list;
 }
+
+MongoCollection<Document> diagnosisCollection;
+diagnosisCollection = database.getCollection("Diagnosis");
+
+public void addDiagnosis(Diagnosis d) {
+    Document doc = Document.parse(gson.toJson(d));
+    diagnosisCollection.insertOne(doc);
+}
+
+public List<Diagnosis> getDiagnosesForPatient(int patientID) {
+    List<Diagnosis> list = new ArrayList<>();
+
+    for (Document doc : diagnosisCollection.find(Filters.eq("patient.patientID", patientID))) {
+        list.add(gson.fromJson(doc.toJson(), Diagnosis.class));
+    }
+    return list;
+}
+
+
 
 
 

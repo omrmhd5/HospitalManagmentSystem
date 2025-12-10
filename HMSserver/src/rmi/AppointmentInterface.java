@@ -4,6 +4,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 import model.Appointment;
+import model.AvailableReservation;
+import model.Diagnosis;
 
 public interface AppointmentInterface extends Remote {
 
@@ -30,6 +32,10 @@ public interface AppointmentInterface extends Remote {
                                                     String specialty, 
                                                     String date) 
                                                     throws RemoteException;
+    
+    boolean recordDiagnosis(Diagnosis d) throws RemoteException;
+List<Diagnosis> getDiagnosesForPatient(int patientID) throws RemoteException;
+
 
 
 }
