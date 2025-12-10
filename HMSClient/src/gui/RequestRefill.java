@@ -100,7 +100,7 @@ public class RequestRefill extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new RequestRefill().setVisible(true));
+        RecordTestResult.awt.EventQueue.invokeLater(() -> new RequestRefill().setVisible(true));
     }
 
    

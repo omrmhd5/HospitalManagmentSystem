@@ -6,9 +6,11 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import model.Admin;
 import rmi.AdminInterface;
 import rmi.PharmacistInterface;
+import rmi.LabTechnicianInterface;
 
 public class RMIServer {
 
@@ -38,6 +40,17 @@ public class RMIServer {
         };
 
         registry.bind("pharmacist", pharmacistInterface);
+
+       
+        LabTechnicianInterface labTechInterface = new LabTechnicianInterface() {
+
+            @Override
+            public String recordLabTestResult(int testID, String result) throws RemoteException {
+                return db.recordLabTestResult(testID, result);
+            }
+        };
+
+        registry.bind("labtech", labTechInterface);
 
         System.out.println("The server is ready");
     }

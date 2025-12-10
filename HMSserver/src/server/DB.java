@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import model.Patient;
 import model.Pharmacist;
+import model.LabTest;
 import org.bson.Document;
 
 public class DB {
@@ -22,6 +23,7 @@ public class DB {
     // Collections
     private MongoCollection<Document> patientCollection;
     private MongoCollection<Document> pharmacistCollection;
+    private MongoCollection<Document> labTestCollection;
 
     public static Gson gson = new Gson();
 
@@ -34,7 +36,8 @@ public class DB {
         database = mongoClient.getDatabase("HospitalSystem");
 
         patientCollection = database.getCollection("Patients");
-        pharmacistCollection = database.getCollection("Pharmacists"); // <-- ADD THIS COLLECTION
+        pharmacistCollection = database.getCollection("Pharmacists");
+        labTestCollection = database.getCollection("LabTests");   // <--- NEW COLLECTION
     }
 
     // ---------------------------------------------------------
@@ -79,8 +82,7 @@ public class DB {
     }
 
     // ---------------------------------------------------------
-     //IBRAHIM
- 
+    // PHARMACIST REQUEST REFILL
     public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity) {
 
         if (medicineName == null || medicineName.isBlank()) {
@@ -91,7 +93,6 @@ public class DB {
             return "Invalid quantity. Must be greater than zero.";
         }
 
-        // Find pharmacist in DB
         Document doc = pharmacistCollection.find(Filters.eq("pharmacistID", pharmacistID)).first();
 
         if (doc == null) {
@@ -100,12 +101,35 @@ public class DB {
 
         Pharmacist pharmacist = gson.fromJson(doc.toJson(), Pharmacist.class);
 
-        // Call model logic
         return pharmacist.requestMedicineRefill(medicineName, quantity);
     }
 
     // ---------------------------------------------------------
+    // LAB TECHNICIAN – RECORD LAB TEST RESULT
+    public String recordLabTestResult(int testID, String result) {
 
+        if (result == null || result.isBlank()) {
+            return "Invalid result.";
+        }
+
+        Document doc = labTestCollection.find(Filters.eq("testID", testID)).first();
+
+        if (doc == null) {
+            return "Test not found in database.";
+        }
+
+        LabTest test = gson.fromJson(doc.toJson(), LabTest.class);
+        test.setResult(result);
+
+        labTestCollection.replaceOne(
+                Filters.eq("testID", testID),
+                Document.parse(gson.toJson(test))
+        );
+
+        return "Test result saved successfully.";
+    }
+
+    // ---------------------------------------------------------
     public void close() {
         mongoClient.close();
     }
