@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bson.Document;
 import model.Appointment;
+import model.ICURequest;
 
 /**
  *
@@ -77,6 +78,26 @@ public class DB {
 
     return list;
 }
+    MongoCollection<Document> icuCollection;
+    icuCollection = database.getCollection("ICURequests");
+    
+    public void addICURequest(ICURequest req) {
+    Document doc = Document.parse(gson.toJson(req));
+    icuCollection.insertOne(doc);
+}
+
+public List<ICURequest> getRequestsForPatient(int patientID) {
+    List<ICURequest> list = new ArrayList<>();
+
+    for (Document doc : icuCollection.find(Filters.eq("patient.patientID", patientID))) {
+        list.add(gson.fromJson(doc.toJson(), ICURequest.class));
+    }
+
+    return list;
+}
+
+
+
    
 //   public DB() 
 //    {
