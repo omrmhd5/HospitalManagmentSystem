@@ -2,6 +2,7 @@ package rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 import model.Appointment;
 
 public interface AppointmentInterface extends Remote {
@@ -23,5 +24,7 @@ public interface AppointmentInterface extends Remote {
 
     // Main manage function (cancel or reschedule)
     boolean manageAppointment(int appointmentID, String operation, String newDate, String newTime) throws RemoteException;
+    
+    List<Appointment> getAppointmentsForDoctor(int doctorID) throws RemoteException;
 
 }

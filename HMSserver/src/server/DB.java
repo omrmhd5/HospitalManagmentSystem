@@ -10,6 +10,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bson.Document;
@@ -63,7 +65,18 @@ public class DB {
     }
 
 
-    
+    public List<Appointment> getAppointmentsForDoctor(int doctorID) {
+    List<Appointment> list = new ArrayList<>();
+
+    MongoCollection<Document> col = database.getCollection("Appointment");
+
+    for (Document doc : col.find(Filters.eq("doctor.doctorID", doctorID))) {
+        Appointment a = gson.fromJson(doc.toJson(), Appointment.class);
+        list.add(a);
+    }
+
+    return list;
+}
    
 //   public DB() 
 //    {

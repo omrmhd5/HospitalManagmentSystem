@@ -118,4 +118,14 @@ public class Appointment implements Serializable {
         return true;
     }
     
+    public String toReadableString() {
+    return  "Appointment ID: " + appointmentID +
+            "\nPatient: " + (patient != null ? patient.getName() : "Unknown") +
+            "\nDoctor: " + (doctor != null ? doctor.getName() : "Unknown") +
+            "\nDate: " + date +
+            "\nTime: " + time +
+            "\nStatus: " + status;
+}
+
+    
 }

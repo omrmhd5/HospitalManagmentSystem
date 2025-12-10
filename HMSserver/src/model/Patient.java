@@ -9,6 +9,7 @@ public class Patient implements Serializable {
     private String gender;
     private int age;
     private String medicalHistory;
+    private String name;
 
     // Read-only prescription view (UML)
     private Prescription readOnly;
@@ -61,6 +62,10 @@ public class Patient implements Serializable {
 
     public int getAge() { return age; }
     public void setAge(int age) { this.age = age; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
 
     public String getMedicalHistory() { return medicalHistory; }
     public void setMedicalHistory(String medicalHistory) { this.medicalHistory = medicalHistory; }
