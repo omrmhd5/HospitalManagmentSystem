@@ -1,5 +1,6 @@
 package model;
 
+import DesignPattern.DoctorRequestStrategy;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -10,8 +11,7 @@ public class Doctor extends User implements Serializable {
     private String specialization;
     private String availabilitySchedule;
 
-    private Object requestStrategy;     // UML: DoctorRequestStrategy
-    private Object requestChain;        // UML: ICURequestHandler
+    private DoctorRequestStrategy requestStrategy;  // FIXED
 
     private ArrayList<Appointment> appointments = new ArrayList<>();
 
@@ -25,45 +25,20 @@ public class Doctor extends User implements Serializable {
         this.availabilitySchedule = availabilitySchedule;
     }
 
-    // ---------- UML METHODS ----------
-
     public ArrayList<Appointment> viewAppointment() {
         return appointments;
     }
 
-    public void recordDiagnosis(String diagnosis) {
-        System.out.println("Diagnosis recorded: " + diagnosis);
-    }
-
-    public Prescription recordPrescription(Patient p, String medicine, String dosage) {
-        Prescription pres = new Prescription(0, p, this);
-        pres.addMedicine(medicine, dosage);
-        return pres;
-    }
-
-    public LabTest requestLabTest(Patient p, String type) {
-        return new LabTest(0, type, "Today");
-    }
-
-    public void requestMedicineRefill() {
-        System.out.println("Medicine refill requested.");
-    }
-
-    public ICURoom requestICURoom(ICURoom room) {
-        room.handleRequest(this.doctorID);
-        return room;
-    }
-
-    public void viewPatientRecord(Patient p) {
-        System.out.println("Viewing patient record: " + p.getPatientID());
-    }
-
-    public void setRequestStrategy(Object strategy) {
+    public void setRequestStrategy(DoctorRequestStrategy strategy) {
         this.requestStrategy = strategy;
     }
 
     public void executeRequest(Appointment appointment) {
-        System.out.println("Executing request for appointment: " + appointment.getAppointmentID());
+        if (requestStrategy != null) {
+            requestStrategy.executeRequest(this, appointment);
+        } else {
+            System.out.println("No request strategy assigned.");
+        }
     }
 
     public void updateAppointment(Appointment appointment, String message) {
