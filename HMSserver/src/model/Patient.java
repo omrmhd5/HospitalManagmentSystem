@@ -1,21 +1,28 @@
 package model;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import rmi.PatientRecordInterface;
+import server.DB;
 
-import java.io.Serializable;
-
-public class Patient implements Serializable {
-
+public class Patient extends UnicastRemoteObject implements PatientRecordInterface {
     private int patientID;
     private String contactInfo;
     private String gender;
     private int age;
     private String medicalHistory;
+    private final DB db;
 
     // Read-only prescription view (UML)
     private Prescription readOnly;
 
-    public Patient() { }
+    // Mahmoud
+    public Patient(DB db) throws RemoteException {
+        this.db = db;
+    }
 
-    public Patient(int patientID, String contactInfo, String gender, int age, String medicalHistory) {
+    // Mahmoud
+    public Patient(int patientID, String contactInfo, String gender, int age, String medicalHistory, DB db) throws RemoteException {
+        this.db = db;
         this.patientID = patientID;
         this.contactInfo = contactInfo;
         this.gender = gender;
@@ -46,6 +53,30 @@ public class Patient implements Serializable {
 
     public void updateAppointment(Appointment appointment, String message) {
         appointment.updateStatus(message);
+    }
+    
+    // Mahmoud
+    @Override
+    public String viewPatientRecord(String patientName) throws RemoteException {
+        if (patientName == null || patientName.isEmpty()) {
+            return "Patient name is required";
+        }
+        
+        Patient patient = db.getPatientByName(patientName);
+        
+        if (patient == null) {
+            return "Patient not found: " + patientName;
+        }
+        
+        String record = "Patient Record\n" +
+                        "====================\n" +
+                        "Name: " + patientName + "\n" +
+                        "Contact: " + patient.getContactInfo() + "\n" +
+                        "Gender: " + patient.getGender() + "\n" +
+                        "Age: " + patient.getAge() + "\n" +
+                        "Medical History: " + patient.getMedicalHistory() + "\n";
+        
+        return record;
     }
 
     // ---------- Getters & Setters ----------

@@ -1,5 +1,4 @@
 package server;
-
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -7,28 +6,32 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Admin;
-
+import model.Appointment;
+import model.Patient;
+import model.Prescription;
 import rmi.AdminInterface;
-
+import rmi.AppointmentInterface;
+import rmi.PatientRecordInterface;
+import rmi.PrescriptionInterface;
 public class RMIServer {
+    // Mahmoud
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
-                   
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
-        
-        //Calling the class for the database 
         DB db = new DB();
         
-        // Here we create our remote object
         AdminInterface admin = new Admin();
+        AppointmentInterface appointmentService = new Appointment(db);
+        PrescriptionInterface prescriptionService = new Prescription(db);
+        PatientRecordInterface patientRecordService = new Patient(db);
         
-        // An RMI Registry initialized on port 1099
         Registry registry = LocateRegistry.createRegistry(1099);
         
-        // Our remote object admin is binded to the name "admin"
         registry.bind("admin", admin);
+        registry.bind("appointment", appointmentService);
+        registry.bind("prescription", prescriptionService);
+        registry.bind("patientRecord", patientRecordService);
         
-        // Outputs that the server is ready
         System.out.println("The server is ready");
     }
 }
