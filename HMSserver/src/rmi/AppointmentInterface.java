@@ -26,5 +26,10 @@ public interface AppointmentInterface extends Remote {
     boolean manageAppointment(int appointmentID, String operation, String newDate, String newTime) throws RemoteException;
     
     List<Appointment> getAppointmentsForDoctor(int doctorID) throws RemoteException;
+    List<AvailableReservation> getAvailableReservations(String doctorName, 
+                                                    String specialty, 
+                                                    String date) 
+                                                    throws RemoteException;
+
 
 }

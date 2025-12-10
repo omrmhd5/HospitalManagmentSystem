@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bson.Document;
 import model.Appointment;
+import model.AvailableReservation;
 import model.ICURequest;
 
 /**
@@ -91,6 +92,32 @@ public List<ICURequest> getRequestsForPatient(int patientID) {
 
     for (Document doc : icuCollection.find(Filters.eq("patient.patientID", patientID))) {
         list.add(gson.fromJson(doc.toJson(), ICURequest.class));
+    }
+
+    return list;
+}
+
+public List<AvailableReservation> getAvailableReservations(String doctorName, String specialty, String date) {
+
+    List<AvailableReservation> list = new ArrayList<>();
+
+    MongoCollection<Document> col = database.getCollection("DoctorSchedules");
+
+    Document filter = new Document();
+
+    if (doctorName != null && !doctorName.isEmpty())
+        filter.append("doctor.name", doctorName);
+
+    if (specialty != null && !specialty.isEmpty())
+        filter.append("doctor.specialty", specialty);
+
+    if (date != null && !date.isEmpty())
+        filter.append("date", date);
+
+    for (Document doc : col.find(filter)) {
+
+        AvailableReservation ar = gson.fromJson(doc.toJson(), AvailableReservation.class);
+        list.add(ar);
     }
 
     return list;
