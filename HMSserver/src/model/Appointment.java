@@ -10,6 +10,7 @@ public class Appointment implements Serializable {
     private String date;
     private String time;
     private String status;
+    
 
     public Appointment() { }
 
@@ -93,6 +94,7 @@ public class Appointment implements Serializable {
 
     public boolean manageAppointment(String operation, String newDate, String newTime) {
         if (operation.equalsIgnoreCase("cancel")) {
+            
             return cancelAppointment();
         }
         else if (operation.equalsIgnoreCase("reschedule")) {
