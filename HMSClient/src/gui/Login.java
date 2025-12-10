@@ -4,6 +4,10 @@
  */
 package gui;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 /**
  *
  * @author COMPUMARTS
@@ -16,8 +20,22 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
         initComponents();
     }
+    
+//    public JTextField getjTextField1() {
+//        return jTextField1;
+//    }
+
+    public JButton getContinueButton() {
+        return ContinueButton;
+    }
+
+//    public JLabel getjLabel1() {
+//        return jLabel1;
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
