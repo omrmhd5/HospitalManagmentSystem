@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import model.Patient;
+import model.Pharmacist;
 import org.bson.Document;
 
 public class DB {
@@ -17,54 +19,47 @@ public class DB {
     public static MongoClient mongoClient;
     public static MongoDatabase database;
 
-    // --- Collections ---
+    // Collections
     private MongoCollection<Document> patientCollection;
+    private MongoCollection<Document> pharmacistCollection;
 
     public static Gson gson = new Gson();
 
     public DB() {
 
-        // Disable MongoDB noise logs
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
 
-        // Open local connection
         mongoClient = new MongoClient();
-
-        // Select database
         database = mongoClient.getDatabase("HospitalSystem");
 
-        // Patient collection
         patientCollection = database.getCollection("Patients");
+        pharmacistCollection = database.getCollection("Pharmacists"); // <-- ADD THIS COLLECTION
     }
 
-
-
-    // Insert a new patient (used in Add Patient Record) // ibrahim
+    // ---------------------------------------------------------
+    // Insert new patient
     public void insertPatient(Patient p) {
         patientCollection.insertOne(Document.parse(gson.toJson(p)));
         System.out.println("Patient inserted: " + p.getPatientID());
     }
 
-    // Get patient by ID //ibrahim
+    // Get patient by ID
     public Patient getPatientByID(int id) {
         Document doc = patientCollection.find(Filters.eq("patientID", id)).first();
         if (doc == null) return null;
         return gson.fromJson(doc.toJson(), Patient.class);
     }
 
-    // Add patient record entry to existing patient //ibrahim
+    // Add patient record
     public boolean addPatientRecord(int patientID, String record) {
 
         Patient p = getPatientByID(patientID);
 
-        if (p == null)
-            return false;
+        if (p == null) return false;
 
-        // Add the record inside model object
         p.addRecord(record);
 
-        // Save updated object back into database
         patientCollection.replaceOne(
                 Filters.eq("patientID", patientID),
                 Document.parse(gson.toJson(p))
@@ -73,18 +68,43 @@ public class DB {
         return true;
     }
 
-    // List all records for specific patient // ibrahim
+    // Get patient records list
     public List<String> getRecordsForPatient(int patientID) {
 
         Patient p = getPatientByID(patientID);
 
-        if (p == null)
-            return new ArrayList<>();
+        if (p == null) return new ArrayList<>();
 
         return p.getRecords();
     }
 
-    // ============================================================
+    // ---------------------------------------------------------
+     //IBRAHIM
+ 
+    public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity) {
+
+        if (medicineName == null || medicineName.isBlank()) {
+            return "Medicine name cannot be empty.";
+        }
+
+        if (quantity <= 0) {
+            return "Invalid quantity. Must be greater than zero.";
+        }
+
+        // Find pharmacist in DB
+        Document doc = pharmacistCollection.find(Filters.eq("pharmacistID", pharmacistID)).first();
+
+        if (doc == null) {
+            return "Pharmacist not found in database.";
+        }
+
+        Pharmacist pharmacist = gson.fromJson(doc.toJson(), Pharmacist.class);
+
+        // Call model logic
+        return pharmacist.requestMedicineRefill(medicineName, quantity);
+    }
+
+    // ---------------------------------------------------------
 
     public void close() {
         mongoClient.close();

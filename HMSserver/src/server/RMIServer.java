@@ -7,28 +7,38 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Admin;
-
 import rmi.AdminInterface;
+import rmi.PharmacistInterface;
 
 public class RMIServer {
+
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
-                   
+
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
-        
-        //Calling the class for the database 
+
+        // Initialize DB
         DB db = new DB();
-        
-        // Here we create our remote object
-        AdminInterface admin = new Admin();
-        
-        // An RMI Registry initialized on port 1099
+
+        // Create RMI registry
         Registry registry = LocateRegistry.createRegistry(1099);
-        
-        // Our remote object admin is binded to the name "admin"
+
+        // -------------------- ADMIN BINDING --------------------
+        AdminInterface admin = new Admin();
         registry.bind("admin", admin);
-        
-        // Outputs that the server is ready
+
+        // ----------------- PHARMACIST BINDING ------------------
+        PharmacistInterface pharmacistInterface = new PharmacistInterface() {
+
+            @Override
+            public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity)
+                    throws RemoteException {
+                return db.requestMedicineRefill(pharmacistID, medicineName, quantity);
+            }
+        };
+
+        registry.bind("pharmacist", pharmacistInterface);
+
         System.out.println("The server is ready");
     }
 }
