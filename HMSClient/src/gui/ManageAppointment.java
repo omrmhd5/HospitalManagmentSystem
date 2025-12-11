@@ -18,6 +18,21 @@ public class ManageAppointment extends javax.swing.JFrame {
     /**
      * Creates new form ManageAppointment
      */
+    public ManageAppointment() {
+         initComponents();
+
+    txtNewDate.setVisible(false);
+    lblNewDate.setVisible(false);
+    txtNewTime.setVisible(false);
+    lblNewTime.setVisible(false);
+    btnConfirm.setVisible(false);
+
+    this.setLocationRelativeTo(null);
+    this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);  // FIX
+    this.setVisible(true);
+    this.toFront();           
+    }
+    
     public JButton getSearchButton() {
     return Search;
 }
@@ -60,20 +75,7 @@ public void showRescheduleFields() {
     btnConfirm.setVisible(true);
 }
 
-    public ManageAppointment() {
-         initComponents();
-
-    txtNewDate.setVisible(false);
-    lblNewDate.setVisible(false);
-    txtNewTime.setVisible(false);
-    lblNewTime.setVisible(false);
-    btnConfirm.setVisible(false);
-
-    this.setLocationRelativeTo(null);
-    this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);  // FIX
-    this.setVisible(true);
-    this.toFront();           
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
