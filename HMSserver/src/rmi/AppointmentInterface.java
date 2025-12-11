@@ -22,6 +22,7 @@ public interface AppointmentInterface extends Remote {
 
     // Rana - Main manage function (cancel or reschedule)
     boolean manageAppointment(int appointmentID, String operation, String newDate, String newTime) throws RemoteException;
+    
 
     // Rana - Get appointments for doctor (returns formatted string)
     String getAppointmentsForDoctor(int doctorID) throws RemoteException;
