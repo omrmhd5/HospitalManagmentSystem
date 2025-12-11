@@ -252,4 +252,10 @@ public class Patient extends User implements PatientInterface {
     
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    
+    // Mahmoud
+    @Override
+    public List<String> getAllPatientNames() throws RemoteException {
+        return db.getAllPatientNames();
+    }
 }

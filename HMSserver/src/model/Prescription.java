@@ -39,13 +39,16 @@ public class Prescription extends UnicastRemoteObject implements PrescriptionInt
     // Mahmoud
     @Override
     public String recordPrescription(String patientName, String doctorName, String medicine, String dosage, String diagnosis) throws RemoteException {
-        if (patientName == null || patientName.isEmpty() || doctorName == null || doctorName.isEmpty()) {
-            return "Missing prescription details";
-        }
-        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
-        Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
+        // Mahmoud - Get actual patient from database
+        Patient patient = db.getPatientByName(patientName);
+        
+        // Mahmoud - Get actual doctor from database
+        Doctor doctor = db.getDoctorByName(doctorName);
+        
+        // Mahmoud - Create Prescription object with actual patient and doctor data
         Prescription prescription = new Prescription(0, patient, doctor, medicine, dosage, diagnosis, db);
         
+        // Mahmoud
         db.insertPrescription(prescription);
         return "Prescription recorded for " + patientName + " by Dr. " + doctorName;
     }

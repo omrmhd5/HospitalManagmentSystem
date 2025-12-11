@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controllers;
 
 import gui.ViewPatientRecord;
@@ -10,56 +6,89 @@ import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import rmi.PatientInterface;
 
-/**
- *
- * @author omrmh
- */
 public class ViewPatientRecordController {
     
-    // We have reference to both the GUI and the rmi registry
-    ViewPatientRecord gui;
-    Registry r;
+    private final ViewPatientRecord gui;
+    private final Registry registry;
     
-    // The constructor takes the gui and the rmi registry as paramaters
-    public ViewPatientRecordController(ViewPatientRecord gui, Registry r)
-    {
+    // Mahmoud
+    public ViewPatientRecordController(ViewPatientRecord gui, Registry registry) {
         this.gui = gui;
-        this.r = r;
-        // This registers the button with our action listener below (the inner class)
-        gui.getViewButton().addActionListener(new ViewBtnAction());
+        this.registry = registry;
+        
+        // Mahmoud
+        gui.getLblDoctorName().setText("Doctor: " + gui.getDoctorName());
+        
+        gui.getBtnViewRecord().addActionListener(new ViewRecordAction());
+        gui.getBtnCancel().addActionListener(new CancelAction());
+        
+        // Mahmoud
+        loadPatients();
     }
     
-    // This class is responsible for handling the button click
-    class ViewBtnAction implements ActionListener {
-
+    // Mahmoud
+    private void loadPatients() {
+        try {
+            // Mahmoud
+            PatientInterface patientService = (PatientInterface) registry.lookup("patient");
+            
+            // Mahmoud
+            List<String> patients = patientService.getAllPatientNames();
+            
+            if (patients.isEmpty()) {
+                gui.getCmbPatientName().setModel(new DefaultComboBoxModel<>(new String[]{"No patients available"}));
+            } else {
+                gui.getCmbPatientName().setModel(new DefaultComboBoxModel<>(patients.toArray(new String[0])));
+            }
+            
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ViewPatientRecordController.class.getName()).log(Level.SEVERE, null, ex);
+            gui.getCmbPatientName().setModel(new DefaultComboBoxModel<>(new String[]{"Error loading patients"}));
+        }
+    }
+    
+    // Mahmoud
+    class ViewRecordAction implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent ae) {
+        public void actionPerformed(ActionEvent e) {
             try {
-
-                // We try to obtain a remote reference to the patient remote object
-                // that lives on the server. (using the registry object obtained from
-                // the constructor above)
-                PatientInterface patientService = (PatientInterface) r.lookup("patient");
+                // Mahmoud
+                PatientInterface patientService = (PatientInterface) registry.lookup("patient");
                 
-                String patientName = gui.getPatientNameField().getText();
+                String selectedPatient = (String) gui.getCmbPatientName().getSelectedItem();
+                
+                if (selectedPatient == null || selectedPatient.equals("No patients available") || selectedPatient.equals("Error loading patients")) {
+                    JOptionPane.showMessageDialog(gui, "Please select a valid patient", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Mahmoud - View patient record
+                String record = patientService.viewPatientRecord(selectedPatient);
+                
                 // Mahmoud
-                String response = patientService.viewPatientRecord(patientName);
-                // Mahmoud
-                gui.getRecordArea().setText(response);
-               
+                gui.getTxtRecordArea().setText(record);
+                
             } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(ViewPatientRecordController.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(gui, "Failed to retrieve record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
     }
     
+    // Mahmoud
+    class CancelAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            gui.dispose();
+        }
+    }
 }
 
 

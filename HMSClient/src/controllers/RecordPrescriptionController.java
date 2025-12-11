@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controllers;
 
 import gui.RecordPrescription;
@@ -10,62 +6,112 @@ import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import rmi.PatientInterface;
 import rmi.PrescriptionInterface;
 
-/**
- *
- * @author omrmh
- */
 public class RecordPrescriptionController {
     
-    // We have reference to both the GUI and the rmi registry
-    RecordPrescription gui;
-    Registry r;
+    private final RecordPrescription gui;
+    private final Registry registry;
     
-    // The constructor takes the gui and the rmi registry as paramaters
-    public RecordPrescriptionController(RecordPrescription gui, Registry r)
-    {
+    // Mahmoud
+    public RecordPrescriptionController(RecordPrescription gui, Registry registry) {
         this.gui = gui;
-        this.r = r;
-        // This registers the button with our action listener below (the inner class)
-        gui.getRecordButton().addActionListener(new RecordBtnAction());
+        this.registry = registry;
+        
+        // Mahmoud
+        gui.getLblDoctorName().setText("Doctor: " + gui.getDoctorName());
+        gui.getTxtDoctor().setText(gui.getDoctorName());
+        
+        gui.getBtnRecord().addActionListener(new RecordAction());
+        gui.getBtnCancel().addActionListener(new CancelAction());
+        
+        // Mahmoud
+        loadPatients();
     }
     
-    // This class is responsible for handling the button click
-    class RecordBtnAction implements ActionListener {
-
+    // Mahmoud
+    private void loadPatients() {
+        try {
+            // Mahmoud
+            PatientInterface patientService = (PatientInterface) registry.lookup("patient");
+            
+            // Mahmoud
+            List<String> patients = patientService.getAllPatientNames();
+            
+            if (patients.isEmpty()) {
+                gui.getCmbPatientName().setModel(new DefaultComboBoxModel<>(new String[]{"No patients available"}));
+            } else {
+                gui.getCmbPatientName().setModel(new DefaultComboBoxModel<>(patients.toArray(new String[0])));
+            }
+            
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(RecordPrescriptionController.class.getName()).log(Level.SEVERE, null, ex);
+            gui.getCmbPatientName().setModel(new DefaultComboBoxModel<>(new String[]{"Error loading patients"}));
+        }
+    }
+    
+    // Mahmoud
+    class RecordAction implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent ae) {
+        public void actionPerformed(ActionEvent e) {
             try {
-
-                // We try to obtain a remote reference to the prescription remote object
-                // that lives on the server. (using the registry object obtained from
-                // the constructor above)
-                PrescriptionInterface prescriptionService = (PrescriptionInterface) r.lookup("prescription");
+                // Mahmoud
+                PrescriptionInterface prescriptionService = (PrescriptionInterface) registry.lookup("prescription");
                 
-                String patientName = gui.getPatientNameField().getText();
-                String doctor = (String) gui.getDoctorCombo().getSelectedItem();
-                // Mahmoud
-                String medicine = gui.getMedicineField().getText();
-                // Mahmoud
-                String dosage = gui.getDosageField().getText();
-                // Mahmoud
-                String diagnosis = gui.getDiagnosisArea().getText();
-                // Mahmoud
-                String response = prescriptionService.recordPrescription(patientName, doctor, medicine, dosage, diagnosis);
-                JOptionPane.showMessageDialog(gui, response);
-               
+                String selectedPatient = (String) gui.getCmbPatientName().getSelectedItem();
+                String doctorName = gui.getTxtDoctor().getText();
+                String medicine = gui.getTxtMedicine().getText();
+                String dosage = gui.getTxtDosage().getText();
+                String diagnosis = gui.getTxtDiagnosis().getText();
+                
+                if (selectedPatient == null || selectedPatient.equals("No patients available") || selectedPatient.equals("Error loading patients")) {
+                    JOptionPane.showMessageDialog(gui, "Please select a valid patient", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                if (medicine == null || medicine.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Please enter medicine name", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                if (dosage == null || dosage.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Please enter dosage", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Mahmoud - Record prescription
+                String response = prescriptionService.recordPrescription(
+                    selectedPatient,
+                    doctorName,
+                    medicine,
+                    dosage,
+                    diagnosis
+                );
+                
+                JOptionPane.showMessageDialog(gui, response, "Success", JOptionPane.INFORMATION_MESSAGE);
+                
+                gui.dispose();
+                
             } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(RecordPrescriptionController.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(gui, "Recording failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
     }
     
+    // Mahmoud
+    class CancelAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            gui.dispose();
+        }
+    }
 }
 
 

@@ -301,7 +301,36 @@ public class DB {
     
     // Mahmoud
     public void insertPrescription(Prescription p) {
-        prescription.insertOne(Document.parse(gson.toJson(p)));
+        // Mahmoud - Manually create Document to avoid Gson serialization of RMI object
+        Document patientDoc = new Document();
+        if (p.getPatient() != null) {
+            Patient patient = p.getPatient();
+            patientDoc.append("patientID", patient.getPatientID())
+                    .append("name", patient.getName())
+                    .append("contactInfo", patient.getContactInfo())
+                    .append("gender", patient.getGender())
+                    .append("age", patient.getAge())
+                    .append("medicalHistory", patient.getMedicalHistory());
+        }
+        
+        Document doctorDoc = new Document();
+        if (p.getDoctor() != null) {
+            Doctor d = p.getDoctor();
+            doctorDoc.append("doctorID", d.getDoctorID())
+                    .append("name", d.getName())
+                    .append("specialization", d.getSpecialization())
+                    .append("availabilitySchedule", d.getAvailabilitySchedule());
+        }
+        
+        Document doc = new Document()
+                .append("prescriptionID", p.getPrescriptionID())
+                .append("medicine", p.getMedicine())
+                .append("dosage", p.getDosage())
+                .append("diagnosis", p.getDiagnosis())
+                .append("patient", patientDoc)
+                .append("doctor", doctorDoc);
+        
+        prescription.insertOne(doc);
         System.out.println("Prescription is inserted.");
     }
     
@@ -441,6 +470,19 @@ public class DB {
     // ========================================
     // Doctor DB
     // ========================================
+    
+    // Mahmoud
+    public List<String> getAllPatientNames() {
+        List<String> patientNames = new ArrayList<>();
+        // Mahmoud - Query patient collection for all patients
+        for (Document doc : patient.find()) {
+            String name = doc.getString("name");
+            if (name != null && !name.isEmpty()) {
+                patientNames.add(name);
+            }
+        }
+        return patientNames;
+    }
     
     // Mahmoud
     public List<String> getAllDoctorNames() {

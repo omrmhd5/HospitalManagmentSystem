@@ -54,7 +54,8 @@ public class DoctorDashboardController {
     class RecordPrescriptionAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            RecordPrescription recordPrescriptionGui = new RecordPrescription();
+            // Mahmoud
+            RecordPrescription recordPrescriptionGui = new RecordPrescription(gui.getDoctorName(), gui.getDoctorEmail());
             RecordPrescriptionController recordPrescriptionController = new RecordPrescriptionController(recordPrescriptionGui, registry);
         }
     }
@@ -62,7 +63,8 @@ public class DoctorDashboardController {
     class ViewPatientRecordsAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ViewPatientRecord viewPatientRecordGui = new ViewPatientRecord();
+            // Mahmoud
+            ViewPatientRecord viewPatientRecordGui = new ViewPatientRecord(gui.getDoctorName(), gui.getDoctorEmail());
             ViewPatientRecordController viewPatientRecordController = new ViewPatientRecordController(viewPatientRecordGui, registry);
         }
     }
