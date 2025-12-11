@@ -1,7 +1,9 @@
 package controllers.loginRegister;
 
+import controllers.AdminDashboardController;
 import controllers.DoctorDashboardController;
 import controllers.PatientDashboardController;
+import gui.AdminDashboard;
 import gui.DoctorDashboard;
 import gui.loginRegister.Login;
 import gui.PatientDashboard;
@@ -63,6 +65,9 @@ public class LoginController {
                     } else if (role.equals("Doctor")) {
                         DoctorDashboard doctorDashboard = new DoctorDashboard(name, email);
                         DoctorDashboardController doctorDashboardController = new DoctorDashboardController(doctorDashboard, registry);
+                    } else if (role.equals("Admin")) {
+                        AdminDashboard adminDashboard = new AdminDashboard(name, email);
+                        AdminDashboardController adminDashboardController = new AdminDashboardController(adminDashboard, registry);
                     } else {
                         JOptionPane.showMessageDialog(null, "Dashboard for " + role + " is coming soon!", "Info", JOptionPane.INFORMATION_MESSAGE);
                     }

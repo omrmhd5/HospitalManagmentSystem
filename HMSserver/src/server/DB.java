@@ -425,7 +425,7 @@ public class DB {
     // Salma
     public void saveUser(int userID, String fullName, String email, String role) {
         Document doc = new Document("userID", userID)
-            .append("fullName", fullName)
+            .append("name", fullName)
             .append("email", email)
             .append("role", role);
         user.insertOne(doc);
@@ -436,6 +436,42 @@ public class DB {
     public void deleteUserById(int userID) {
         user.deleteOne(Filters.eq("userID", userID));
         System.out.println("User deleted from database with ID: " + userID);
+    }
+    
+    // Salma - Get all users from database
+    public List<Object[]> getAllUsers() {
+        List<Object[]> users = new ArrayList<>();
+        for (Document doc : user.find()) {
+            Integer userIDObj = doc.getInteger("userID");
+            if (userIDObj == null) {
+                continue; // Skip documents without userID
+            }
+            int userID = userIDObj;
+            String name = doc.getString("name");
+            if (name == null) {
+                name = doc.getString("fullName"); // Fallback to fullName if name doesn't exist
+            }
+            String email = doc.getString("email");
+            String role = doc.getString("role");
+            
+            if (name != null && email != null && role != null) {
+                users.add(new Object[]{userID, name, email, role});
+            }
+        }
+        System.out.println("Retrieved " + users.size() + " users from database");
+        return users;
+    }
+    
+    // Salma - Get next available userID
+    public int getNextUserID() {
+        int maxID = 0;
+        for (Document doc : user.find()) {
+            Integer id = doc.getInteger("userID");
+            if (id != null && id > maxID) {
+                maxID = id;
+            }
+        }
+        return maxID + 1;
     }
     
     // ========================================

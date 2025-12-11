@@ -29,7 +29,6 @@ public class DoctorDashboard extends javax.swing.JFrame {
         btnRequestLabTest = new javax.swing.JButton();
         btnRequestRefill = new javax.swing.JButton();
         btnRequestICU = new javax.swing.JButton();
-        btnViewProfile = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -92,13 +91,6 @@ public class DoctorDashboard extends javax.swing.JFrame {
             }
         });
 
-        btnViewProfile.setText("View Profile");
-        btnViewProfile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewProfileActionPerformed(evt);
-            }
-        });
-
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,7 +114,6 @@ public class DoctorDashboard extends javax.swing.JFrame {
                     .addComponent(btnRequestLabTest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRequestRefill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRequestICU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnViewProfile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
@@ -147,9 +138,7 @@ public class DoctorDashboard extends javax.swing.JFrame {
                 .addComponent(btnRequestRefill, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(btnRequestICU, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnViewProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(105, 105, 105)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(40, Short.MAX_VALUE))
         );
@@ -185,10 +174,6 @@ public class DoctorDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRequestICUActionPerformed
 
-    private void btnViewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewProfileActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewProfileActionPerformed
-
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
@@ -200,7 +185,6 @@ public class DoctorDashboard extends javax.swing.JFrame {
     public JButton getBtnRequestLabTest() { return btnRequestLabTest; }
     public JButton getBtnRequestRefill() { return btnRequestRefill; }
     public JButton getBtnRequestICU() { return btnRequestICU; }
-    public JButton getBtnViewProfile() { return btnViewProfile; }
     public JButton getBtnLogout() { return btnLogout; }
     public String getDoctorName() { return doctorName; }
     public String getDoctorEmail() { return doctorEmail; }
@@ -224,7 +208,6 @@ public class DoctorDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnRequestRefill;
     private javax.swing.JButton btnViewAppointments;
     private javax.swing.JButton btnViewPatientRecords;
-    private javax.swing.JButton btnViewProfile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblWelcome;
     // End of variables declaration//GEN-END:variables

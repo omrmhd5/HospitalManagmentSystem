@@ -64,23 +64,22 @@ public class ManageUsers extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Salma Mehrez", "sal@gmail.com", "Admin", null},
-                {"Tasnim Hatem", "tas@gmail.com", "Receptionist", null},
-                {"Rana Hatem", "ran@gmail.com", "Pharmacist", null},
-                {"Omar Mohamed", "oma@gmail.com", "Lab Technician", null},
-                {"Omar Mahmoud", "omr@gmail.com", "Doctor", null}
             },
             new String [] {
-                "Full Name", "Email", "Role", "Delete"
+                "ID", "Full Name", "Email", "Role", "Delete"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+            jTable1.getColumnModel().getColumn(0).setMinWidth(50);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(80);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(60);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(80);
+            jTable1.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -98,12 +97,6 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel3.setText("Email:");
 
         jLabel4.setText("Role:");
-
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        jTextField3.setText("jTextField3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

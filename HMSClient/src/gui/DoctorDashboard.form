@@ -36,7 +36,6 @@
                   <Component id="btnRequestLabTest" max="32767" attributes="0"/>
                   <Component id="btnRequestRefill" max="32767" attributes="0"/>
                   <Component id="btnRequestICU" max="32767" attributes="0"/>
-                  <Component id="btnViewProfile" max="32767" attributes="0"/>
                   <Component id="btnLogout" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="50" max="32767" attributes="0"/>
@@ -64,9 +63,7 @@
               <Component id="btnRequestRefill" min="-2" pref="45" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="btnRequestICU" min="-2" pref="45" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-              <Component id="btnViewProfile" min="-2" pref="45" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
               <Component id="btnLogout" min="-2" pref="45" max="-2" attributes="0"/>
               <EmptySpace pref="40" max="32767" attributes="0"/>
           </Group>
@@ -148,14 +145,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRequestICUActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnViewProfile">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="View Profile"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnViewProfileActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="btnLogout">
       <Properties>
         <Property name="text" type="java.lang.String" value="Logout"/>
@@ -166,4 +155,3 @@
     </Component>
   </SubComponents>
 </Form>
-
