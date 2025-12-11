@@ -2,6 +2,7 @@ package model;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import org.bson.Document;
 import rmi.AdminInterface;
 import server.DB;
 
@@ -52,10 +53,15 @@ public class Admin extends User implements AdminInterface {
             throw new RemoteException("Database connection not available");
         }
         try {
+            // Mahmoud
             int userID = db.getNextUserID();
-            db.saveUser(userID, fullName, email, role);
-            System.out.println("Admin: User added to database - " + fullName + " (ID: " + userID + ")");
-            return true;
+            // Mahmoud - Use registerUserWithRole to add to both user collection and role-specific collection
+            // Default password is "password" - admin can change it later if needed
+            boolean success = db.registerUserWithRole(userID, fullName, email, "password", role);
+            if (success) {
+                System.out.println("Admin: User added to database - " + fullName + " (ID: " + userID + ", Role: " + role + ")");
+            }
+            return success;
         } catch (Exception e) {
             System.err.println("Error adding user: " + e.getMessage());
             e.printStackTrace();
@@ -85,11 +91,22 @@ public class Admin extends User implements AdminInterface {
             throw new RemoteException("Database connection not available");
         }
         try {
-            // Delete old user and create new one with same ID
+            // Mahmoud - Get old user document to preserve password
+            Document oldUserDoc = db.getUserById(userID);
+            String password = "password"; // Default password
+            if (oldUserDoc != null && oldUserDoc.getString("password") != null) {
+                password = oldUserDoc.getString("password");
+            }
+            
+            // Mahmoud - Delete old user (this will also delete from role-specific collection)
             db.deleteUserById(userID);
-            db.saveUser(userID, fullName, email, role);
-            System.out.println("Admin: User updated in database - " + fullName);
-            return true;
+            
+            // Mahmoud - Use registerUserWithRole to add to both user collection and role-specific collection
+            boolean success = db.registerUserWithRole(userID, fullName, email, password, role);
+            if (success) {
+                System.out.println("Admin: User updated in database - " + fullName + " (ID: " + userID + ", Role: " + role + ")");
+            }
+            return success;
         } catch (Exception e) {
             System.err.println("Error updating user: " + e.getMessage());
             e.printStackTrace();

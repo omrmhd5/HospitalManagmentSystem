@@ -5,39 +5,26 @@
 package gui;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
-/**
- *
- * @author salma
- */
 public class RequestLabTest extends javax.swing.JFrame {
     
     private String doctorName;
     private String doctorEmail;
-
-    /**
-     * Creates new form RequestLabTest
-     */
+    
+    // Mahmoud
     public RequestLabTest() {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        this("Guest Doctor", "doctor@example.com");
     }
     
+    // Mahmoud
     public RequestLabTest(String doctorName, String doctorEmail) {
         this.doctorName = doctorName;
         this.doctorEmail = doctorEmail;
         initComponents();
-
-        if (doctorName != null) {
-            getDoctorNameField().setText(doctorName);
-        }
-        if (doctorEmail != null) {
-            getDoctorEmailField().setText(doctorEmail);
-        }
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
@@ -68,8 +55,8 @@ public class RequestLabTest extends javax.swing.JFrame {
     }
     
     // Getters for Patient Information
-    public JTextField getPatientNameField() {
-        return jTextField4;
+    public JComboBox<String> getCmbPatientName() {
+        return cmbPatientName;
     }
     
     public JTextField getPatientAgeField() {
@@ -90,6 +77,10 @@ public class RequestLabTest extends javax.swing.JFrame {
     
     public javax.swing.JButton getSubmitButton() {
         return jButton1;
+    }
+    
+    public JLabel getLblDoctorName() {
+        return lblDoctorName;
     }
 
     /**
@@ -116,17 +107,26 @@ public class RequestLabTest extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField4 = new javax.swing.JTextField();
+        cmbPatientName = new javax.swing.JComboBox<>();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jTextField6 = new javax.swing.JTextField();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
+        lblDoctorName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Hospital Management System - Request Lab Test");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Request Lab Test");
+        
+        lblDoctorName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblDoctorName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDoctorName.setText("Doctor: John Doe");
+        
+        cmbPatientName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loading patients..." }));
 
         jLabel2.setText("Dr's Name:");
 
@@ -158,7 +158,13 @@ public class RequestLabTest extends javax.swing.JFrame {
 
         jRadioButton2.setText("Female");
 
-        jButton1.setText("Request");
+        jTextField6.setEditable(false);
+        jTextField6.setEnabled(false);
+        
+        jRadioButton1.setEnabled(false);
+        jRadioButton2.setEnabled(false);
+        
+        jDateChooser1.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,21 +222,25 @@ public class RequestLabTest extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel3)
                             .addGap(18, 18, 18)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cmbPatientName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(0, 302, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                    .addComponent(lblDoctorName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
+                .addComponent(lblDoctorName)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -250,8 +260,8 @@ public class RequestLabTest extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbPatientName, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -305,6 +315,7 @@ public class RequestLabTest extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbPatientName;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
@@ -319,12 +330,12 @@ public class RequestLabTest extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblDoctorName;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }

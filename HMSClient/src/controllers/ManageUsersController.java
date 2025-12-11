@@ -110,10 +110,11 @@ public class ManageUsersController {
             // Get data from text fields
             String fullName = gui.getFullNameField().getText().trim();
             String email = gui.getEmailField().getText().trim();
-            String role = gui.getRoleField().getText().trim();
+            // Mahmoud
+            String role = (String) gui.getRoleComboBox().getSelectedItem();
             
             // Validate required fields
-            if (fullName.isEmpty() || email.isEmpty() || role.isEmpty()) {
+            if (fullName.isEmpty() || email.isEmpty() || role == null || role.isEmpty()) {
                 JOptionPane.showMessageDialog(gui, 
                     "All fields are required!", 
                     "Validation Error", 
@@ -137,7 +138,8 @@ public class ManageUsersController {
                 // Clear input fields
                 gui.getFullNameField().setText("");
                 gui.getEmailField().setText("");
-                gui.getRoleField().setText("");
+                // Mahmoud
+                gui.getRoleComboBox().setSelectedIndex(0);
             } else {
                 JOptionPane.showMessageDialog(gui, 
                     "Failed to add user.", 

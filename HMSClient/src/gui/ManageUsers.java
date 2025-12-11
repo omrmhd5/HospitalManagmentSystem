@@ -5,18 +5,12 @@
 package gui;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-/**
- *
- * @author salma
- */
 public class ManageUsers extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ManageUsers
-     */
     public ManageUsers() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -36,8 +30,8 @@ public class ManageUsers extends javax.swing.JFrame {
         return jTextField1;
     }
     
-    public JTextField getRoleField() {
-        return jTextField3;
+    public JComboBox<String> getRoleComboBox() {
+        return cmbRole;
     }
     
     public JButton getAddButton() {
@@ -62,9 +56,11 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        cmbRole = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Patient", "Receptionist", "Doctor", "Pharmacist", "Lab Technician", "Admin" }));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -82,7 +78,8 @@ public class ManageUsers extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Manage Users");
 
         jButton1.setText("Add Row");
@@ -122,7 +119,7 @@ public class ManageUsers extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(47, 47, 47)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(68, 68, 68)
@@ -152,7 +149,7 @@ public class ManageUsers extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jButton1)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -199,6 +196,7 @@ public class ManageUsers extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbRole;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -208,6 +206,5 @@ public class ManageUsers extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

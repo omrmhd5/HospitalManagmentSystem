@@ -463,7 +463,38 @@ public class DB {
     
     // Salma
     public void deleteUserById(int userID) {
+        // Mahmoud - Get user role before deleting
+        Document userDoc = user.find(Filters.eq("userID", userID)).first();
+        String role = null;
+        if (userDoc != null) {
+            role = userDoc.getString("role");
+        }
+        
+        // Mahmoud - Delete from user collection
         user.deleteOne(Filters.eq("userID", userID));
+        
+        // Mahmoud - Delete from role-specific collection
+        if (role != null) {
+            switch (role) {
+                case "Doctor":
+                    doctor.deleteOne(Filters.eq("userID", userID));
+                    break;
+                case "Patient":
+                    patient.deleteOne(Filters.eq("userID", userID));
+                    break;
+                case "Pharmacist":
+                    pharmacist.deleteOne(Filters.eq("userID", userID));
+                    break;
+                case "Lab Technician":
+                    labtest.deleteOne(Filters.eq("userID", userID));
+                    break;
+                case "Admin":
+                case "Receptionist":
+                    // Only in user collection
+                    break;
+            }
+        }
+        
         System.out.println("User deleted from database with ID: " + userID);
     }
     
@@ -501,6 +532,11 @@ public class DB {
             }
         }
         return maxID + 1;
+    }
+    
+    // Mahmoud - Get user document by userID
+    public Document getUserById(int userID) {
+        return user.find(Filters.eq("userID", userID)).first();
     }
     
     // ========================================

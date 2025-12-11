@@ -90,6 +90,7 @@ public class Patient extends User implements PatientInterface {
                         "Contact: " + patient.getContactInfo() + "\n" +
                         "Gender: " + patient.getGender() + "\n" +
                         "Age: " + patient.getAge() + "\n" +
+                        "Date of Birth: " + (patient.getDateOfBirth() != null ? patient.getDateOfBirth() : "") + "\n" +
                         "Medical History: " + patient.getMedicalHistory() + "\n";
         
         return record;
