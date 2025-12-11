@@ -1,5 +1,6 @@
 package controllers;
 
+import gui.PatientDashboard;
 import gui.ViewProfile;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,14 +18,16 @@ import rmi.PatientInterface;
  */
 public class ViewProfileController {
     
-    // References to GUI and RMI registry
+    // References to GUI, RMI registry, and PatientDashboard for welcome message updates
     ViewProfile gui;
     Registry r;
+    PatientDashboard patientDashboard;
     
-    // Constructor takes GUI and RMI registry as parameters
-    public ViewProfileController(ViewProfile gui, Registry r) {
+    // Constructor takes GUI, RMI registry, and PatientDashboard as parameters
+    public ViewProfileController(ViewProfile gui, Registry r, PatientDashboard patientDashboard) {
         this.gui = gui;
         this.r = r;
+        this.patientDashboard = patientDashboard;
         
         // Load profile data when controller is created
         loadProfileData();
@@ -34,24 +37,32 @@ public class ViewProfileController {
     }
     
     // Load profile data from server and populate GUI fields
+    // Salma
     private void loadProfileData() {
         try {
+            // Get patient email from GUI
+            String email = gui.getPatientEmail();
+            if (email == null || email.isEmpty()) {
+                System.err.println("Error: Patient email is not available");
+                return;
+            }
+            
             // Lookup the patient remote object
             PatientInterface patient = (PatientInterface) r.lookup("patient");
             
-            // Call remote methods to get profile data
-            String name = patient.getProfileName();
-            String dob = patient.getProfileDateOfBirth();
-            String gender = patient.getProfileGender();
-            String address = patient.getProfileAddress();
-            String phone = patient.getProfilePhoneNumber();
+            // Call remote methods to get profile data by email
+            String name = patient.getProfileNameByEmail(email);
+            String dob = patient.getProfileDateOfBirthByEmail(email);
+            String gender = patient.getProfileGenderByEmail(email);
+            String address = patient.getProfileAddressByEmail(email);
+            String phone = patient.getProfilePhoneNumberByEmail(email);
             
             // Populate GUI fields with profile data
-            gui.getNameField().setText(name);
-            gui.getDateOfBirthField().setText(dob);
-            gui.getGenderField().setText(gender);
-            gui.getAddressField().setText(address);
-            gui.getPhoneNumberField().setText(phone);
+            gui.getNameField().setText(name != null ? name : "");
+            gui.getDateOfBirthField().setText(dob != null ? dob : "");
+            gui.getGenderField().setText(gender != null ? gender : "");
+            gui.getAddressField().setText(address != null ? address : "");
+            gui.getPhoneNumberField().setText(phone != null ? phone : "");
             
             System.out.println("Profile loaded successfully for: " + name);
             
@@ -82,25 +93,48 @@ public class ViewProfileController {
                     
                 } else {
                     // Save mode - collect data and send to server
+                    String email = gui.getPatientEmail();
+                    if (email == null || email.isEmpty()) {
+                        System.err.println("Error: Patient email is not available");
+                        return;
+                    }
+                    
                     String name = gui.getNameField().getText();
                     String dob = gui.getDateOfBirthField().getText();
                     String gender = gui.getGenderField().getText();
                     String address = gui.getAddressField().getText();
                     String phone = gui.getPhoneNumberField().getText();
                     
-                    // Lookup patient remote object and update profile
+                    // Lookup patient remote object and update profile by email
                     PatientInterface patient = (PatientInterface) r.lookup("patient");
-                    patient.updateProfile(name, dob, gender, address, phone);
+                    boolean success = patient.updateProfileByEmail(email, name, dob, gender, address, phone);
                     
-                    // Switch back to view mode - disable all fields
-                    gui.getNameField().setEnabled(false);
-                    gui.getDateOfBirthField().setEnabled(false);
-                    gui.getGenderField().setEnabled(false);
-                    gui.getAddressField().setEnabled(false);
-                    gui.getPhoneNumberField().setEnabled(false);
-                    gui.getEditButton().setText("Edit");
-                    
-                    System.out.println("Profile updated successfully!");
+                    if (success) {
+                        // Switch back to view mode - disable all fields
+                        gui.getNameField().setEnabled(false);
+                        gui.getDateOfBirthField().setEnabled(false);
+                        gui.getGenderField().setEnabled(false);
+                        gui.getAddressField().setEnabled(false);
+                        gui.getPhoneNumberField().setEnabled(false);
+                        gui.getEditButton().setText("Edit");
+                        
+                        // Update PatientDashboard welcome message if name changed
+                        if (patientDashboard != null) {
+                            patientDashboard.updateWelcomeMessage(name);
+                        }
+                        
+                        javax.swing.JOptionPane.showMessageDialog(gui, 
+                            "Profile updated successfully!", 
+                            "Success", 
+                            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        System.out.println("Profile updated successfully!");
+                    } else {
+                        javax.swing.JOptionPane.showMessageDialog(gui, 
+                            "Failed to update profile. Please try again.", 
+                            "Error", 
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                        System.err.println("Failed to update profile");
+                    }
                 }
                 
             } catch (RemoteException | NotBoundException ex) {

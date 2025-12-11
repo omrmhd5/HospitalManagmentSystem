@@ -16,10 +16,23 @@ public class ViewProfile extends javax.swing.JFrame {
     /**
      * Creates new form ViewProfile
      */
+    private String patientEmail;
+    
     public ViewProfile() {
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
         initComponents();
+        this.setVisible(true);
+    }
+    
+    public ViewProfile(String patientEmail) {
+        this.patientEmail = patientEmail;
+        this.setLocationRelativeTo(null);
+        initComponents();
+        this.setVisible(true);
+    }
+    
+    public String getPatientEmail() {
+        return patientEmail;
     }
     
     // Getters for GUI components
@@ -69,8 +82,7 @@ public class ViewProfile extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setEnabled(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Name:");
 
@@ -92,19 +104,14 @@ public class ViewProfile extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setText("jTextField1");
         jTextField1.setEnabled(false);
 
-        jTextField2.setText("jTextField2");
         jTextField2.setEnabled(false);
 
-        jTextField3.setText("jTextField3");
         jTextField3.setEnabled(false);
 
-        jTextField4.setText("jTextField4");
         jTextField4.setEnabled(false);
 
-        jTextField5.setText("jTextField5");
         jTextField5.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

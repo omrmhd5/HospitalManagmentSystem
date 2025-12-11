@@ -123,6 +123,52 @@ public class Patient extends User implements PatientInterface {
         return this.phoneNumber;
     }
     
+    // Salma - Get patient profile by email
+    @Override
+    public String getProfileNameByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getName() != null ? p.getName() : "";
+    }
+    
+    @Override
+    public String getProfileDateOfBirthByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getDateOfBirth() != null ? p.getDateOfBirth() : "";
+    }
+    
+    @Override
+    public String getProfileGenderByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getGender() != null ? p.getGender() : "";
+    }
+    
+    @Override
+    public String getProfileAddressByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getAddress() != null ? p.getAddress() : "";
+    }
+    
+    @Override
+    public String getProfilePhoneNumberByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getPhoneNumber() != null ? p.getPhoneNumber() : "";
+    }
+    
     @Override
     public void updateProfile(String name, String dateOfBirth, String gender, 
                              String address, String phoneNumber) throws RemoteException {
@@ -132,6 +178,19 @@ public class Patient extends User implements PatientInterface {
         this.address = address;
         this.phoneNumber = phoneNumber;
         System.out.println("Profile updated for: " + this.name);
+    }
+    
+    // Salma - Update patient profile by email and save to database
+    @Override
+    public boolean updateProfileByEmail(String email, String name, String dateOfBirth, 
+                                      String gender, String address, String phoneNumber) throws RemoteException {
+        boolean success = db.updatePatientByEmail(email, name, dateOfBirth, gender, address, phoneNumber);
+        if (success) {
+            System.out.println("Profile updated in database for: " + email);
+        } else {
+            System.out.println("Failed to update profile for: " + email);
+        }
+        return success;
     }
 
    //ibrahim

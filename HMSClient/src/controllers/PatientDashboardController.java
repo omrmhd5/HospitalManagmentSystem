@@ -51,9 +51,9 @@ public class PatientDashboardController {
     class ViewProfileAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Mahmoud
-            ViewProfile viewProfileGui = new ViewProfile();
-            ViewProfileController viewProfileController = new ViewProfileController(viewProfileGui, registry);
+            // Mahmoud - Pass patient email to ViewProfile and dashboard reference for updates
+            ViewProfile viewProfileGui = new ViewProfile(gui.getPatientEmail());
+            ViewProfileController viewProfileController = new ViewProfileController(viewProfileGui, registry, gui);
         }
     }
     

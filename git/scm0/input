@@ -1,0 +1,6 @@
+Enhance patient profile management with email-based updates
+
+- Add email-based profile retrieval and update methods
+- Sync patient name updates to user collection for login
+- Update dashboard welcome message when name changes
+

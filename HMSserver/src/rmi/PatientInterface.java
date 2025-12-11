@@ -20,9 +20,20 @@ public interface PatientInterface extends Remote {
     String getProfileAddress() throws RemoteException;
     String getProfilePhoneNumber() throws RemoteException;
     
+    // Salma - Get patient profile by email
+    String getProfileNameByEmail(String email) throws RemoteException;
+    String getProfileDateOfBirthByEmail(String email) throws RemoteException;
+    String getProfileGenderByEmail(String email) throws RemoteException;
+    String getProfileAddressByEmail(String email) throws RemoteException;
+    String getProfilePhoneNumberByEmail(String email) throws RemoteException;
+    
     // Update patient profile
     void updateProfile(String name, String dateOfBirth, String gender, 
                       String address, String phoneNumber) throws RemoteException;
+    
+    // Salma - Update patient profile by email
+    boolean updateProfileByEmail(String email, String name, String dateOfBirth, 
+                                 String gender, String address, String phoneNumber) throws RemoteException;
 
     // Mahmoud - Add patient
     boolean addPatient(int patientID, String name, String contactInfo, String gender, 

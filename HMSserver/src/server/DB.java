@@ -77,6 +77,9 @@ public class DB {
     // Mahmoud
     public Patient getPatientByName(String patientName) throws RemoteException {
         Document doc = patient.find(Filters.eq("name", patientName)).first();
+        if (doc == null) {
+            return null;
+        }
         // Mahmoud - Manually create Patient object from Document to avoid Gson RMI issues
         Patient p = new Patient(
             doc.getInteger("userID", 0),
@@ -91,6 +94,31 @@ public class DB {
             doc.getString("dateOfBirth"),
             doc.getString("address"),
             doc.getString("phoneNumber"),
+            this
+        );
+        return p;
+    }
+    
+    // Salma - Get patient by email
+    public Patient getPatientByEmail(String email) throws RemoteException {
+        Document doc = patient.find(Filters.eq("email", email)).first();
+        if (doc == null) {
+            return null;
+        }
+        // Manually create Patient object from Document to avoid Gson RMI issues
+        Patient p = new Patient(
+            doc.getInteger("userID", 0),
+            doc.getString("name"),
+            doc.getString("email"),
+            doc.getString("password"),
+            doc.getInteger("patientID", 0),
+            doc.getString("contactInfo"),
+            doc.getString("gender"),
+            doc.getInteger("age", 0),
+            doc.getString("medicalHistory"),
+            doc.getString("dateOfBirth") != null ? doc.getString("dateOfBirth") : "",
+            doc.getString("address") != null ? doc.getString("address") : "",
+            doc.getString("phoneNumber") != null ? doc.getString("phoneNumber") : "",
             this
         );
         return p;
@@ -134,6 +162,38 @@ public class DB {
         Document doc = patient.find(Filters.eq("userID", userID)).first();
         System.out.println("Patient found: " + doc.toJson());
         return doc;
+    }
+    
+    // Salma - Update patient profile by email
+    public boolean updatePatientByEmail(String email, String name, String dateOfBirth, 
+                                       String gender, String address, String phoneNumber) {
+        Document doc = patient.find(Filters.eq("email", email)).first();
+        if (doc == null) {
+            return false;
+        }
+        
+        // Update the patient collection with new values
+        Document updateDoc = new Document("$set", new Document()
+            .append("name", name)
+            .append("dateOfBirth", dateOfBirth)
+            .append("gender", gender)
+            .append("address", address)
+            .append("phoneNumber", phoneNumber));
+        
+        patient.updateOne(Filters.eq("email", email), updateDoc);
+        System.out.println("Patient profile updated in patient collection for: " + email);
+        
+        // Also update the user collection with the new name (for login purposes)
+        Document userUpdateDoc = new Document("$set", new Document()
+            .append("name", name));
+        
+        user.updateOne(Filters.and(
+            Filters.eq("email", email),
+            Filters.eq("role", "Patient")
+        ), userUpdateDoc);
+        System.out.println("Patient name updated in user collection for: " + email);
+        
+        return true;
     }
     
     // ========================================

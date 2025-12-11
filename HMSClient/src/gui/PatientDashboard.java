@@ -125,6 +125,12 @@ public class PatientDashboard extends javax.swing.JFrame {
     public JButton getBtnLogout() { return btnLogout; }
     public String getPatientName() { return patientName; }
     public String getPatientEmail() { return patientEmail; }
+    
+    // Salma - Update welcome message when name changes
+    public void updateWelcomeMessage(String newName) {
+        this.patientName = newName;
+        lblWelcome.setText("Welcome, " + newName);
+    }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new PatientDashboard("John Doe", "john@example.com"));
