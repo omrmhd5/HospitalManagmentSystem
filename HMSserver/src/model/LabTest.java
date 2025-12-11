@@ -1,12 +1,11 @@
 package model;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import rmi.LabTestInterface;
 
-public class LabTest extends User implements LabTestInterface, Serializable {
+public class LabTest extends User implements LabTestInterface {
 
     private int testID;
     private String type;
@@ -27,22 +26,21 @@ public class LabTest extends User implements LabTestInterface, Serializable {
     
     private static int testCounter = 1000; // Static counter for generating test IDs
 
+    // Salma
     public LabTest() throws RemoteException { 
         super();
     }
 
+    // Salma
     public LabTest(int testID, String type, String date) throws RemoteException {
         super();
         this.testID = testID;
         this.type = type;
         this.date = date;
         this.status = "Pending";
-        this.result = "";   // initially empty
+        this.result = "";
     }
 
-    // ---------- UML Logic ----------
-    public void recordTestResult(String resultValue) {
-        this.result = resultValue;
     // ---------- RMI Interface Methods ----------
     // Salma
     
@@ -111,13 +109,14 @@ public class LabTest extends User implements LabTestInterface, Serializable {
 
     // ---------- Domain Logic ----------
     
+    // Salma
     public void recordTestResult(String result) {
         this.result = result;
         this.status = "Completed";
         System.out.println("Test result recorded: " + result);
     }
     
-    // Helper method to get current date/time
+    // Salma
     private String getCurrentDateTime() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

@@ -42,7 +42,7 @@ public class Prescription extends UnicastRemoteObject implements PrescriptionInt
         if (patientName == null || patientName.isEmpty() || doctorName == null || doctorName.isEmpty()) {
             return "Missing prescription details";
         }
-        Patient patient = new Patient(0, patientName, "", 0, "",db);
+        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
         Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
         Prescription prescription = new Prescription(0, patient, doctor, medicine, dosage, diagnosis, db);
         
@@ -50,7 +50,21 @@ public class Prescription extends UnicastRemoteObject implements PrescriptionInt
         return "Prescription recorded for " + patientName + " by Dr. " + doctorName;
     }
 
-    public String getMedicine() { return medicine; }
-    public String getDosage() { return dosage; }
     public int getPrescriptionID() { return prescriptionID; }
+    public void setPrescriptionID(int prescriptionID) { this.prescriptionID = prescriptionID; }
+    
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
+    
+    public Doctor getDoctor() { return doctor; }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
+    
+    public String getMedicine() { return medicine; }
+    public void setMedicine(String medicine) { this.medicine = medicine; }
+    
+    public String getDosage() { return dosage; }
+    public void setDosage(String dosage) { this.dosage = dosage; }
+    
+    public String getDiagnosis() { return diagnosis; }
+    public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
 }

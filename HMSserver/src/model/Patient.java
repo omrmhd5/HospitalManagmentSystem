@@ -1,17 +1,12 @@
 package model;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import rmi.PatientRecordInterface;
 import rmi.PatientInterface;
-import rmi.AppointmentInterface;
-import rmi.PrescriptionInterface;
 import server.DB;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Patient extends User implements PatientRecordInterface, PatientInterface, AppointmentInterface, PrescriptionInterface {
+public class Patient extends User implements PatientInterface {
 
     private int patientID;
     private String name;
@@ -19,7 +14,6 @@ public class Patient extends User implements PatientRecordInterface, PatientInte
     private String gender;
     private int age;
     private String medicalHistory;
-    private String name;
     private String dateOfBirth;
     private String address;
     private String phoneNumber;
@@ -36,6 +30,7 @@ public class Patient extends User implements PatientRecordInterface, PatientInte
         this.db = db;
     }
 
+    // Mahmoud
     public Patient(int userID, String name, String email, String password,
                    int patientID, String contactInfo, String gender, int age, 
                    String medicalHistory, String dateOfBirth, String address, String phoneNumber, DB db) 
@@ -149,8 +144,35 @@ public class Patient extends User implements PatientRecordInterface, PatientInte
         return records;
     }
 
+    
+    // Mahmoud
+    @Override
+    public boolean addPatient(Patient p) throws RemoteException {
+        db.insertPatient(p);
+        return true;
+    }
+    
+    // Mahmoud
+    @Override
+    public Patient getPatientByID(int patientID) throws RemoteException {
+        return db.getPatientByID(patientID);
+    }
+    
+    // Ibrahim
+    @Override
+    public boolean addPatientRecord(int patientID, String record) throws RemoteException {
+        return db.addPatientRecord(patientID, record);
+    }
+    
+    // Ibrahim
+    @Override
+    public String getAllRecords(int patientID) throws RemoteException {
+        List<String> records = db.getRecordsForPatient(patientID);
+        return String.join("\n", records);
+    }
+    
+    
     // ---------- Getters & Setters ----------
-
     public int getPatientID() { return patientID; }
     public void setPatientID(int patientID) { this.patientID = patientID; }
 
@@ -165,10 +187,6 @@ public class Patient extends User implements PatientRecordInterface, PatientInte
 
     public int getAge() { return age; }
     public void setAge(int age) { this.age = age; }
-    
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    
 
     public String getMedicalHistory() { return medicalHistory; }
     public void setMedicalHistory(String medicalHistory) { this.medicalHistory = medicalHistory; }

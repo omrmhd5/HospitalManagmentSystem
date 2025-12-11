@@ -13,7 +13,7 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import rmi.PatientRecordInterface;
+import rmi.PatientInterface;
 
 /**
  *
@@ -41,14 +41,14 @@ public class ViewPatientRecordController {
         public void actionPerformed(ActionEvent ae) {
             try {
 
-                // We try to obtain a remote reference to the patient record remote object
+                // We try to obtain a remote reference to the patient remote object
                 // that lives on the server. (using the registry object obtained from
                 // the constructor above)
-                PatientRecordInterface patientRecordService = (PatientRecordInterface) r.lookup("patientRecord");
+                PatientInterface patientService = (PatientInterface) r.lookup("patient");
                 
                 String patientName = gui.getPatientNameField().getText();
                 // Mahmoud
-                String response = patientRecordService.viewPatientRecord(patientName);
+                String response = patientService.viewPatientRecord(patientName);
                 // Mahmoud
                 gui.getRecordArea().setText(response);
                
@@ -61,4 +61,5 @@ public class ViewPatientRecordController {
     }
     
 }
+
 

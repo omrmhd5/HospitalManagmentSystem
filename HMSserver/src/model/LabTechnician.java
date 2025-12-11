@@ -1,38 +1,38 @@
 package model;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
+import rmi.LabTechnicianInterface;
+import server.DB;
 
-public class LabTechnician extends User implements Serializable {
+public class LabTechnician extends User implements LabTechnicianInterface {
 
     private int technicianID;
     private String labDepartment;
+    private final DB db;
 
-    public LabTechnician() throws RemoteException{}
+    // Ibrahim
+    public LabTechnician(DB db) throws RemoteException {
+        this.db = db;
+    }
 
+    // Ibrahim
     public LabTechnician(int userID, String name, String email, String password,
-                         int technicianID, String labDepartment) throws RemoteException {
+                         int technicianID, String labDepartment, DB db) throws RemoteException {
         super(userID, name, email, password, "LabTechnician");
         this.technicianID = technicianID;
         this.labDepartment = labDepartment;
+        this.db = db;
     }
 
-    // ---------- UML METHOD ----------
-    public void recordTestResult(LabTest test) {
-        test.recordTestResult();
+    // Ibrahim
+    @Override
+    public String recordLabTestResult(int testID, String result) throws RemoteException {
+        return db.recordLabTestResult(testID, result);
     }
 
     public int getTechnicianID() { return technicianID; }
+    public void setTechnicianID(int technicianID) { this.technicianID = technicianID; }
     
-   //ibrahim 
-    public String recordTestResult(int testID, String result) {
-
-    if (result == null || result.isBlank()) {
-        return "Test result cannot be empty.";
-    }
-
-    System.out.println("Recording result for Test ID: " + testID);
-    return "Test result recorded successfully for Test ID: " + testID;
-}
-
+    public String getLabDepartment() { return labDepartment; }
+    public void setLabDepartment(String labDepartment) { this.labDepartment = labDepartment; }
 }

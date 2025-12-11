@@ -33,4 +33,7 @@ public interface PatientInterface extends Remote {
     boolean addPatientRecord(int patientID, String record) throws RemoteException;
 
     String getAllRecords(int patientID) throws RemoteException;
+    
+    // Mahmoud
+    String viewPatientRecord(String patientName) throws RemoteException;
 }

@@ -7,16 +7,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Admin;
 import model.Appointment;
-import model.Patient;
-import model.Prescription;
+import model.ICURoom;
+import model.LabTechnician;
 import model.LabTest;
-
-import model.Admin;
+import model.Patient;
+import model.Pharmacist;
+import model.Prescription;
 import rmi.AdminInterface;
 import rmi.AppointmentInterface;
-import rmi.PatientRecordInterface;
-import rmi.PrescriptionInterface;import rmi.PatientInterface;
+import rmi.ICUInterface;
+import rmi.LabTechnicianInterface;
 import rmi.LabTestInterface;
+import rmi.PatientInterface;
+import rmi.PharmacyInterface;
+import rmi.PrescriptionInterface;
 
 public class RMIServer {
     // Mahmoud
@@ -25,51 +29,28 @@ public class RMIServer {
         mongoLogger.setLevel(Level.SEVERE);
         DB db = new DB();
         
-        // Here we create our remote objects
-        AdminInterface admin = new Admin();
+        // Create remote objects
+        AdminInterface adminService = new Admin();
         AppointmentInterface appointmentService = new Appointment(db);
         PrescriptionInterface prescriptionService = new Prescription(db);
-        PatientRecordInterface patientRecordService = new Patient(db);
+        PatientInterface patientService = new Patient(db);
+        LabTestInterface labTestService = new LabTest();
+        LabTechnicianInterface labTechService = new LabTechnician(db);
+        PharmacyInterface pharmacyService = new Pharmacist(db);
+        ICUInterface icuService = new ICURoom(db);
         
-        PatientInterface patient = new Patient(db);
-        
-        // Create lab test service
-        LabTestInterface labTest = new LabTest(db);
-        
+        // Create registry
         Registry registry = LocateRegistry.createRegistry(1099);
         
-        registry.bind("admin", admin);
+        // Bind all services
+        registry.bind("admin", adminService);
         registry.bind("appointment", appointmentService);
         registry.bind("prescription", prescriptionService);
-        registry.bind("patientRecord", patientRecordService);
-        
-        // Our remote object patient is binded to the name "patient"
-        registry.bind("patient", patient);
-        
-        // Our remote object labtest is binded to the name "labtest"
-        registry.bind("labtest", labTest);
-      
-        PharmacistInterface pharmacistInterface = new PharmacistInterface() {
-
-            @Override
-            public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity)
-                    throws RemoteException {
-                return db.requestMedicineRefill(pharmacistID, medicineName, quantity);
-            }
-        };
-
-        registry.bind("pharmacist", pharmacistInterface);
-
-       
-        LabTechnicianInterface labTechInterface = new LabTechnicianInterface() {
-
-            @Override
-            public String recordLabTestResult(int testID, String result) throws RemoteException {
-                return db.recordLabTestResult(testID, result);
-            }
-        };
-
-        registry.bind("labtech", labTechInterface);
+        registry.bind("patient", patientService);
+        registry.bind("labtest", labTestService);
+        registry.bind("labtech", labTechService);
+        registry.bind("pharmacy", pharmacyService);
+        registry.bind("icu", icuService);
         
         System.out.println("The server is ready");
     }

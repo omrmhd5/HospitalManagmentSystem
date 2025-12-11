@@ -6,3 +6,4 @@ public interface PrescriptionInterface extends Remote {
     String recordPrescription(String patientName, String doctorName, String medicine, String dosage, String diagnosis) throws RemoteException;
 }
 
+

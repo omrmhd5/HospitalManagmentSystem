@@ -2,6 +2,8 @@ package rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import model.Patient;
+import model.Report;
 import java.util.List;
 
 public interface AdminInterface extends Remote {

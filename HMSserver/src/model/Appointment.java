@@ -3,7 +3,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import rmi.AppointmentInterface;
 import server.DB;
-import java.io.Serializable;
 
 public class Appointment extends UnicastRemoteObject implements AppointmentInterface {
 
@@ -13,14 +12,16 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     private String date;
     private String time;
     private String status;
+    private final DB db;
   
    // Mahmoud
     public Appointment(DB db) throws RemoteException{
         this.db = db;
     }
     
+    // Mahmoud
     public Appointment(int appointmentID, Patient patient, Doctor doctor,
-                       String date, String time, DB db) {
+                       String date, String time, DB db) throws RemoteException {
         this.db = db;
         this.appointmentID = appointmentID;
         this.patient = patient;
@@ -47,16 +48,12 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         if (doctorName == null || doctorName.isEmpty() || date == null || date.isEmpty() || time == null || time.isEmpty()) {
             return "Missing appointment details";
         }
-        Patient patient = new Patient(0, patientName, "", 0, "",db);
+        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
         Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
         Appointment appointment = new Appointment(0, patient, doctor, date, time, db);
         
         db.insertAppointment(appointment);
         return "Appointment booked with " + doctorName + " on " + date + " at " + time;
-    }
-    
-    public int getAppointmentID() {
-        return appointmentID;
     }
 
     // Getters / setters
@@ -77,30 +74,25 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
 
     public String getStatus() { return status; }
     
+    // Mahmoud - Stub implementations for AppointmentInterface methods
+    @Override
+    public Appointment getAppointmentByID(int appointmentID) throws RemoteException {
+        return null;
+    }
+    
+    @Override
+    public boolean addAppointment(Appointment appointment) throws RemoteException {
+        return false;
+    }
+    
+    @Override
+    public boolean updateAppointment(Appointment appointment) throws RemoteException {
+        return false;
+    }
+    
     //Rana
-    public boolean rescheduleAppointment(String newDate, String newTime) {
-
-    //  cannot reschedule if already canceled or completed
-    if (this.status.equals("Cancelled") || this.status.equals("Completed")) {
-        System.out.println("Cannot reschedule. Appointment is " + this.status);
-        return false;
-    }
-
-    // Example rule: cannot reschedule last minute 
-    if (!isRescheduleAllowed()) {
-        System.out.println("Rescheduling is not allowed this close to the appointment.");
-        return false;
-    }
-
-    // Update date/time
-    this.date = newDate;
-    this.time = newTime;
-    this.status = "Rescheduled";
-    return true;
-}
-
-    public boolean cancelAppointment() {
-
+    @Override
+    public boolean cancelAppointment(int appointmentID) throws RemoteException {
         // Cannot cancel if already cancelled or completed
         if (this.status.equals("Cancelled") || this.status.equals("Completed")) {
             System.out.println("Appointment is already " + this.status);
@@ -117,14 +109,36 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         return true;
     }
 
+    //Rana
+    @Override
+    public boolean rescheduleAppointment(int appointmentID, String newDate, String newTime) throws RemoteException {
+        //  cannot reschedule if already canceled or completed
+        if (this.status.equals("Cancelled") || this.status.equals("Completed")) {
+            System.out.println("Cannot reschedule. Appointment is " + this.status);
+            return false;
+        }
 
-    public boolean manageAppointment(String operation, String newDate, String newTime) {
+        // Example rule: cannot reschedule last minute 
+        if (!isRescheduleAllowed()) {
+            System.out.println("Rescheduling is not allowed this close to the appointment.");
+            return false;
+        }
+
+        // Update date/time
+        this.date = newDate;
+        this.time = newTime;
+        this.status = "Rescheduled";
+        return true;
+    }
+
+    //Rana
+    @Override
+    public boolean manageAppointment(int appointmentID, String operation, String newDate, String newTime) throws RemoteException {
         if (operation.equalsIgnoreCase("cancel")) {
-            
-            return cancelAppointment();
+            return cancelAppointment(appointmentID);
         }
         else if (operation.equalsIgnoreCase("reschedule")) {
-            return rescheduleAppointment(newDate, newTime);
+            return rescheduleAppointment(appointmentID, newDate, newTime);
         }
         else {
             System.out.println("Invalid operation.");
