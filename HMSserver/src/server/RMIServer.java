@@ -34,7 +34,7 @@ public class RMIServer {
         DB db = new DB();
         
         // Create remote objects
-        AdminInterface adminService = new Admin();
+        AdminInterface adminService = new Admin(db);
         AppointmentInterface appointmentService = new Appointment(db);
         PrescriptionInterface prescriptionService = new Prescription(db);
         PatientInterface patientService = new Patient(db);

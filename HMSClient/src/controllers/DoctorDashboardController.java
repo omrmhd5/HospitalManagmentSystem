@@ -31,7 +31,6 @@ public class DoctorDashboardController {
         gui.getBtnRequestLabTest().addActionListener(new RequestLabTestAction());
         gui.getBtnRequestRefill().addActionListener(new RequestRefillAction());
         gui.getBtnRequestICU().addActionListener(new RequestICUAction());
-        gui.getBtnViewProfile().addActionListener(new ViewProfileAction());
         gui.getBtnLogout().addActionListener(new LogoutAction());
     }
     
@@ -95,15 +94,6 @@ public class DoctorDashboardController {
         }
     }
     
-    class ViewProfileAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JOptionPane.showMessageDialog(gui, 
-                "Doctor profile view is coming soon!", 
-                "Info", 
-                JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
     
     class LogoutAction implements ActionListener {
         @Override
