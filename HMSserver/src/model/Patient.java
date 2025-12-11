@@ -94,34 +94,7 @@ public class Patient extends User implements PatientInterface {
         
         return record;
     }
-
-    // RMI Interface Methods
-    // Salma
     
-    @Override
-    public String getProfileName() throws RemoteException {
-        return this.name;
-    }
-    
-    @Override
-    public String getProfileDateOfBirth() throws RemoteException {
-        return this.dateOfBirth;
-    }
-    
-    @Override
-    public String getProfileGender() throws RemoteException {
-        return this.gender;
-    }
-    
-    @Override
-    public String getProfileAddress() throws RemoteException {
-        return this.address;
-    }
-    
-    @Override
-    public String getProfilePhoneNumber() throws RemoteException {
-        return this.phoneNumber;
-    }
     
     // Salma - Get patient profile by email
     @Override

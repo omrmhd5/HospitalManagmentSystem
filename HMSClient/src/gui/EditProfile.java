@@ -14,6 +14,8 @@ import com.toedter.calendar.JDateChooser;
  * @author salma
  */
 public class EditProfile extends javax.swing.JFrame {
+    
+    private String patientEmail;
 
     /**
      * Creates new form EditProfile
@@ -22,6 +24,17 @@ public class EditProfile extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+    
+    public EditProfile(String patientEmail) {
+        this.patientEmail = patientEmail;
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    
+    public String getPatientEmail() {
+        return patientEmail;
     }
     
     // Getters for GUI components

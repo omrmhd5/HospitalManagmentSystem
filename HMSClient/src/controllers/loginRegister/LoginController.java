@@ -1,6 +1,8 @@
 package controllers.loginRegister;
 
+import controllers.DoctorDashboardController;
 import controllers.PatientDashboardController;
+import gui.DoctorDashboard;
 import gui.loginRegister.Login;
 import gui.PatientDashboard;
 import java.awt.event.ActionEvent;
@@ -58,6 +60,9 @@ public class LoginController {
                     if (role.equals("Patient")) {
                         PatientDashboard patientDashboard = new PatientDashboard(name, email);
                         PatientDashboardController patientDashboardController = new PatientDashboardController(patientDashboard, registry);
+                    } else if (role.equals("Doctor")) {
+                        DoctorDashboard doctorDashboard = new DoctorDashboard(name, email);
+                        DoctorDashboardController doctorDashboardController = new DoctorDashboardController(doctorDashboard, registry);
                     } else {
                         JOptionPane.showMessageDialog(null, "Dashboard for " + role + " is coming soon!", "Info", JOptionPane.INFORMATION_MESSAGE);
                     }

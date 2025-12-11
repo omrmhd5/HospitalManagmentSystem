@@ -38,37 +38,48 @@ public class EditProfileController {
     // Load profile data from server and populate GUI fields
     private void loadProfileData() {
         try {
+            // Get patient email from GUI
+            String email = gui.getPatientEmail();
+            if (email == null || email.isEmpty()) {
+                System.err.println("Error: Patient email is not available");
+                return;
+            }
+            
             // Lookup the patient remote object
             PatientInterface patient = (PatientInterface) r.lookup("patient");
             
-            // Call remote methods to get profile data
-            String name = patient.getProfileName();
-            String dob = patient.getProfileDateOfBirth();
-            String gender = patient.getProfileGender();
-            String address = patient.getProfileAddress();
-            String phone = patient.getProfilePhoneNumber();
+            // Call remote methods to get profile data by email
+            String name = patient.getProfileNameByEmail(email);
+            String dob = patient.getProfileDateOfBirthByEmail(email);
+            String gender = patient.getProfileGenderByEmail(email);
+            String address = patient.getProfileAddressByEmail(email);
+            String phone = patient.getProfilePhoneNumberByEmail(email);
             
             // Populate GUI fields with profile data
-            gui.getNameField().setText(name);
+            gui.getNameField().setText(name != null ? name : "");
             
             // Parse and set date of birth
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = sdf.parse(dob);
-                gui.getDateOfBirthChooser().setDate(date);
-            } catch (Exception e) {
-                System.err.println("Error parsing date: " + e.getMessage());
+            if (dob != null && !dob.isEmpty()) {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = sdf.parse(dob);
+                    gui.getDateOfBirthChooser().setDate(date);
+                } catch (Exception e) {
+                    System.err.println("Error parsing date: " + e.getMessage());
+                }
             }
             
             // Set gender radio button
-            if ("Male".equalsIgnoreCase(gender)) {
-                gui.getMaleRadioButton().setSelected(true);
-            } else if ("Female".equalsIgnoreCase(gender)) {
-                gui.getFemaleRadioButton().setSelected(true);
+            if (gender != null) {
+                if ("Male".equalsIgnoreCase(gender)) {
+                    gui.getMaleRadioButton().setSelected(true);
+                } else if ("Female".equalsIgnoreCase(gender)) {
+                    gui.getFemaleRadioButton().setSelected(true);
+                }
             }
             
-            gui.getAddressField().setText(address);
-            gui.getPhoneNumberField().setText(phone);
+            gui.getAddressField().setText(address != null ? address : "");
+            gui.getPhoneNumberField().setText(phone != null ? phone : "");
             
             System.out.println("Edit Profile loaded successfully for: " + name);
             
@@ -84,6 +95,17 @@ public class EditProfileController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             try {
+                // Get patient email from GUI
+                String email = gui.getPatientEmail();
+                if (email == null || email.isEmpty()) {
+                    System.err.println("Error: Patient email is not available");
+                    javax.swing.JOptionPane.showMessageDialog(gui, 
+                        "Error: Patient email is not available", 
+                        "Error", 
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 // Collect data from GUI fields
                 String name = gui.getNameField().getText();
                 
@@ -106,18 +128,33 @@ public class EditProfileController {
                 String address = gui.getAddressField().getText();
                 String phone = gui.getPhoneNumberField().getText();
                 
-                // Lookup patient remote object and update profile
+                // Lookup patient remote object and update profile by email
                 PatientInterface patient = (PatientInterface) r.lookup("patient");
-                patient.updateProfile(name, dob, gender, address, phone);
+                boolean success = patient.updateProfileByEmail(email, name, dob, gender, address, phone);
                 
-                System.out.println("Profile saved successfully!");
-                
-                // Optionally close the window after saving
-                gui.dispose();
+                if (success) {
+                    javax.swing.JOptionPane.showMessageDialog(gui, 
+                        "Profile updated successfully!", 
+                        "Success", 
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("Profile saved successfully!");
+                    
+                    gui.dispose();
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(gui, 
+                        "Failed to update profile. Please try again.", 
+                        "Error", 
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
+                    System.err.println("Failed to update profile");
+                }
                 
             } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(EditProfileController.class.getName()).log(Level.SEVERE, null, ex);
                 System.err.println("Error saving profile: " + ex.getMessage());
+                javax.swing.JOptionPane.showMessageDialog(gui, 
+                    "Error saving profile: " + ex.getMessage(), 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
     }

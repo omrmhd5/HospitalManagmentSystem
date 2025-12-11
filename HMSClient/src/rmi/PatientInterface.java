@@ -13,13 +13,6 @@ import java.rmi.RemoteException;
 //ibrahim
 public interface PatientInterface extends Remote {
   
-    // Get patient profile data fields
-    String getProfileName() throws RemoteException;
-    String getProfileDateOfBirth() throws RemoteException;
-    String getProfileGender() throws RemoteException;
-    String getProfileAddress() throws RemoteException;
-    String getProfilePhoneNumber() throws RemoteException;
-    
     // Salma - Get patient profile by email
     String getProfileNameByEmail(String email) throws RemoteException;
     String getProfileDateOfBirthByEmail(String email) throws RemoteException;

@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import GUI.ViewPatientRecord;
+import gui.ViewPatientRecord;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;

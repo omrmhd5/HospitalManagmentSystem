@@ -38,7 +38,7 @@ public class RMIServer {
         AppointmentInterface appointmentService = new Appointment(db);
         PrescriptionInterface prescriptionService = new Prescription(db);
         PatientInterface patientService = new Patient(db);
-        LabTestInterface labTestService = new LabTest();
+        LabTestInterface labTestService = new LabTest(db);
         LabTechnicianInterface labTechService = new LabTechnician(db);
         PharmacyInterface pharmacyService = new Pharmacist(db);
         ICUInterface icuService = new ICURoom(db);

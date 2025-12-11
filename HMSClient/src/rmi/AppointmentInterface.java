@@ -28,5 +28,8 @@ public interface AppointmentInterface extends Remote {
 
     // Mahmoud - Get all doctor names
     List<String> getAllDoctorNames() throws RemoteException;
+    
+    // Salma - Get doctor phone number by email
+    String getDoctorPhoneByEmail(String email) throws RemoteException;
 
 }

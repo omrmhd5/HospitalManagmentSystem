@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import rmi.AppointmentInterface;
 import rmi.LabTestInterface;
 
 /**
@@ -30,12 +31,44 @@ public class RequestLabTestController {
         this.gui = gui;
         this.r = r;
         
+        // Populate doctor information if available
+        if (gui.getDoctorName() != null && !gui.getDoctorName().isEmpty()) {
+            gui.getDoctorNameField().setText(gui.getDoctorName());
+        }
+        if (gui.getDoctorEmail() != null && !gui.getDoctorEmail().isEmpty()) {
+            gui.getDoctorEmailField().setText(gui.getDoctorEmail());
+            // Load doctor phone number from database
+            loadDoctorPhone();
+        }
+        
         // Load available test types into ComboBox
         loadTestTypes();
         
         // Register the Submit button with our action listener
         gui.getSubmitButton().addActionListener(new SubmitButtonAction());
         
+    }
+    
+    // Load doctor phone number from database
+    private void loadDoctorPhone() {
+        try {
+            String email = gui.getDoctorEmail();
+            if (email == null || email.isEmpty()) {
+                return;
+            }
+            
+            // Lookup the appointment service to get doctor phone
+            AppointmentInterface appointmentService = (AppointmentInterface) r.lookup("appointment");
+            String phone = appointmentService.getDoctorPhoneByEmail(email);
+            
+            if (phone != null && !phone.isEmpty()) {
+                gui.getDoctorPhoneField().setText(phone);
+            }
+            
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(RequestLabTestController.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error loading doctor phone: " + ex.getMessage());
+        }
     }
     
     // Load available test types from server
@@ -76,12 +109,28 @@ public class RequestLabTestController {
             
             String patientName = gui.getPatientNameField().getText().trim();
             String patientAgeStr = gui.getPatientAgeField().getText().trim();
-            String patientGender = gui.getPatientGenderField().getText().trim();
+            
+            // Get gender from radio buttons
+            String patientGender = "";
+            if (gui.getMaleRadioButton().isSelected()) {
+                patientGender = "Male";
+            } else if (gui.getFemaleRadioButton().isSelected()) {
+                patientGender = "Female";
+            }
             
             // Validate required fields
-            if (doctorName.isEmpty() || patientName.isEmpty()) {
+            if ( patientName.isEmpty()) {
                 JOptionPane.showMessageDialog(gui, 
-                    "Doctor Name and Patient Name are required!", 
+                    "Patient Name are required!", 
+                    "Validation Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Validate gender selection
+            if (patientGender.isEmpty()) {
+                JOptionPane.showMessageDialog(gui, 
+                    "Please select a gender (Male or Female)!", 
                     "Validation Error", 
                     JOptionPane.ERROR_MESSAGE);
                 return;
@@ -128,7 +177,7 @@ public class RequestLabTestController {
                     "Success", 
                     JOptionPane.INFORMATION_MESSAGE);
                                 
-                // gui.dispose();
+                gui.dispose();
             } else {
                 JOptionPane.showMessageDialog(gui, 
                     "Failed to submit lab test request.", 

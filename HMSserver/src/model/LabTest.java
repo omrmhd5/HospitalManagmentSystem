@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import rmi.LabTestInterface;
+import server.DB;
 
 public class LabTest extends User implements LabTestInterface {
 
@@ -25,20 +26,23 @@ public class LabTest extends User implements LabTestInterface {
     private String patientDateOfBirth;
     
     private static int testCounter = 1000; // Static counter for generating test IDs
+    private final DB db; // Database reference for saving lab test requests
 
-    // Salma
-    public LabTest() throws RemoteException { 
+    // Salma - Constructor with DB reference
+    public LabTest(DB db) throws RemoteException {
         super();
+        this.db = db;
     }
-
-    // Salma
-    public LabTest(int testID, String type, String date) throws RemoteException {
+    
+    // Salma - Constructor with DB reference
+    public LabTest(int testID, String type, String date, DB db) throws RemoteException {
         super();
         this.testID = testID;
         this.type = type;
         this.date = date;
         this.status = "Pending";
         this.result = "";
+        this.db = db;
     }
 
     // ---------- RMI Interface Methods ----------
@@ -66,6 +70,10 @@ public class LabTest extends User implements LabTestInterface {
             this.patientGender = patientGender;
             this.patientDateOfBirth = patientDateOfBirth;
             
+            // Save to database
+            this.db.saveLabTest(this);
+            
+            
             // Log the request
             System.out.println("=== Lab Test Request Submitted ===");
             System.out.println("Test ID: " + this.testID);
@@ -79,6 +87,7 @@ public class LabTest extends User implements LabTestInterface {
             
         } catch (Exception e) {
             System.err.println("Error submitting lab test request: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }

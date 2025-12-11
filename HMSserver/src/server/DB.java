@@ -105,7 +105,7 @@ public class DB {
         if (doc == null) {
             return null;
         }
-        // Manually create Patient object from Document to avoid Gson RMI issues
+        // Manually create Patient object from Document 
         Patient p = new Patient(
             doc.getInteger("userID", 0),
             doc.getString("name"),
@@ -127,6 +127,9 @@ public class DB {
     // Mahmoud
     public Doctor getDoctorByName(String doctorName) throws RemoteException {
         Document doc = doctor.find(Filters.eq("name", doctorName)).first();
+        if (doc == null) {
+            return null;
+        }
         // Mahmoud - Manually create Doctor object from Document to avoid Gson RMI issues
         Doctor d = new Doctor(
             doc.getInteger("userID", 0),
@@ -138,6 +141,34 @@ public class DB {
             doc.getString("availabilitySchedule")
         );
         return d;
+    }
+    
+    // Salma - Get doctor by email
+    public Doctor getDoctorByEmail(String email) throws RemoteException {
+        Document doc = doctor.find(Filters.eq("email", email)).first();
+        if (doc == null) {
+            return null;
+        }
+        // Manually create Doctor object from Document to avoid Gson RMI issues
+        Doctor d = new Doctor(
+            doc.getInteger("userID", 0),
+            doc.getString("name"),
+            doc.getString("email"),
+            doc.getString("password"),
+            doc.getInteger("doctorID", 0),
+            doc.getString("specialization") != null ? doc.getString("specialization") : "",
+            doc.getString("availabilitySchedule") != null ? doc.getString("availabilitySchedule") : ""
+        );
+        return d;
+    }
+    
+    // Salma - Get doctor phone number by email
+    public String getDoctorPhoneByEmail(String email) {
+        Document doc = doctor.find(Filters.eq("email", email)).first();
+        if (doc == null) {
+            return "";
+        }
+        return doc.getString("phoneNumber") != null ? doc.getString("phoneNumber") : "";
     }
     
     // Ibrahim
@@ -183,7 +214,7 @@ public class DB {
         patient.updateOne(Filters.eq("email", email), updateDoc);
         System.out.println("Patient profile updated in patient collection for: " + email);
         
-        // Also update the user collection with the new name (for login purposes)
+        // update the user collection with the new name (for login purposes)
         Document userUpdateDoc = new Document("$set", new Document()
             .append("name", name));
         
@@ -302,8 +333,28 @@ public class DB {
     
     // Salma
     public void saveLabTest(LabTest labTest) {
-        labtest.insertOne(Document.parse(gson.toJson(labTest)));
-        System.out.println("Lab test saved to database with ID: " + labTest.getTestID());
+        try {
+            // Manually create Document to avoid Gson serialization issues with RMI objects
+            Document doc = new Document()
+                    .append("testID", labTest.getTestID())
+                    .append("type", labTest.getType() != null ? labTest.getType() : "")
+                    .append("result", labTest.getResult() != null ? labTest.getResult() : "")
+                    .append("date", labTest.getDate() != null ? labTest.getDate() : "")
+                    .append("status", labTest.getStatus() != null ? labTest.getStatus() : "")
+                    .append("doctorName", labTest.getDoctorName() != null ? labTest.getDoctorName() : "")
+                    .append("doctorEmail", labTest.getDoctorEmail() != null ? labTest.getDoctorEmail() : "")
+                    .append("doctorPhone", labTest.getDoctorPhone() != null ? labTest.getDoctorPhone() : "")
+                    .append("patientName", labTest.getPatientName() != null ? labTest.getPatientName() : "")
+                    .append("patientAge", labTest.getPatientAge())
+                    .append("patientGender", labTest.getPatientGender() != null ? labTest.getPatientGender() : "")
+                    .append("patientDateOfBirth", labTest.getPatientDateOfBirth() != null ? labTest.getPatientDateOfBirth() : "");
+            
+            labtest.insertOne(doc);
+        } catch (Exception e) {
+            System.err.println("Error saving lab test to database: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save lab test to database", e);
+        }
     }
     
     // ========================================

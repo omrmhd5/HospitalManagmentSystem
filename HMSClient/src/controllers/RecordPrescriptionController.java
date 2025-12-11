@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import GUI.RecordPrescription;
+import gui.RecordPrescription;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;

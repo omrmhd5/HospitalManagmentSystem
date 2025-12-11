@@ -247,4 +247,10 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         return db.getAllDoctorNames();
     }
     
+    // Salma - Get doctor phone number by email
+    @Override
+    public String getDoctorPhoneByEmail(String email) throws RemoteException {
+        return db.getDoctorPhoneByEmail(email);
+    }
+    
 }
