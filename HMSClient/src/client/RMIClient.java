@@ -1,7 +1,7 @@
 package client;
 
-import controllers.LoginController;
-import gui.Login;
+import controllers.RoleSelectController;
+import gui.RoleSelect;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -14,7 +14,7 @@ public class RMIClient {
         Registry registry = LocateRegistry.getRegistry(1099);
         
         // Mahmoud
-        Login l = new Login();
-        LoginController lc = new LoginController(l, registry);
+        RoleSelect roleSelect = new RoleSelect();
+        RoleSelectController roleSelectController = new RoleSelectController(roleSelect, registry);
     }
 }

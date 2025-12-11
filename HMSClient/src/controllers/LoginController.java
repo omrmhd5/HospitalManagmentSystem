@@ -1,10 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controllers;
 
 import gui.Login;
+import gui.Register;
+import gui.PatientDashboard;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
@@ -12,45 +10,93 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rmi.AdminInterface;
+import javax.swing.JOptionPane;
+import rmi.AuthInterface;
 
-/**
- *
- * @author omrmh
- */
 public class LoginController {
     
-    // We have reference to both the GUI and the rmi registry
-    Login gui;
-    Registry r;
+    private final Login gui;
+    private final Registry registry;
     
-    // The constructor takes the gui and the rmi registry as paramaters
-    public LoginController(Login gui, Registry r)
-    {
+    // Mahmoud
+    public LoginController(Login gui, Registry registry) {
         this.gui = gui;
-        this.r = r;
-        // This registers the button with our action listener below (the inner class)
-        gui.getContinueButton().addActionListener(new printBtnAction());
+        this.registry = registry;
+        
+        gui.getBtnLogin().addActionListener(new LoginAction());
+        gui.getBtnSwitchToRegister().addActionListener(new SwitchToRegisterAction());
     }
     
-    // This class is responsible for handling the button click
-    class printBtnAction implements ActionListener {
-
+    // Mahmoud
+    class LoginAction implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent ae) {
+        public void actionPerformed(ActionEvent e) {
             try {
-
-                // We try to obtain a remote reference to the grade remote object
-                // that lives on the client. (using the registry object obtained from
-                // the constructor above)
-                AdminInterface admin = (AdminInterface) r.lookup("admin");
-                admin.print();
-               
+                // Mahmoud
+                AuthInterface authService = (AuthInterface) registry.lookup("auth");
+                
+                String email = gui.getTxtEmail().getText().trim();
+                String password = new String(gui.getTxtPassword().getPassword());
+                String role = gui.getRole();
+                
+                if (email.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Mahmoud
+                String result = authService.login(email, password, role);
+                
+                if (result.contains("successful")) {
+                    // Mahmoud - Extract name from result: "Login successful! Welcome Name (Role)"
+                    String name = extractNameFromResult(result);
+                    
+                    JOptionPane.showMessageDialog(gui, result, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    gui.dispose();
+                    
+                    // Mahmoud - Open appropriate dashboard based on role
+                    if (role.equals("Patient")) {
+                        PatientDashboard patientDashboard = new PatientDashboard(name, email);
+                        PatientDashboardController patientDashboardController = new PatientDashboardController(patientDashboard, registry);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Dashboard for " + role + " is coming soon!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(gui, result, "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
             } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(gui, "Server error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         
+        // Mahmoud
+        private String extractNameFromResult(String result) {
+            try {
+                // Format: "Login successful! Welcome Name (Role)"
+                int welcomeIndex = result.indexOf("Welcome ") + 8;
+                int roleIndex = result.indexOf(" (", welcomeIndex);
+                if (welcomeIndex > 7 && roleIndex > welcomeIndex) {
+                    return result.substring(welcomeIndex, roleIndex);
+                }
+            } catch (Exception ex) {
+                // If extraction fails, return default
+            }
+            return "User";
+        }
     }
     
+    // Mahmoud
+    class SwitchToRegisterAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String role = gui.getRole();
+            gui.dispose();
+            
+            // Mahmoud
+            Register registerGui = new Register(role);
+            RegisterController registerController = new RegisterController(registerGui, registry);
+        }
+    }
 }

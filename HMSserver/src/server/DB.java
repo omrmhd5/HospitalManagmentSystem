@@ -19,6 +19,7 @@ import model.LabTest;
 import model.Patient;
 import model.Pharmacist;
 import model.Prescription;
+import model.User;
 import org.bson.Document;
 
 public class DB {
@@ -287,6 +288,62 @@ public class DB {
     public void deleteUserById(int userID) {
         user.deleteOne(Filters.eq("userID", userID));
         System.out.println("User deleted from database with ID: " + userID);
+    }
+    
+    // ========================================
+    // Doctor DB
+    // ========================================
+    
+    // Mahmoud
+    public List<String> getAllDoctorNames() {
+        List<String> doctorNames = new ArrayList<>();
+        // Mahmoud - Query user collection for doctors
+        for (Document doc : user.find(Filters.eq("role", "Doctor"))) {
+            String name = doc.getString("name");
+            String specialty = doc.getString("specialty");
+            if (name != null) {
+                doctorNames.add(name + " - " + (specialty != null ? specialty : "General Practice"));
+            }
+        }
+        return doctorNames;
+    }
+    
+    // ========================================
+    // Authentication DB
+    // ========================================
+    
+    // Mahmoud
+    public String authenticateUser(String email, String password, String role) {
+        Document doc = user.find(Filters.and(
+                Filters.eq("email", email),
+                Filters.eq("password", password),
+                Filters.eq("role", role)
+        )).first();
+        
+        if (doc == null) {
+            return null;
+        }
+        
+        return doc.getString("name");
+    }
+    
+    // Mahmoud
+    public boolean registerUser(int userID, String name, String email, String password, String role) {
+        Document doc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", role);
+        
+        user.insertOne(doc);
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean emailExists(String email) {
+        Document doc = user.find(Filters.eq("email", email)).first();
+        return doc != null;
     }
     
     // ========================================

@@ -251,5 +251,10 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
             "\nStatus: " + status;
 }
 
+    // Mahmoud
+    @Override
+    public List<String> getAllDoctorNames() throws RemoteException {
+        return db.getAllDoctorNames();
+    }
     
 }

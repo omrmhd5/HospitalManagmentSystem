@@ -2,6 +2,7 @@ package rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface AppointmentInterface extends Remote {
     // Mahmoud
@@ -28,5 +29,8 @@ public interface AppointmentInterface extends Remote {
 
     // Rana - Get available reservations (returns formatted string)
     String getAvailableReservations(String doctorName, String specialty, String date) throws RemoteException;
+
+    // Mahmoud - Get all doctor names
+    List<String> getAllDoctorNames() throws RemoteException;
 
 }
