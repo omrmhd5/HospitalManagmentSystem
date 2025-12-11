@@ -2,14 +2,14 @@ package rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import model.Drug;
 
 public interface PharmacyInterface extends Remote {
     // Tasneem
-    boolean addDrug(Drug d) throws RemoteException;
+    boolean addDrug(int drugID, String name, String category, int quantity, 
+                    int reorderLevel, String expiryDate) throws RemoteException;
     
-    // Tasneem
-    Drug getDrugByID(int id) throws RemoteException;
+    // Tasneem - Returns formatted string
+    String getDrugByID(int id) throws RemoteException;
     
     // Tasneem
     boolean receiveDrugStock(int drugID, int amount) throws RemoteException;
@@ -18,5 +18,9 @@ public interface PharmacyInterface extends Remote {
     boolean dispenseDrug(int drugID, int amount) throws RemoteException;
     
     // Tasneem
-    boolean updateDrug(Drug d) throws RemoteException;
+    boolean updateDrug(int drugID, String name, String category, int quantity, 
+                       int reorderLevel, String expiryDate) throws RemoteException;
+    
+    // Ibrahim
+    String requestMedicineRefill(int pharmacistID, String medicineName, int quantity) throws RemoteException;
 }

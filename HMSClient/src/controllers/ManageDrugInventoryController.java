@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Drug;
-import rmiServer.AppointmentInterface;
+import javax.swing.JOptionPane;
+import rmi.PharmacyInterface;
 
 public class ManageDrugInventoryController {
 
@@ -27,20 +27,19 @@ public class ManageDrugInventoryController {
     class AddDrugAction implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             try {
-                AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                PharmacyInterface service =
+                        (PharmacyInterface) registry.lookup("pharmacy");
 
-                Drug d = new Drug(
-                    Integer.parseInt(gui.getDrugIDField().getText()),
-                    gui.getNameField().getText(),
-                    gui.getCategoryField().getText(),
-                    Integer.parseInt(gui.getQuantityField().getText()),
-                    Integer.parseInt(gui.getReorderField().getText()),
-                    gui.getExpiryField().getText()
-                );
+                // Pass individual fields (no object!)
+                int drugID = Integer.parseInt(gui.getDrugIDField().getText());
+                String name = gui.getNameField().getText();
+                String category = gui.getCategoryField().getText();
+                int quantity = Integer.parseInt(gui.getQuantityField().getText());
+                int reorderLevel = Integer.parseInt(gui.getReorderField().getText());
+                String expiryDate = gui.getExpiryField().getText();
 
-                boolean ok = service.addDrug(d);
-                gui.setOutput(ok ? "Drug added successfully!" : "Failed to add drug.");
+                boolean ok = service.addDrug(drugID, name, category, quantity, reorderLevel, expiryDate);
+                JOptionPane.showMessageDialog(gui, ok ? "Drug added successfully!" : "Failed to add drug.");
 
             } catch (Exception ex) {
                 Logger.getLogger(ManageDrugInventoryController.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,14 +50,14 @@ public class ManageDrugInventoryController {
     class ReceiveStockAction implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             try {
-                AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                PharmacyInterface service =
+                        (PharmacyInterface) registry.lookup("pharmacy");
 
                 int id = Integer.parseInt(gui.getDrugIDField().getText());
                 int amount = Integer.parseInt(gui.getAmountField().getText());
 
                 boolean ok = service.receiveDrugStock(id, amount);
-                gui.setOutput(ok ? "Stock received!" : "Failed to receive stock.");
+                JOptionPane.showMessageDialog(gui, ok ? "Stock received!" : "Failed to receive stock.");
 
             } catch (Exception ex) {
                 Logger.getLogger(ManageDrugInventoryController.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,14 +68,14 @@ public class ManageDrugInventoryController {
     class DispenseStockAction implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             try {
-                AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                PharmacyInterface service =
+                        (PharmacyInterface) registry.lookup("pharmacy");
 
                 int id = Integer.parseInt(gui.getDrugIDField().getText());
                 int amount = Integer.parseInt(gui.getAmountField().getText());
 
                 boolean ok = service.dispenseDrug(id, amount);
-                gui.setOutput(ok ? "Drug dispensed!" : "Not enough stock.");
+                JOptionPane.showMessageDialog(gui, ok ? "Drug dispensed!" : "Not enough stock.");
 
             } catch (Exception ex) {
                 Logger.getLogger(ManageDrugInventoryController.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,20 +86,19 @@ public class ManageDrugInventoryController {
     class UpdateDrugAction implements ActionListener {
         @Override public void actionPerformed(ActionEvent e) {
             try {
-                AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                PharmacyInterface service =
+                        (PharmacyInterface) registry.lookup("pharmacy");
 
-                Drug d = new Drug(
-                    Integer.parseInt(gui.getDrugIDField().getText()),
-                    gui.getNameField().getText(),
-                    gui.getCategoryField().getText(),
-                    Integer.parseInt(gui.getQuantityField().getText()),
-                    Integer.parseInt(gui.getReorderField().getText()),
-                    gui.getExpiryField().getText()
-                );
+                // Pass individual fields (no object!)
+                int drugID = Integer.parseInt(gui.getDrugIDField().getText());
+                String name = gui.getNameField().getText();
+                String category = gui.getCategoryField().getText();
+                int quantity = Integer.parseInt(gui.getQuantityField().getText());
+                int reorderLevel = Integer.parseInt(gui.getReorderField().getText());
+                String expiryDate = gui.getExpiryField().getText();
 
-                boolean ok = service.updateDrug(d);
-                gui.setOutput(ok ? "Drug updated!" : "Update failed.");
+                boolean ok = service.updateDrug(drugID, name, category, quantity, reorderLevel, expiryDate);
+                JOptionPane.showMessageDialog(gui, ok ? "Drug updated!" : "Update failed.");
 
             } catch (Exception ex) {
                 Logger.getLogger(ManageDrugInventoryController.class.getName()).log(Level.SEVERE, null, ex);

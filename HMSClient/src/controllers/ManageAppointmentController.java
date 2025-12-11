@@ -8,8 +8,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Appointment;
-import rmiServer.AppointmentInterface;
+import javax.swing.JOptionPane;
+import rmi.AppointmentInterface;
 
 public class ManageAppointmentController {
 
@@ -33,22 +33,14 @@ public class ManageAppointmentController {
         public void actionPerformed(ActionEvent e) {
             try {
                 AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                        (AppointmentInterface) registry.lookup("appointment");
 
                 int id = Integer.parseInt(gui.getAppointmentIDField().getText());
 
-                Appointment a = service.getAppointmentByID(id);
-
-                if (a == null) {
-                    gui.setDetailsText("Appointment not found.");
-                } else {
-                    gui.setDetailsText(
-                            "Doctor: " + a.getDoctor().getName() + "\n"
-                            + "Date: " + a.getDate() + "\n"
-                            + "Time: " + a.getTime() + "\n"
-                            + "Status: " + a.getStatus()
-                    );
-                }
+                // Returns formatted string
+                String appointmentDetails = service.getAppointmentByID(id);
+                
+                gui.setDetailsText(appointmentDetails);
 
             } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(ManageAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,13 +54,13 @@ public class ManageAppointmentController {
         public void actionPerformed(ActionEvent e) {
             try {
                 AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                        (AppointmentInterface) registry.lookup("appointment");
 
                 int id = Integer.parseInt(gui.getAppointmentIDField().getText());
 
                 boolean ok = service.cancelAppointment(id);
 
-                gui.setMessage(ok
+                JOptionPane.showMessageDialog(gui, ok
                         ? "Appointment cancelled successfully."
                         : "Cancellation failed.");
 
@@ -96,7 +88,7 @@ public class ManageAppointmentController {
 
             try {
                 AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                        (AppointmentInterface) registry.lookup("appointment");
 
                 int id = Integer.parseInt(gui.getAppointmentIDField().getText());
                 String newDate = gui.getNewDateField().getText();
@@ -104,7 +96,7 @@ public class ManageAppointmentController {
 
                 boolean ok = service.rescheduleAppointment(id, newDate, newTime);
 
-                gui.setMessage(ok
+                JOptionPane.showMessageDialog(gui, ok
                         ? "Appointment rescheduled successfully."
                         : "Reschedule failed.");
 

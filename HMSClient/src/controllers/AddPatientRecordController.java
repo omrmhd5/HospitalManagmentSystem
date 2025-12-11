@@ -11,7 +11,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Patient;
 import rmi.PatientInterface;
 /**
  *
@@ -47,10 +46,8 @@ public class AddPatientRecordController {
                 String contact = gui.getTxtContactInfo().getText();
                 String history = gui.getTxtMedicalHistory().getText();
 
-                // Create model object
-                Patient p = new Patient(id, name, contact, gender, age, history);
-
-                boolean ok = service.addPatient(p);
+                // Call RMI with individual fields (no object!)
+                boolean ok = service.addPatient(id, name, contact, gender, age, history);
 
                 if (ok) {
                     gui.setOutputMessage("Patient added successfully!");

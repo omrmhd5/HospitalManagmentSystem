@@ -4,10 +4,8 @@
  */
 package rmi;
 
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import model.Patient;
 /**
  *
  * @author omarm
@@ -26,9 +24,12 @@ public interface PatientInterface extends Remote {
     void updateProfile(String name, String dateOfBirth, String gender, 
                       String address, String phoneNumber) throws RemoteException;
 
-    boolean addPatient(Patient p) throws RemoteException;
+    // Mahmoud - Add patient
+    boolean addPatient(int patientID, String name, String contactInfo, String gender, 
+                       int age, String medicalHistory) throws RemoteException;
 
-    Patient getPatientByID(int patientID) throws RemoteException;
+    // Mahmoud - Get patient by ID (returns formatted string)
+    String getPatientByID(int patientID) throws RemoteException;
 
     boolean addPatientRecord(int patientID, String record) throws RemoteException;
 

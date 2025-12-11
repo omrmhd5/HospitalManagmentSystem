@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Admin;
 import model.Appointment;
+import model.Diagnosis;
 import model.ICURoom;
 import model.LabTechnician;
 import model.LabTest;
@@ -15,6 +16,7 @@ import model.Pharmacist;
 import model.Prescription;
 import rmi.AdminInterface;
 import rmi.AppointmentInterface;
+import rmi.DiagnosisInterface;
 import rmi.ICUInterface;
 import rmi.LabTechnicianInterface;
 import rmi.LabTestInterface;
@@ -38,6 +40,7 @@ public class RMIServer {
         LabTechnicianInterface labTechService = new LabTechnician(db);
         PharmacyInterface pharmacyService = new Pharmacist(db);
         ICUInterface icuService = new ICURoom(db);
+        DiagnosisInterface diagnosisService = new Diagnosis(db);
         
         // Create registry
         Registry registry = LocateRegistry.createRegistry(1099);
@@ -51,6 +54,7 @@ public class RMIServer {
         registry.bind("labtech", labTechService);
         registry.bind("pharmacy", pharmacyService);
         registry.bind("icu", icuService);
+        registry.bind("diagnosis", diagnosisService);
         
         System.out.println("The server is ready");
     }

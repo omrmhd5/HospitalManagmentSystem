@@ -34,15 +34,35 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
 
     // Rana
     @Override
-    public boolean createICURequest(ICURequest req) throws RemoteException {
+    public boolean createICURequest(int requestID, String doctorName, String patientName, 
+                                    String date, String time, String urgency, 
+                                    String diagnosis, String expectedDuration) throws RemoteException {
+        Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
+        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
+        ICURequest req = new ICURequest(requestID, doctor, patient, date, time, urgency, diagnosis, expectedDuration);
         db.addICURequest(req);
         return true;
     }
 
     // Rana
     @Override
-    public List<ICURequest> getICURequestsForPatient(int patientID) throws RemoteException {
-        return db.getRequestsForPatient(patientID);
+    public String getICURequestsForPatient(int patientID) throws RemoteException {
+        List<ICURequest> requests = db.getRequestsForPatient(patientID);
+        
+        if (requests == null || requests.isEmpty()) {
+            return "No ICU requests found for this patient";
+        }
+        
+        StringBuilder result = new StringBuilder();
+        result.append("ICU Requests\n");
+        result.append("====================\n");
+        
+        for (ICURequest req : requests) {
+            result.append("\n").append(req.toReadableString()).append("\n");
+            result.append("--------------------\n");
+        }
+        
+        return result.toString();
     }
 
     public int getRoomID() { return roomID; }

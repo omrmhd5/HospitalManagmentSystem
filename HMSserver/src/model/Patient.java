@@ -147,15 +147,33 @@ public class Patient extends User implements PatientInterface {
     
     // Mahmoud
     @Override
-    public boolean addPatient(Patient p) throws RemoteException {
-        db.insertPatient(p);
+    public boolean addPatient(int patientID, String name, String contactInfo, String gender, 
+                              int age, String medicalHistory) throws RemoteException {
+        Patient patient = new Patient(0, name, "", "", patientID, contactInfo, gender, age, 
+                                      medicalHistory, "", "", "", db);
+        db.insertPatient(patient);
         return true;
     }
     
     // Mahmoud
     @Override
-    public Patient getPatientByID(int patientID) throws RemoteException {
-        return db.getPatientByID(patientID);
+    public String getPatientByID(int patientID) throws RemoteException {
+        Patient patient = db.getPatientByID(patientID);
+        
+        if (patient == null) {
+            return "Patient not found";
+        }
+        
+        String result = "Patient Details\n" +
+                        "====================\n" +
+                        "Patient ID: " + patient.getPatientID() + "\n" +
+                        "Name: " + patient.getName() + "\n" +
+                        "Contact: " + patient.getContactInfo() + "\n" +
+                        "Gender: " + patient.getGender() + "\n" +
+                        "Age: " + patient.getAge() + "\n" +
+                        "Medical History: " + patient.getMedicalHistory();
+        
+        return result;
     }
     
     // Ibrahim
@@ -171,7 +189,7 @@ public class Patient extends User implements PatientInterface {
         return String.join("\n", records);
     }
     
-    
+
     // ---------- Getters & Setters ----------
     public int getPatientID() { return patientID; }
     public void setPatientID(int patientID) { this.patientID = patientID; }

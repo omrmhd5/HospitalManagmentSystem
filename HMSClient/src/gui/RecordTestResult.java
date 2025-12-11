@@ -4,6 +4,8 @@
  */
 package gui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author omarm
@@ -13,10 +15,8 @@ public class RecordTestResult extends javax.swing.JPanel {
      public RecordTestResult() {
         initComponents();
     }
-    /**
-     * Creates new form java
-     */
-      public javax.swing.JTextField getTxtTestID() {
+    
+    public javax.swing.JTextField getTxtTestID() {
         return txtTestID;
     }
 
@@ -55,5 +55,8 @@ public class RecordTestResult extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField txtTestID;
+    private javax.swing.JTextField txtResult;
+    private javax.swing.JButton btnSubmit;
     // End of variables declaration//GEN-END:variables
 }

@@ -31,39 +31,72 @@ public class Pharmacist extends User implements PharmacyInterface {
 
     // Tasneem
     @Override
-    public boolean addDrug(Drug d) throws RemoteException {
-        db.addDrug(d);
+    public boolean addDrug(int drugID, String name, String category, int quantity, 
+                           int reorderLevel, String expiryDate) throws RemoteException {
+        Drug drug = new Drug(drugID, name, category, quantity, reorderLevel, expiryDate);
+        db.addDrug(drug);
         return true;
     }
 
     // Tasneem
     @Override
-    public Drug getDrugByID(int id) throws RemoteException {
-        return db.getDrugByID(id);
+    public String getDrugByID(int id) throws RemoteException {
+        Drug drug = db.getDrugByID(id);
+        
+        if (drug == null) {
+            return "Drug not found";
+        }
+        
+        String result = "Drug Details\n" +
+                        "====================\n" +
+                        "Drug ID: " + drug.getDrugID() + "\n" +
+                        "Name: " + drug.getName() + "\n" +
+                        "Category: " + drug.getCategory() + "\n" +
+                        "Quantity: " + drug.getQuantity() + "\n" +
+                        "Reorder Level: " + drug.getReorderLevel() + "\n" +
+                        "Expiry Date: " + drug.getExpiryDate();
+        
+        return result;
     }
 
     // Tasneem
     @Override
     public boolean receiveDrugStock(int drugID, int amount) throws RemoteException {
-        return true;
+        Drug drug = db.getDrugByID(drugID);
+        if (drug != null) {
+            drug.receiveStock(amount);
+            db.updateDrug(drug);
+            return true;
+        }
+        return false;
     }
 
     // Tasneem
     @Override
     public boolean dispenseDrug(int drugID, int amount) throws RemoteException {
-        return true;
+        Drug drug = db.getDrugByID(drugID);
+        if (drug != null) {
+            boolean success = drug.dispenseStock(amount);
+            if (success) {
+                db.updateDrug(drug);
+            }
+            return success;
+        }
+        return false;
     }
 
     // Tasneem
     @Override
-    public boolean updateDrug(Drug d) throws RemoteException {
-        return db.updateDrug(d);
+    public boolean updateDrug(int drugID, String name, String category, int quantity, 
+                              int reorderLevel, String expiryDate) throws RemoteException {
+        Drug drug = new Drug(drugID, name, category, quantity, reorderLevel, expiryDate);
+        return db.updateDrug(drug);
     }
 
     // Ibrahim
-    public String requestMedicineRefill(String medicineName, int quantity) {
-        return "Refill request submitted successfully for " 
-                + medicineName + " (Quantity: " + quantity + ")";
+    @Override
+    public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity) throws RemoteException {
+        return db.requestMedicineRefill(pharmacistID, medicineName, quantity);
     }
 
     public int getPharmacistID() { return pharmacistID; }

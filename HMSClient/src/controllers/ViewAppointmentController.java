@@ -3,12 +3,12 @@ package controllers;
 import gui.ViewAppointment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Appointment;
-import rmiServer.AppointmentInterface;
+import rmi.AppointmentInterface;
 
 public class ViewAppointmentController {
 
@@ -27,25 +27,16 @@ public class ViewAppointmentController {
         public void actionPerformed(ActionEvent e) {
             try {
                 AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                        (AppointmentInterface) registry.lookup("appointment");
 
                 int doctorID = Integer.parseInt(gui.getDoctorIDField().getText());
 
-                List<Appointment> list = service.getAppointmentsForDoctor(doctorID);
+                // Returns formatted string
+                String appointments = service.getAppointmentsForDoctor(doctorID);
 
-                if (list.isEmpty()) {
-                    gui.setOutput("No appointments found.");
-                    return;
-                }
+                gui.setOutput(appointments);
 
-                StringBuilder sb = new StringBuilder();
-                for (Appointment a : list) {
-                    sb.append(a.toReadableString()).append("\n-----------------\n");
-                }
-
-                gui.setOutput(sb.toString());
-
-            } catch (Exception ex) {
+            } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(ViewAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

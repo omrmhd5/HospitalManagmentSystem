@@ -32,10 +32,6 @@ public JTextField getPatientIDField() {
     return txtPatientID;
 }
 
-//public JTextField getDoctorIDField() {
-//    return txtDoctorID;
-//}
-
 public JTextField getDateField() {
     return txtDate;
 }

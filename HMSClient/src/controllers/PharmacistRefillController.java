@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import rmi.PharmacistInterface;
+import rmi.PharmacyInterface;
 /**
  *
  * @author omarm
@@ -39,11 +39,11 @@ public class PharmacistRefillController {
                 int quantity = Integer.parseInt(gui.getTxtQuantity().getText());
 
                 // Get remote object from RMI registry
-                PharmacistInterface pharmacist = 
-                        (PharmacistInterface) registry.lookup("pharmacist");
+                PharmacyInterface pharmacy = 
+                        (PharmacyInterface) registry.lookup("pharmacy");
 
                 // Call RMI method
-                String response = pharmacist.requestMedicineRefill(
+                String response = pharmacy.requestMedicineRefill(
                         pharmacistID, 
                         medicineName, 
                         quantity

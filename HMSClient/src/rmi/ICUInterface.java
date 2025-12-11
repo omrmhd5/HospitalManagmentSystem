@@ -2,13 +2,13 @@ package rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
-import model.ICURequest;
 
 public interface ICUInterface extends Remote {
     // Rana
-    boolean createICURequest(ICURequest req) throws RemoteException;
+    boolean createICURequest(int requestID, String doctorName, String patientName, 
+                             String date, String time, String urgency, 
+                             String diagnosis, String expectedDuration) throws RemoteException;
     
-    // Rana
-    List<ICURequest> getICURequestsForPatient(int patientID) throws RemoteException;
+    // Rana - Returns formatted string of all requests
+    String getICURequestsForPatient(int patientID) throws RemoteException;
 }

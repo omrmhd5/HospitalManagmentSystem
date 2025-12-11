@@ -6,12 +6,9 @@ import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.AvailableReservation;
 import rmi.AppointmentInterface;
-import rmiServer.AppointmentInterface;
 
 public class ViewAvailableReservationsController {
 
@@ -30,27 +27,16 @@ public class ViewAvailableReservationsController {
         public void actionPerformed(ActionEvent e) {
             try {
                 AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("AppointmentService");
+                        (AppointmentInterface) registry.lookup("appointment");
 
                 String doctorName = gui.getDoctorNameField().getText();
                 String specialty = gui.getSpecialtyField().getText();
-                String date      = gui.getDateField().getText();
+                String date = gui.getDateField().getText();
 
-                List<AvailableReservation> list = 
-                        service.getAvailableReservations(doctorName, specialty, date);
+                // Returns formatted string
+                String reservations = service.getAvailableReservations(doctorName, specialty, date);
 
-                if (list.isEmpty()) {
-                    gui.setOutput("No available reservations found.");
-                    return;
-                }
-
-                StringBuilder sb = new StringBuilder();
-                for (AvailableReservation a : list) {
-                    sb.append(a.toReadableString())
-                      .append("\n----------------------\n");
-                }
-
-                gui.setOutput(sb.toString());
+                gui.setOutput(reservations);
 
             } catch (RemoteException | NotBoundException ex) {
                 Logger.getLogger(ViewAvailableReservationsController.class.getName()).log(Level.SEVERE, null, ex);

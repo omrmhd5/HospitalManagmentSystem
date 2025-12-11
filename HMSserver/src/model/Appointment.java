@@ -1,6 +1,7 @@
 package model;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import rmi.AppointmentInterface;
 import server.DB;
 
@@ -73,29 +74,64 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     public void setTime(String time) { this.time = time; }
 
     public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
     
-    // Mahmoud - Stub implementations for AppointmentInterface methods
+    // Rana
     @Override
-    public Appointment getAppointmentByID(int appointmentID) throws RemoteException {
-        return null;
+    public String getAppointmentByID(int appointmentID) throws RemoteException {
+        Appointment appointment = db.getAppointmentByID(appointmentID);
+        
+        if (appointment == null) {
+            return "Appointment not found";
+        }
+        
+        String result = "Appointment Details\n" +
+                        "====================\n" +
+                        "Appointment ID: " + appointment.getAppointmentID() + "\n" +
+                        "Patient: " + appointment.getPatient().getName() + "\n" +
+                        "Doctor: " + appointment.getDoctor().getName() + "\n" +
+                        "Date: " + appointment.getDate() + "\n" +
+                        "Time: " + appointment.getTime() + "\n" +
+                        "Status: " + appointment.getStatus();
+        
+        return result;
     }
     
+    // Rana
     @Override
-    public boolean addAppointment(Appointment appointment) throws RemoteException {
-        return false;
-    }
-    
-    @Override
-    public boolean updateAppointment(Appointment appointment) throws RemoteException {
-        return false;
+    public boolean updateAppointment(int appointmentID, String patientName, String doctorName, 
+                                      String date, String time, String status) throws RemoteException {
+        Appointment appointment = db.getAppointmentByID(appointmentID);
+        
+        if (appointment == null) {
+            return false;
+        }
+        
+        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
+        Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
+        
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        appointment.setDate(date);
+        appointment.setTime(time);
+        appointment.setStatus(status);
+        
+        db.updateAppointment(appointment);
+        return true;
     }
     
     //Rana
     @Override
     public boolean cancelAppointment(int appointmentID) throws RemoteException {
+        Appointment appointment = db.getAppointmentByID(appointmentID);
+        
+        if (appointment == null) {
+            return false;
+        }
+        
         // Cannot cancel if already cancelled or completed
-        if (this.status.equals("Cancelled") || this.status.equals("Completed")) {
-            System.out.println("Appointment is already " + this.status);
+        if (appointment.getStatus().equals("Cancelled") || appointment.getStatus().equals("Completed")) {
+            System.out.println("Appointment is already " + appointment.getStatus());
             return false;
         }
 
@@ -105,16 +141,23 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
             return false;
         }
 
-        this.status = "Cancelled";
+        appointment.setStatus("Cancelled");
+        db.updateAppointment(appointment);
         return true;
     }
 
     //Rana
     @Override
     public boolean rescheduleAppointment(int appointmentID, String newDate, String newTime) throws RemoteException {
+        Appointment appointment = db.getAppointmentByID(appointmentID);
+        
+        if (appointment == null) {
+            return false;
+        }
+        
         //  cannot reschedule if already canceled or completed
-        if (this.status.equals("Cancelled") || this.status.equals("Completed")) {
-            System.out.println("Cannot reschedule. Appointment is " + this.status);
+        if (appointment.getStatus().equals("Cancelled") || appointment.getStatus().equals("Completed")) {
+            System.out.println("Cannot reschedule. Appointment is " + appointment.getStatus());
             return false;
         }
 
@@ -125,9 +168,10 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         }
 
         // Update date/time
-        this.date = newDate;
-        this.time = newTime;
-        this.status = "Rescheduled";
+        appointment.setDate(newDate);
+        appointment.setTime(newTime);
+        appointment.setStatus("Rescheduled");
+        db.updateAppointment(appointment);
         return true;
     }
 
@@ -146,7 +190,47 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         }
     }
 
+    //Rana
+    @Override
+    public String getAppointmentsForDoctor(int doctorID) throws RemoteException {
+        List<Appointment> list = db.getAppointmentsForDoctor(doctorID);
+        
+        if (list == null || list.isEmpty()) {
+            return "No appointments found for this doctor";
+        }
+        
+        StringBuilder result = new StringBuilder();
+        result.append("Doctor's Appointments\n");
+        result.append("====================\n\n");
+        
+        for (Appointment a : list) {
+            result.append(a.toReadableString()).append("\n");
+            result.append("-----------------\n");
+        }
+        
+        return result.toString();
+    }
 
+    //Rana
+    @Override
+    public String getAvailableReservations(String doctorName, String specialty, String date) throws RemoteException {
+        List<AvailableReservation> list = db.getAvailableReservations(doctorName, specialty, date);
+        
+        if (list == null || list.isEmpty()) {
+            return "No available reservations found";
+        }
+        
+        StringBuilder result = new StringBuilder();
+        result.append("Available Reservations\n");
+        result.append("====================\n\n");
+        
+        for (AvailableReservation a : list) {
+            result.append(a.toReadableString()).append("\n");
+            result.append("----------------------\n");
+        }
+        
+        return result.toString();
+    }
 
     /** Dummy rule: always allow for now */
     private boolean isRescheduleAllowed() {
