@@ -46,13 +46,16 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     // Mahmoud
     @Override
     public String bookAppointment(String patientName, String doctorName, String date, String time) throws RemoteException {
-        if (doctorName == null || doctorName.isEmpty() || date == null || date.isEmpty() || time == null || time.isEmpty()) {
-            return "Missing appointment details";
-        }
-        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
-        Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
+        // Mahmoud - Get actual patient from database
+        Patient patient = db.getPatientByName(patientName);
+        
+        // Mahmoud - Get actual doctor from database
+        Doctor doctor = db.getDoctorByName(doctorName);
+        
+        // Mahmoud - Create Appointment object with actual patient and doctor data
         Appointment appointment = new Appointment(0, patient, doctor, date, time, db);
         
+        // Mahmoud
         db.insertAppointment(appointment);
         return "Appointment booked with " + doctorName + " on " + date + " at " + time;
     }
@@ -107,8 +110,15 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
             return false;
         }
         
-        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
-        Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
+        // Mahmoud - Create Patient object
+        Patient patient = new Patient(
+            0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db
+        );
+        
+        // Mahmoud - Create Doctor object
+        Doctor doctor = new Doctor(
+            0, doctorName, "", "", 0, "", ""
+        );
         
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
@@ -116,6 +126,7 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         appointment.setTime(time);
         appointment.setStatus(status);
         
+        // Mahmoud
         db.updateAppointment(appointment);
         return true;
     }
@@ -206,27 +217,6 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         for (Appointment a : list) {
             result.append(a.toReadableString()).append("\n");
             result.append("-----------------\n");
-        }
-        
-        return result.toString();
-    }
-
-    //Rana
-    @Override
-    public String getAvailableReservations(String doctorName, String specialty, String date) throws RemoteException {
-        List<AvailableReservation> list = db.getAvailableReservations(doctorName, specialty, date);
-        
-        if (list == null || list.isEmpty()) {
-            return "No available reservations found";
-        }
-        
-        StringBuilder result = new StringBuilder();
-        result.append("Available Reservations\n");
-        result.append("====================\n\n");
-        
-        for (AvailableReservation a : list) {
-            result.append(a.toReadableString()).append("\n");
-            result.append("----------------------\n");
         }
         
         return result.toString();

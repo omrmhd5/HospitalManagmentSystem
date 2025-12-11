@@ -33,7 +33,30 @@ public class AuthService extends UnicastRemoteObject implements AuthInterface {
             return false;
         }
         
-        return db.registerUser(userID, name, email, password, role);
+        // Mahmoud - Register in both user collection and role-specific collection
+        return db.registerUserWithRole(userID, name, email, password, role);
+    }
+    
+    // Mahmoud
+    @Override
+    public boolean registerPatient(int userID, String name, String email, String password, 
+                                   String gender, int age, String phone, String address) throws RemoteException {
+        if (db.emailExists(email)) {
+            return false;
+        }
+        
+        return db.registerPatientExtended(userID, name, email, password, gender, age, phone, address);
+    }
+    
+    // Mahmoud
+    @Override
+    public boolean registerDoctor(int userID, String name, String email, String password,
+                                 String specialization, String schedule, String phone) throws RemoteException {
+        if (db.emailExists(email)) {
+            return false;
+        }
+        
+        return db.registerDoctorExtended(userID, name, email, password, specialization, schedule, phone);
     }
     
     // Mahmoud

@@ -1,4 +1,4 @@
-package gui;
+package gui.loginRegister;
 
 import javax.swing.JButton;
 import javax.swing.JPasswordField;

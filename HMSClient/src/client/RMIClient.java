@@ -1,7 +1,7 @@
 package client;
 
-import controllers.RoleSelectController;
-import gui.RoleSelect;
+import controllers.loginRegister.RoleSelectController;
+import gui.loginRegister.RoleSelect;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

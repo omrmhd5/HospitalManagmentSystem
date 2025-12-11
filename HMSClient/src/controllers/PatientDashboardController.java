@@ -1,9 +1,9 @@
 package controllers;
 
+import controllers.loginRegister.RoleSelectController;
 import gui.PatientDashboard;
-import gui.RoleSelect;
+import gui.loginRegister.RoleSelect;
 import gui.BookAppointment;
-import gui.ViewAvailableReservations;
 import gui.ManageAppointment;
 import gui.ViewProfile;
 import java.awt.event.ActionEvent;
@@ -22,7 +22,6 @@ public class PatientDashboardController {
         this.registry = registry;
         
         gui.getBtnBookAppointment().addActionListener(new BookAppointmentAction());
-        gui.getBtnViewAvailableReservations().addActionListener(new ViewAvailableReservationsAction());
         gui.getBtnManageAppointment().addActionListener(new ManageAppointmentAction());
         gui.getBtnViewProfile().addActionListener(new ViewProfileAction());
         gui.getBtnLogout().addActionListener(new LogoutAction());
@@ -35,16 +34,6 @@ public class PatientDashboardController {
             // Mahmoud
             BookAppointment bookAppointmentGui = new BookAppointment(gui.getPatientName(), gui.getPatientEmail());
             BookAppointmentController bookAppointmentController = new BookAppointmentController(bookAppointmentGui, registry);
-        }
-    }
-    
-    // Mahmoud
-    class ViewAvailableReservationsAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Mahmoud
-            ViewAvailableReservations viewAvailableReservationsGui = new ViewAvailableReservations();
-            ViewAvailableReservationsController viewAvailableReservationsController = new ViewAvailableReservationsController(viewAvailableReservationsGui, registry);
         }
     }
     

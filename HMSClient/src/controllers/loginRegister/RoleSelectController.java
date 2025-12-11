@@ -2,10 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controllers;
+package controllers.loginRegister;
 
-import gui.RoleSelect;
-import gui.Login;
+import gui.loginRegister.RoleSelect;
+import gui.loginRegister.Login;
+import gui.loginRegister.PatientRegister;
+import gui.loginRegister.DoctorRegister;
+import gui.loginRegister.Register;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.registry.Registry;

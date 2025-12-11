@@ -1,7 +1,7 @@
-package controllers;
+package controllers.loginRegister;
 
-import gui.Login;
-import gui.Register;
+import gui.loginRegister.Login;
+import gui.loginRegister.PatientRegister;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
@@ -12,13 +12,13 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import rmi.AuthInterface;
 
-public class RegisterController {
+public class PatientRegisterController {
     
-    private final Register gui;
+    private final PatientRegister gui;
     private final Registry registry;
     
     // Mahmoud
-    public RegisterController(Register gui, Registry registry) {
+    public PatientRegisterController(PatientRegister gui, Registry registry) {
         this.gui = gui;
         this.registry = registry;
         
@@ -34,22 +34,27 @@ public class RegisterController {
                 // Mahmoud
                 AuthInterface authService = (AuthInterface) registry.lookup("auth");
                 
+                String userIDStr = gui.getTxtUserID().getText().trim();
+                String name = gui.getTxtName().getText().trim();
                 String email = gui.getTxtEmail().getText().trim();
                 String password = new String(gui.getTxtPassword().getPassword());
-                String name = gui.getTxtName().getText().trim();
-                String userIDStr = gui.getTxtUserID().getText().trim();
-                String role = gui.getRole();
+                String gender = (String) gui.getCmbGender().getSelectedItem();
+                String ageStr = gui.getTxtAge().getText().trim();
+                String phone = gui.getTxtPhone().getText().trim();
+                String address = gui.getTxtAddress().getText().trim();
                 
-                if (email.isEmpty() || password.isEmpty() || name.isEmpty() || userIDStr.isEmpty()) {
-                    JOptionPane.showMessageDialog(gui, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                if (userIDStr.isEmpty() || name.isEmpty() || email.isEmpty() || password.isEmpty() || ageStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Please fill in all required fields", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
                 int userID;
+                int age;
                 try {
                     userID = Integer.parseInt(userIDStr);
+                    age = Integer.parseInt(ageStr);
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(gui, "User ID must be a number", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(gui, "User ID and Age must be numbers", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
@@ -61,23 +66,22 @@ public class RegisterController {
                 }
                 
                 // Mahmoud
-                boolean success = authService.register(userID, name, email, password, role);
+                boolean success = authService.registerPatient(userID, name, email, password, gender, age, phone, address);
                 
                 if (success) {
                     JOptionPane.showMessageDialog(gui, "Registration successful! You can now login.", "Success", JOptionPane.INFORMATION_MESSAGE);
                     
-                    String currentRole = gui.getRole();
                     gui.dispose();
                     
                     // Mahmoud
-                    Login loginGui = new Login(currentRole);
+                    Login loginGui = new Login("Patient");
                     LoginController loginController = new LoginController(loginGui, registry);
                 } else {
                     JOptionPane.showMessageDialog(gui, "Registration failed", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 
             } catch (RemoteException | NotBoundException ex) {
-                Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PatientRegisterController.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(gui, "Server error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -87,11 +91,10 @@ public class RegisterController {
     class SwitchToLoginAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String role = gui.getRole();
             gui.dispose();
             
             // Mahmoud
-            Login loginGui = new Login(role);
+            Login loginGui = new Login("Patient");
             LoginController loginController = new LoginController(loginGui, registry);
         }
     }

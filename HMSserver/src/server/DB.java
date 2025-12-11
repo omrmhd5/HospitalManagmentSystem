@@ -5,12 +5,12 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Appointment;
-import model.AvailableReservation;
 import model.Diagnosis;
 import model.Doctor;
 import model.Drug;
@@ -75,9 +75,41 @@ public class DB {
     }
     
     // Mahmoud
-    public Patient getPatientByName(String patientName) {
-        Document doc = patient.find(Filters.eq("contactInfo", patientName)).first();
-        return gson.fromJson(doc.toJson(), Patient.class);
+    public Patient getPatientByName(String patientName) throws RemoteException {
+        Document doc = patient.find(Filters.eq("name", patientName)).first();
+        // Mahmoud - Manually create Patient object from Document to avoid Gson RMI issues
+        Patient p = new Patient(
+            doc.getInteger("userID", 0),
+            doc.getString("name"),
+            doc.getString("email"),
+            doc.getString("password"),
+            doc.getInteger("patientID", 0),
+            doc.getString("contactInfo"),
+            doc.getString("gender"),
+            doc.getInteger("age", 0),
+            doc.getString("medicalHistory"),
+            doc.getString("dateOfBirth"),
+            doc.getString("address"),
+            doc.getString("phoneNumber"),
+            this
+        );
+        return p;
+    }
+    
+    // Mahmoud
+    public Doctor getDoctorByName(String doctorName) throws RemoteException {
+        Document doc = doctor.find(Filters.eq("name", doctorName)).first();
+        // Mahmoud - Manually create Doctor object from Document to avoid Gson RMI issues
+        Doctor d = new Doctor(
+            doc.getInteger("userID", 0),
+            doc.getString("name"),
+            doc.getString("email"),
+            doc.getString("password"),
+            doc.getInteger("doctorID", 0),
+            doc.getString("specialization"),
+            doc.getString("availabilitySchedule")
+        );
+        return d;
     }
     
     // Ibrahim
@@ -110,7 +142,36 @@ public class DB {
     
     // Mahmoud
     public void insertAppointment(Appointment a) {
-        appointment.insertOne(Document.parse(gson.toJson(a)));
+        // Mahmoud - Manually create Document to avoid Gson serialization of RMI object
+        Document patientDoc = new Document();
+        if (a.getPatient() != null) {
+            Patient p = a.getPatient();
+            patientDoc.append("patientID", p.getPatientID())
+                    .append("name", p.getName() != null ? p.getName() : "")
+                    .append("contactInfo", p.getContactInfo() != null ? p.getContactInfo() : "")
+                    .append("gender", p.getGender() != null ? p.getGender() : "")
+                    .append("age", p.getAge())
+                    .append("medicalHistory", p.getMedicalHistory() != null ? p.getMedicalHistory() : "");
+        }
+        
+        Document doctorDoc = new Document();
+        if (a.getDoctor() != null) {
+            Doctor d = a.getDoctor();
+            doctorDoc.append("doctorID", d.getDoctorID())
+                    .append("name", d.getName() != null ? d.getName() : "")
+                    .append("specialization", d.getSpecialization() != null ? d.getSpecialization() : "")
+                    .append("availabilitySchedule", d.getAvailabilitySchedule() != null ? d.getAvailabilitySchedule() : "");
+        }
+        
+        Document doc = new Document()
+                .append("appointmentID", a.getAppointmentID())
+                .append("date", a.getDate() != null ? a.getDate() : "")
+                .append("time", a.getTime() != null ? a.getTime() : "")
+                .append("status", a.getStatus() != null ? a.getStatus() : "")
+                .append("patient", patientDoc)
+                .append("doctor", doctorDoc);
+        
+        appointment.insertOne(doc);
         System.out.println("Appointment is inserted.");
     }
     
@@ -203,30 +264,6 @@ public class DB {
         return list;
     }
     
-    // ========================================
-    // Available Reservation DB
-    // ========================================
-    
-    // Tasneem
-    public List<AvailableReservation> getAvailableReservations(String doctorName, String specialty, String date) {
-        List<AvailableReservation> list = new ArrayList<>();
-        Document filter = new Document();
-        
-        if (doctorName != null && !doctorName.isEmpty())
-            filter.append("doctor.name", doctorName);
-        
-        if (specialty != null && !specialty.isEmpty())
-            filter.append("doctor.specialty", specialty);
-        
-        if (date != null && !date.isEmpty())
-            filter.append("date", date);
-        
-        for (Document doc : doctor.find(filter)) {
-            AvailableReservation ar = gson.fromJson(doc.toJson(), AvailableReservation.class);
-            list.add(ar);
-        }
-        return list;
-    }
     
     // ========================================
     // Diagnosis DB
@@ -337,6 +374,143 @@ public class DB {
                 .append("role", role);
         
         user.insertOne(doc);
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean registerUserWithRole(int userID, String name, String email, String password, String role) {
+        // Mahmoud - Create in user collection
+        Document userDoc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", role);
+        user.insertOne(userDoc);
+        
+        // Mahmoud - Also create in role-specific collection
+        switch (role) {
+            case "Doctor":
+                Document doctorDoc = new Document()
+                        .append("userID", userID)
+                        .append("doctorID", userID)
+                        .append("name", name)
+                        .append("email", email)
+                        .append("password", password)
+                        .append("role", "Doctor")
+                        .append("specialization", "General Practice")
+                        .append("availabilitySchedule", "Mon-Fri 9AM-5PM");
+                doctor.insertOne(doctorDoc);
+                break;
+                
+            case "Patient":
+                Document patientDoc = new Document()
+                        .append("userID", userID)
+                        .append("patientID", userID)
+                        .append("name", name)
+                        .append("email", email)
+                        .append("password", password)
+                        .append("role", "Patient")
+                        .append("contactInfo", email)
+                        .append("gender", "Not Specified")
+                        .append("age", 0)
+                        .append("medicalHistory", "None")
+                        .append("dateOfBirth", "")
+                        .append("address", "")
+                        .append("phoneNumber", "");
+                patient.insertOne(patientDoc);
+                break;
+                
+            case "Pharmacist":
+                Document pharmacistDoc = new Document()
+                        .append("userID", userID)
+                        .append("pharmacistID", userID)
+                        .append("name", name)
+                        .append("email", email)
+                        .append("password", password)
+                        .append("role", "Pharmacist");
+                pharmacist.insertOne(pharmacistDoc);
+                break;
+                
+            case "Lab Technician":
+                Document labTechDoc = new Document()
+                        .append("userID", userID)
+                        .append("technicianID", userID)
+                        .append("name", name)
+                        .append("email", email)
+                        .append("password", password)
+                        .append("role", "Lab Technician");
+                labtest.insertOne(labTechDoc);
+                break;
+                
+            case "Admin":
+            case "Receptionist":
+                // Mahmoud - Admin and Receptionist only in user collection
+                break;
+        }
+        
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean registerPatientExtended(int userID, String name, String email, String password,
+                                           String gender, int age, String phone, String address) {
+        // Mahmoud - Create in user collection
+        Document userDoc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Patient");
+        user.insertOne(userDoc);
+        
+        // Mahmoud - Create in patient collection with extended info
+        Document patientDoc = new Document()
+                .append("userID", userID)
+                .append("patientID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Patient")
+                .append("contactInfo", email)
+                .append("gender", gender)
+                .append("age", age)
+                .append("phoneNumber", phone)
+                .append("address", address)
+                .append("medicalHistory", "None")
+                .append("dateOfBirth", "");
+        patient.insertOne(patientDoc);
+        
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean registerDoctorExtended(int userID, String name, String email, String password,
+                                          String specialization, String schedule, String phone) {
+        // Mahmoud - Create in user collection
+        Document userDoc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Doctor")
+                .append("specialty", specialization);
+        user.insertOne(userDoc);
+        
+        // Mahmoud - Create in doctor collection with extended info
+        Document doctorDoc = new Document()
+                .append("userID", userID)
+                .append("doctorID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Doctor")
+                .append("specialization", specialization)
+                .append("specialty", specialization)
+                .append("availabilitySchedule", schedule)
+                .append("phoneNumber", phone);
+        doctor.insertOne(doctorDoc);
+        
         return true;
     }
     

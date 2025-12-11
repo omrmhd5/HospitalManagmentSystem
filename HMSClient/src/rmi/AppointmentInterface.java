@@ -5,30 +5,26 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface AppointmentInterface extends Remote {
-    // Mahmoud
+    // Mahmoud - Book appointment
     String bookAppointment(String patientName, String doctorName, String date, String time) throws RemoteException;
 
     // Rana - Get appointment by ID (returns formatted string)
     String getAppointmentByID(int appointmentID) throws RemoteException;
 
     // Rana - Update appointment
-    boolean updateAppointment(int appointmentID, String patientName, String doctorName, 
-                              String date, String time, String status) throws RemoteException;
+    boolean updateAppointment(int appointmentID, String patientName, String doctorName, String date, String time, String status) throws RemoteException;
 
-    // Cancel appointment
+    // Rana - Cancel appointment
     boolean cancelAppointment(int appointmentID) throws RemoteException;
 
-    // Reschedule appointment
+    // Rana - Reschedule appointment
     boolean rescheduleAppointment(int appointmentID, String newDate, String newTime) throws RemoteException;
 
-    // Main manage function (cancel or reschedule)
+    // Rana - Main manage function (cancel or reschedule)
     boolean manageAppointment(int appointmentID, String operation, String newDate, String newTime) throws RemoteException;
 
     // Rana - Get appointments for doctor (returns formatted string)
     String getAppointmentsForDoctor(int doctorID) throws RemoteException;
-
-    // Rana - Get available reservations (returns formatted string)
-    String getAvailableReservations(String doctorName, String specialty, String date) throws RemoteException;
 
     // Mahmoud - Get all doctor names
     List<String> getAllDoctorNames() throws RemoteException;

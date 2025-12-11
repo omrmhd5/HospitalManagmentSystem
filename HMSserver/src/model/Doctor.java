@@ -46,4 +46,6 @@ public class Doctor extends User implements Serializable {
     }
 
     public int getDoctorID() { return doctorID; }
+    public String getSpecialization() { return specialization; }
+    public String getAvailabilitySchedule() { return availabilitySchedule; }
 }

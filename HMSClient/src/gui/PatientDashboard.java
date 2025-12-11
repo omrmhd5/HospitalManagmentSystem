@@ -24,7 +24,6 @@ public class PatientDashboard extends javax.swing.JFrame {
         lblWelcome = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnBookAppointment = new javax.swing.JButton();
-        btnViewAvailableReservations = new javax.swing.JButton();
         btnManageAppointment = new javax.swing.JButton();
         btnViewProfile = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
@@ -44,13 +43,6 @@ public class PatientDashboard extends javax.swing.JFrame {
         btnBookAppointment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBookAppointmentActionPerformed(evt);
-            }
-        });
-
-        btnViewAvailableReservations.setText("View Available Reservations");
-        btnViewAvailableReservations.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewAvailableReservationsActionPerformed(evt);
             }
         });
 
@@ -85,7 +77,6 @@ public class PatientDashboard extends javax.swing.JFrame {
                     .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBookAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnViewAvailableReservations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnManageAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnViewProfile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -100,8 +91,6 @@ public class PatientDashboard extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(40, 40, 40)
                 .addComponent(btnBookAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnViewAvailableReservations, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(btnManageAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
@@ -118,10 +107,6 @@ public class PatientDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBookAppointmentActionPerformed
 
-    private void btnViewAvailableReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAvailableReservationsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewAvailableReservationsActionPerformed
-
     private void btnManageAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAppointmentActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnManageAppointmentActionPerformed
@@ -135,7 +120,6 @@ public class PatientDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     public JButton getBtnBookAppointment() { return btnBookAppointment; }
-    public JButton getBtnViewAvailableReservations() { return btnViewAvailableReservations; }
     public JButton getBtnManageAppointment() { return btnManageAppointment; }
     public JButton getBtnViewProfile() { return btnViewProfile; }
     public JButton getBtnLogout() { return btnLogout; }
@@ -150,7 +134,6 @@ public class PatientDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnBookAppointment;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnManageAppointment;
-    private javax.swing.JButton btnViewAvailableReservations;
     private javax.swing.JButton btnViewProfile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblWelcome;

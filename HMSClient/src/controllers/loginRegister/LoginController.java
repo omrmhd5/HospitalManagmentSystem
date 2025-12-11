@@ -1,7 +1,7 @@
-package controllers;
+package controllers.loginRegister;
 
-import gui.Login;
-import gui.Register;
+import controllers.PatientDashboardController;
+import gui.loginRegister.Login;
 import gui.PatientDashboard;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,9 +94,24 @@ public class LoginController {
             String role = gui.getRole();
             gui.dispose();
             
-            // Mahmoud
-            Register registerGui = new Register(role);
-            RegisterController registerController = new RegisterController(registerGui, registry);
+            // Mahmoud - Route to role-specific register form
+            switch (role) {
+                case "Patient":
+                    gui.loginRegister.PatientRegister patientRegisterGui = new gui.loginRegister.PatientRegister();
+                    PatientRegisterController patientRegisterController = new PatientRegisterController(patientRegisterGui, registry);
+                    break;
+                    
+                case "Doctor":
+                    gui.loginRegister.DoctorRegister doctorRegisterGui = new gui.loginRegister.DoctorRegister();
+                    DoctorRegisterController doctorRegisterController = new DoctorRegisterController(doctorRegisterGui, registry);
+                    break;
+                    
+                default:
+                    // Mahmoud - For other roles, use basic register form
+                    gui.loginRegister.Register registerGui = new gui.loginRegister.Register(role);
+                    RegisterController registerController = new RegisterController(registerGui, registry);
+                    break;
+            }
         }
     }
 }
