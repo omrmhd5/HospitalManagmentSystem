@@ -18,6 +18,21 @@ public class ManageAppointment extends javax.swing.JFrame {
     /**
      * Creates new form ManageAppointment
      */
+    public ManageAppointment() {
+         initComponents();
+
+    txtNewDate.setVisible(false);
+    lblNewDate.setVisible(false);
+    txtNewTime.setVisible(false);
+    lblNewTime.setVisible(false);
+    btnConfirm.setVisible(false);
+
+    this.setLocationRelativeTo(null);
+    this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);  // FIX
+    this.setVisible(true);
+    this.toFront();           
+    }
+    
     public JButton getSearchButton() {
     return Search;
 }
@@ -60,16 +75,7 @@ public void showRescheduleFields() {
     btnConfirm.setVisible(true);
 }
 
-    public ManageAppointment() {
-        initComponents();
-        txtNewDate.setVisible(false);
-lblNewDate.setVisible(false);
-
-txtNewTime.setVisible(false);
-lblNewTime.setVisible(false);
-
-btnConfirm.setVisible(false);
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -95,7 +101,7 @@ btnConfirm.setVisible(false);
         txtNewTime = new javax.swing.JTextField();
         btnConfirm = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Manage Appointment");

@@ -13,94 +13,129 @@ import rmi.AppointmentInterface;
 
 public class ManageAppointmentController {
 
-    ManageAppointment gui;
-    Registry registry;
+    private final ManageAppointment gui;
+    private final Registry registry;
 
     public ManageAppointmentController(ManageAppointment gui, Registry registry) {
         this.gui = gui;
         this.registry = registry;
 
-        // Registering listeners
-        gui.getSearchButton().addActionListener(new SearchButtonAction());
-        gui.getCancelButton().addActionListener(new CancelButtonAction());
-        gui.getRescheduleButton().addActionListener(new RescheduleButtonAction());
-        gui.getConfirmButton().addActionListener(new ConfirmButtonAction());
+        gui.getSearchButton().addActionListener(new SearchAction());
+        gui.getCancelButton().addActionListener(new CancelAction());
+        gui.getRescheduleButton().addActionListener(new ShowRescheduleAction());
+        gui.getConfirmButton().addActionListener(new ConfirmRescheduleAction());
     }
 
-    /** ------------------ SEARCH ------------------ **/
-    class SearchButtonAction implements ActionListener {
+    /** ------------------- SEARCH ------------------- **/
+    class SearchAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("appointment");
+                AppointmentInterface service = (AppointmentInterface) registry.lookup("appointment");
 
-                int id = Integer.parseInt(gui.getAppointmentIDField().getText());
+                String idText = gui.getAppointmentIDField().getText().trim();
+                if (idText.isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Please enter Appointment ID.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-                // Returns formatted string
-                String appointmentDetails = service.getAppointmentByID(id);
-                
-                gui.setDetailsText(appointmentDetails);
+                int id = Integer.parseInt(idText);
 
-            } catch (RemoteException | NotBoundException ex) {
+                String details = service.getAppointmentByID(id);
+                gui.setDetailsText(details);
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(gui, "Appointment ID must be a number.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(gui, "Error retrieving appointment.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ManageAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    /** ------------------ CANCEL ------------------ **/
-    class CancelButtonAction implements ActionListener {
+    /** ------------------- CANCEL APPOINTMENT ------------------- **/
+    class CancelAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                AppointmentInterface service =
-                        (AppointmentInterface) registry.lookup("appointment");
+                AppointmentInterface service = (AppointmentInterface) registry.lookup("appointment");
 
-                int id = Integer.parseInt(gui.getAppointmentIDField().getText());
+                String idText = gui.getAppointmentIDField().getText().trim();
+                if (idText.isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Enter Appointment ID first.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int id = Integer.parseInt(idText);
 
                 boolean ok = service.cancelAppointment(id);
 
-                JOptionPane.showMessageDialog(gui, ok
-                        ? "Appointment cancelled successfully."
-                        : "Cancellation failed.");
+                JOptionPane.showMessageDialog(gui,
+                        ok ? "Appointment cancelled successfully."
+                           : "Cancellation failed.");
 
             } catch (Exception ex) {
+                JOptionPane.showMessageDialog(gui, "Error cancelling appointment.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ManageAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    /** ------------------ RESCHEDULE (SHOW FIELDS) ------------------ **/
-    class RescheduleButtonAction implements ActionListener {
+    /** ------------------- SHOW RESCHEDULE FIELDS ------------------- **/
+    class ShowRescheduleAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            // Show hidden fields
             gui.showRescheduleFields();
-
         }
     }
 
-    /** ------------------ CONFIRM RESCHEDULE ------------------ **/
-    class ConfirmButtonAction implements ActionListener {
+    /** ------------------- CONFIRM RESCHEDULE ------------------- **/
+    class ConfirmRescheduleAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
             try {
                 AppointmentInterface service =
                         (AppointmentInterface) registry.lookup("appointment");
 
-                int id = Integer.parseInt(gui.getAppointmentIDField().getText());
-                String newDate = gui.getNewDateField().getText();
-                String newTime = gui.getNewTimeField().getText();
+                String idText = gui.getAppointmentIDField().getText().trim();
+                String newDate = gui.getNewDateField().getText().trim();
+                String newTime = gui.getNewTimeField().getText().trim();
+
+                // Validation
+                if (idText.isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Enter Appointment ID.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (newDate.isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Enter new date.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (newTime.isEmpty()) {
+                    JOptionPane.showMessageDialog(gui, "Enter new time.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int id = Integer.parseInt(idText);
 
                 boolean ok = service.rescheduleAppointment(id, newDate, newTime);
 
-                JOptionPane.showMessageDialog(gui, ok
-                        ? "Appointment rescheduled successfully."
-                        : "Reschedule failed.");
+                JOptionPane.showMessageDialog(gui,
+                        ok ? "Appointment rescheduled successfully."
+                           : "Reschedule failed.");
 
             } catch (Exception ex) {
+                JOptionPane.showMessageDialog(gui, "Error rescheduling appointment.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ManageAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

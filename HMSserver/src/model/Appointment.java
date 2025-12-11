@@ -185,6 +185,7 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         db.updateAppointment(appointment);
         return true;
     }
+    
 
     //Rana
     @Override
