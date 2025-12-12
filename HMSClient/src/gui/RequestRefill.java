@@ -6,13 +6,14 @@ package gui;
 
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 /**
  *
  * @author omarm
  */
 public class RequestRefill extends javax.swing.JFrame {
     
-    private static final Logger logger = Logger.getLogger(RequestRefill.class.getName());
+    private static final RequestRefill.util.logging.Logger logger = RequestRefill.util.logging.Logger.getLogger(RequestRefill.class.getName());
 
     /**
      * Creates new form java
@@ -80,8 +81,7 @@ public class RequestRefill extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-     // ---------- GETTERS ----------
-    public javax.swing.JTextField getTxtPharmacistID() {
+   public javax.swing.JTextField getTxtPharmacistID() {
         return txtPharmacistID;
     }
 
@@ -98,13 +98,12 @@ public class RequestRefill extends javax.swing.JFrame {
     }
 
     public void setOutputMessage(String msg) {
-        javax.swing.JOptionPane.showMessageDialog(this, msg);
+        JOptionPane.showMessageDialog(this, msg);
     }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new RequestRefill().setVisible(true));
     }
-
    
     private void btnSendRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendRequestActionPerformed
         // TODO add your handling code here:

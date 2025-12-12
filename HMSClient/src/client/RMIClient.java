@@ -8,6 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class RMIClient {
+
     public static void main(String[] args) throws RemoteException, NotBoundException {
         
         // Mahmoud
@@ -18,3 +19,4 @@ public class RMIClient {
         RoleSelectController roleSelectController = new RoleSelectController(roleSelect, registry);
     }
 }
+

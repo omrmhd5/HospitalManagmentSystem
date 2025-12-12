@@ -29,6 +29,8 @@ import rmi.PrescriptionInterface;
 public class RMIServer {
     // Mahmoud
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
+
+        // Disable MongoDB logs
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
         DB db = new DB();
