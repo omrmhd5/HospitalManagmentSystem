@@ -661,6 +661,31 @@ public class DB {
         return true;
     }
     
+    // Delete drug
+    public boolean deleteDrug(int drugID) {
+        try {
+            drug.deleteOne(Filters.eq("drugID", drugID));
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error deleting drug: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    // Get all drugs
+    public List<Drug> getAllDrugs() {
+        List<Drug> drugs = new ArrayList<>();
+        for (Document doc : drug.find()) {
+            try {
+                drugs.add(gson.fromJson(doc.toJson(), Drug.class));
+            } catch (Exception e) {
+                // Skip invalid documents
+                System.err.println("Error parsing drug document: " + e.getMessage());
+            }
+        }
+        return drugs;
+    }
+    
     // ========================================
     // User DB
     // ========================================

@@ -3,8 +3,10 @@ package controllers.loginRegister;
 import controllers.AdminDashboardController;
 import controllers.DoctorDashboardController;
 import controllers.PatientDashboardController;
+import controllers.PharmacistDashboardController;
 import gui.AdminDashboard;
 import gui.DoctorDashboard;
+import gui.PharmacistDashboard;
 import gui.loginRegister.Login;
 import gui.PatientDashboard;
 import java.awt.event.ActionEvent;
@@ -68,6 +70,9 @@ public class LoginController {
                     } else if (role.equals("Admin")) {
                         AdminDashboard adminDashboard = new AdminDashboard(name, email);
                         AdminDashboardController adminDashboardController = new AdminDashboardController(adminDashboard, registry);
+                    } else if (role.equals("Pharmacist")) {
+                        PharmacistDashboard pharmacistDashboard = new PharmacistDashboard(name, email);
+                        PharmacistDashboardController pharmacistDashboardController = new PharmacistDashboardController(pharmacistDashboard, registry);
                     } else {
                         JOptionPane.showMessageDialog(null, "Dashboard for " + role + " is coming soon!", "Info", JOptionPane.INFORMATION_MESSAGE);
                     }

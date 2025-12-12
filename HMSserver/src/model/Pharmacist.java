@@ -92,6 +92,23 @@ public class Pharmacist extends User implements PharmacyInterface {
         Drug drug = new Drug(drugID, name, category, quantity, reorderLevel, expiryDate);
         return db.updateDrug(drug);
     }
+    
+    // Delete drug
+    @Override
+    public boolean deleteDrug(int drugID) throws RemoteException {
+        return db.deleteDrug(drugID);
+    }
+    
+    // Get all drugs - returns formatted strings
+    @Override
+    public java.util.List<String> getAllDrugs() throws RemoteException {
+        java.util.List<model.Drug> drugs = db.getAllDrugs();
+        java.util.List<String> drugList = new java.util.ArrayList<>();
+        for (model.Drug drug : drugs) {
+            drugList.add(drug.getDrugID() + " - " + drug.getName());
+        }
+        return drugList;
+    }
 
     // Ibrahim
     @Override
