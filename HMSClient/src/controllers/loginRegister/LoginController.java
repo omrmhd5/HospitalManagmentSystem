@@ -2,10 +2,12 @@ package controllers.loginRegister;
 
 import controllers.AdminDashboardController;
 import controllers.DoctorDashboardController;
+import controllers.LabTechnicianDashboardController;
 import controllers.PatientDashboardController;
 import controllers.PharmacistDashboardController;
 import gui.AdminDashboard;
 import gui.DoctorDashboard;
+import gui.LabTechnicianDashboard;
 import gui.PharmacistDashboard;
 import gui.loginRegister.Login;
 import gui.PatientDashboard;
@@ -73,6 +75,9 @@ public class LoginController {
                     } else if (role.equals("Pharmacist")) {
                         PharmacistDashboard pharmacistDashboard = new PharmacistDashboard(name, email);
                         PharmacistDashboardController pharmacistDashboardController = new PharmacistDashboardController(pharmacistDashboard, registry);
+                    } else if (role.equals("Lab Technician")) {
+                        LabTechnicianDashboard labTechnicianDashboard = new LabTechnicianDashboard(name, email);
+                        LabTechnicianDashboardController labTechnicianDashboardController = new LabTechnicianDashboardController(labTechnicianDashboard, registry);
                     } else {
                         JOptionPane.showMessageDialog(null, "Dashboard for " + role + " is coming soon!", "Info", JOptionPane.INFORMATION_MESSAGE);
                     }

@@ -546,14 +546,32 @@ public class DB {
     
     // Omar Mo
     public String recordLabTestResult(int testID, String result) {
-        Document doc = labtest.find(Filters.eq("testID", testID)).first();
-        LabTest test = gson.fromJson(doc.toJson(), LabTest.class);
-        test.setResult(result);
-        labtest.replaceOne(
-            Filters.eq("testID", testID),
-            Document.parse(gson.toJson(test))
-        );
-        return "Test result saved successfully.";
+        try {
+            Document doc = labtest.find(Filters.eq("testID", testID)).first();
+            if (doc == null) {
+                return "Error: Test with ID " + testID + " not found.";
+            }
+            
+            // Update result and status using $set operator for explicit update
+            Document updateDoc = new Document("$set", new Document()
+                .append("result", result)
+                .append("status", "Completed")
+            );
+            
+            labtest.updateOne(
+                Filters.eq("testID", testID),
+                updateDoc
+            );
+            
+            System.out.println("Lab test result recorded successfully for test ID: " + testID);
+            System.out.println("Result: " + result);
+            return "Test result saved successfully. Test ID: " + testID + " - Status: Completed";
+            
+        } catch (Exception e) {
+            System.err.println("Error recording lab test result: " + e.getMessage());
+            e.printStackTrace();
+            return "Error: Failed to save test result. " + e.getMessage();
+        }
     }
     
     // Salma
@@ -798,6 +816,20 @@ public class DB {
             labTests.add(doc);
         }
         return labTests;
+    }
+    
+    // Get pending lab tests
+    public List<Document> getPendingLabTests() {
+        List<Document> pendingTests = new ArrayList<>();
+        for (Document doc : labtest.find(Filters.eq("status", "Pending"))) {
+            pendingTests.add(doc);
+        }
+        return pendingTests;
+    }
+    
+    // Get lab test by ID
+    public Document getLabTestByID(int testID) {
+        return labtest.find(Filters.eq("testID", testID)).first();
     }
     
     // ========================================
