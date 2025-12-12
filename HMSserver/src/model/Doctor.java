@@ -46,4 +46,13 @@ public class Doctor extends User implements Serializable {
     }
 
     public int getDoctorID() { return doctorID; }
+    
+       public Prescription createPrescription() {
+        return new Prescription(
+                1,
+                "Paracetamol",
+                "2 times daily",
+                "Fever"
+        );
+    }
 }

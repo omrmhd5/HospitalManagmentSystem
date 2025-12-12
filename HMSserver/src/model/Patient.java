@@ -1,5 +1,6 @@
 package model;
 
+import DesignPattern.IReadOnlyPrescription;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,17 @@ public class Patient implements Serializable {
     private int age;
     private String medicalHistory;
 
-    // Patient records //ibrahim
+    // Patient records
     private List<String> records = new ArrayList<>();
 
-    // Read-only prescription view (UML)
-    private Prescription readOnly;
+    //  Read-only interface ONLY
+    private IReadOnlyPrescription readOnlyPrescription;
 
     public Patient() { }
 
-    public Patient(int patientID, String name, String contactInfo, String gender, int age, String medicalHistory) {
+    public Patient(int patientID, String name,
+                   String contactInfo, String gender,
+                   int age, String medicalHistory) {
         this.patientID = patientID;
         this.name = name;
         this.contactInfo = contactInfo;
@@ -30,8 +33,7 @@ public class Patient implements Serializable {
         this.medicalHistory = medicalHistory;
     }
 
-    // ---------- Domain Logic From UML ----------
-
+    //  UML METHODS 
     public void viewAvailableAppointment() {
         System.out.println("Viewing available appointments...");
     }
@@ -40,49 +42,23 @@ public class Patient implements Serializable {
         System.out.println("Managing appointment...");
     }
 
-    public Appointment bookAppointment(Appointment a) {
-        a.confirmReservation();
-        return a;
-    }
-
-    public Prescription viewPrescription() {
-        return readOnly;
-    }
-
-    public void updateAppointment(Appointment appointment, String message) {
-        appointment.updateStatus(message);
-    }
-
-   //ibrahim
     public void addRecord(String details) {
         records.add(details);
-        System.out.println("Record added for patient " + this.patientID + ": " + details);
+        System.out.println("Record added for patient " + patientID);
     }
 
-    public List<String> getRecords() {
-        return records;
+    // PATIENT CAN ONLY VIEW
+    public IReadOnlyPrescription viewPrescription() {
+        return readOnlyPrescription;
     }
 
-    // ---------- Getters & Setters ----------
+    // Doctor injects read-only view
+    public void setReadOnlyPrescription(IReadOnlyPrescription prescription) {
+        this.readOnlyPrescription = prescription;
+    }
 
+    // ===== GETTERS =====
     public int getPatientID() { return patientID; }
-    public void setPatientID(int patientID) { this.patientID = patientID; }
-
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getContactInfo() { return contactInfo; }
-    public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
-
-    public String getGender() { return gender; }
-    public void setGender(String gender) { this.gender = gender; }
-
-    public int getAge() { return age; }
-    public void setAge(int age) { this.age = age; }
-
-    public String getMedicalHistory() { return medicalHistory; }
-    public void setMedicalHistory(String medicalHistory) { this.medicalHistory = medicalHistory; }
-
-    public Prescription getReadOnlyPrescription() { return readOnly; }
-    public void setReadOnlyPrescription(Prescription readOnly) { this.readOnly = readOnly; }
+    public List<String> getRecords() { return records; }
 }
