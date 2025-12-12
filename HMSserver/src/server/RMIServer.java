@@ -1,61 +1,67 @@
 package server;
-
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import model.Admin;
+import model.Appointment;
+import model.AuthService;
+import model.Diagnosis;
+import model.ICURoom;
+import model.LabTechnician;
+import model.LabTest;
+import model.Patient;
+import model.Pharmacist;
+import model.Prescription;
 import rmi.AdminInterface;
-import rmi.PharmacistInterface;
+import rmi.AppointmentInterface;
+import rmi.AuthInterface;
+import rmi.DiagnosisInterface;
+import rmi.ICUInterface;
 import rmi.LabTechnicianInterface;
+import rmi.LabTestInterface;
+import rmi.PatientInterface;
+import rmi.PharmacyInterface;
+import rmi.PrescriptionInterface;
 
 public class RMIServer {
-
+    // Mahmoud
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
 
         // Disable MongoDB logs
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
-
-        // Initialize DB
         DB db = new DB();
-
-        // Create RMI registry
+        
+        // Create remote objects
+        AdminInterface adminService = new Admin(db);
+        AppointmentInterface appointmentService = new Appointment(db);
+        PrescriptionInterface prescriptionService = new Prescription(db);
+        PatientInterface patientService = new Patient(db);
+        LabTestInterface labTestService = new LabTest(db);
+        LabTechnicianInterface labTechService = new LabTechnician(db);
+        PharmacyInterface pharmacyService = new Pharmacist(db);
+        ICUInterface icuService = new ICURoom(db);
+        DiagnosisInterface diagnosisService = new Diagnosis(db);
+        AuthInterface authService = new AuthService(db);
+        
+        // Create registry
         Registry registry = LocateRegistry.createRegistry(1099);
-
-        // -------------------- ADMIN BINDING --------------------
-        AdminInterface admin = new Admin();
-        registry.bind("admin", admin);
-
-        // ----------------- PHARMACIST BINDING ------------------
-        PharmacistInterface pharmacistInterface = new PharmacistInterface() {
-
-            @Override
-            public String requestMedicineRefill(int pharmacistID,
-                                                String medicineName,
-                                                int quantity)
-                    throws RemoteException {
-                return db.requestMedicineRefill(
-                        pharmacistID, medicineName, quantity);
-            }
-        };
-        registry.bind("pharmacist", pharmacistInterface);
-
-        //  LAB TECHNICIAN BINDING 
-        LabTechnicianInterface labTechInterface = new LabTechnicianInterface() {
-
-            @Override
-            public String recordLabTestResult(int testID,
-                                              String result)
-                    throws RemoteException {
-                return db.recordLabTestResult(testID, result);
-            }
-        };
-        registry.bind("labtech", labTechInterface);
-
-        System.out.println("RMI Server is ready...");
+        
+        // Bind all services
+        registry.bind("admin", adminService);
+        registry.bind("appointment", appointmentService);
+        registry.bind("prescription", prescriptionService);
+        registry.bind("patient", patientService);
+        registry.bind("labtest", labTestService);
+        registry.bind("labtech", labTechService);
+        registry.bind("pharmacy", pharmacyService);
+        registry.bind("icu", icuService);
+        registry.bind("diagnosis", diagnosisService);
+        registry.bind("auth", authService);
+        
+        System.out.println("The server is ready");
     }
 }

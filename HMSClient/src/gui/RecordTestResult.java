@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package gui;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -14,10 +15,8 @@ public class RecordTestResult extends javax.swing.JPanel {
      public RecordTestResult() {
         initComponents();
     }
-    /**
-     * Creates new form java
-     */
-      public javax.swing.JTextField getTxtTestID() {
+    
+    public javax.swing.JTextField getTxtTestID() {
         return txtTestID;
     }
 

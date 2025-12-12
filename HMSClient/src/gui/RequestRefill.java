@@ -4,15 +4,17 @@
  */
 package gui;
 
+import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 /**
  *
  * @author omarm
  */
 public class RequestRefill extends javax.swing.JFrame {
-    private static final java.util.logging.Logger logger =
-            java.util.logging.Logger.getLogger(RequestRefill.class.getName());
-  
+    
+    private static final RequestRefill.util.logging.Logger logger = RequestRefill.util.logging.Logger.getLogger(RequestRefill.class.getName());
+
     /**
      * Creates new form java
      */
@@ -84,11 +86,11 @@ public class RequestRefill extends javax.swing.JFrame {
     }
 
     public javax.swing.JTextField getTxtMedicineName() {
-        return txtMedicineName;
+        return jTextField1;
     }
 
     public javax.swing.JTextField getTxtQuantity() {
-        return txtQuantity;
+        return jTextField2;
     }
 
     public javax.swing.JButton getBtnSendRequest() {

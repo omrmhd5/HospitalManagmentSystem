@@ -1,10 +1,12 @@
 package model;
+import java.rmi.RemoteException;
+import rmi.PatientInterface;
+import server.DB;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Patient implements Serializable {
+public class Patient extends User implements PatientInterface {
 
     private int patientID;
     private String name;
@@ -12,6 +14,10 @@ public class Patient implements Serializable {
     private String gender;
     private int age;
     private String medicalHistory;
+    private String dateOfBirth;
+    private String address;
+    private String phoneNumber;
+    private final DB db;
 
     // Patient records //ibrahim
     private List<String> records = new ArrayList<>();
@@ -19,15 +25,27 @@ public class Patient implements Serializable {
     // Read-only prescription view (UML)
     private Prescription readOnly;
 
-    public Patient() { }
+    // Mahmoud
+    public Patient(DB db) throws RemoteException {
+        this.db = db;
+    }
 
-    public Patient(int patientID, String name, String contactInfo, String gender, int age, String medicalHistory) {
+    // Mahmoud
+    public Patient(int userID, String name, String email, String password,
+                   int patientID, String contactInfo, String gender, int age, 
+                   String medicalHistory, String dateOfBirth, String address, String phoneNumber, DB db) 
+                   throws RemoteException {
+        super(userID, name, email, password, "Patient");
+        this.db = db;
         this.patientID = patientID;
         this.name = name;
         this.contactInfo = contactInfo;
         this.gender = gender;
         this.age = age;
         this.medicalHistory = medicalHistory;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
     // ---------- Domain Logic From UML ----------
@@ -52,6 +70,102 @@ public class Patient implements Serializable {
     public void updateAppointment(Appointment appointment, String message) {
         appointment.updateStatus(message);
     }
+    
+    // Mahmoud
+    @Override
+    public String viewPatientRecord(String patientName) throws RemoteException {
+        if (patientName == null || patientName.isEmpty()) {
+            return "Patient name is required";
+        }
+        
+        Patient patient = db.getPatientByName(patientName);
+        
+        if (patient == null) {
+            return "Patient not found: " + patientName;
+        }
+        
+        String record = "Patient Record\n" +
+                        "====================\n" +
+                        "Name: " + patientName + "\n" +
+                        "Contact: " + patient.getContactInfo() + "\n" +
+                        "Gender: " + patient.getGender() + "\n" +
+                        "Age: " + patient.getAge() + "\n" +
+                        "Date of Birth: " + (patient.getDateOfBirth() != null ? patient.getDateOfBirth() : "") + "\n" +
+                        "Medical History: " + patient.getMedicalHistory() + "\n";
+        
+        return record;
+    }
+    
+    
+    // Salma - Get patient profile by email
+    @Override
+    public String getProfileNameByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getName() != null ? p.getName() : "";
+    }
+    
+    @Override
+    public String getProfileDateOfBirthByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getDateOfBirth() != null ? p.getDateOfBirth() : "";
+    }
+    
+    @Override
+    public String getProfileGenderByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getGender() != null ? p.getGender() : "";
+    }
+    
+    @Override
+    public String getProfileAddressByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getAddress() != null ? p.getAddress() : "";
+    }
+    
+    @Override
+    public String getProfilePhoneNumberByEmail(String email) throws RemoteException {
+        Patient p = db.getPatientByEmail(email);
+        if (p == null) {
+            return "";
+        }
+        return p.getPhoneNumber() != null ? p.getPhoneNumber() : "";
+    }
+    
+    @Override
+    public void updateProfile(String name, String dateOfBirth, String gender, 
+                             String address, String phoneNumber) throws RemoteException {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        System.out.println("Profile updated for: " + this.name);
+    }
+    
+    // Salma - Update patient profile by email and save to database
+    @Override
+    public boolean updateProfileByEmail(String email, String name, String dateOfBirth, 
+                                      String gender, String address, String phoneNumber) throws RemoteException {
+        boolean success = db.updatePatientByEmail(email, name, dateOfBirth, gender, address, phoneNumber);
+        if (success) {
+            System.out.println("Profile updated in database for: " + email);
+        } else {
+            System.out.println("Failed to update profile for: " + email);
+        }
+        return success;
+    }
 
    //ibrahim
     public void addRecord(String details) {
@@ -63,8 +177,53 @@ public class Patient implements Serializable {
         return records;
     }
 
-    // ---------- Getters & Setters ----------
+    
+    // Mahmoud
+    @Override
+    public boolean addPatient(int patientID, String name, String contactInfo, String gender, 
+                              int age, String medicalHistory) throws RemoteException {
+        Patient patient = new Patient(0, name, "", "", patientID, contactInfo, gender, age, 
+                                      medicalHistory, "", "", "", db);
+        db.insertPatient(patient);
+        return true;
+    }
+    
+    // Mahmoud
+    @Override
+    public String getPatientByID(int patientID) throws RemoteException {
+        Patient patient = db.getPatientByID(patientID);
+        
+        if (patient == null) {
+            return "Patient not found";
+        }
+        
+        String result = "Patient Details\n" +
+                        "====================\n" +
+                        "Patient ID: " + patient.getPatientID() + "\n" +
+                        "Name: " + patient.getName() + "\n" +
+                        "Contact: " + patient.getContactInfo() + "\n" +
+                        "Gender: " + patient.getGender() + "\n" +
+                        "Age: " + patient.getAge() + "\n" +
+                        "Medical History: " + patient.getMedicalHistory();
+        
+        return result;
+    }
+    
+    // Ibrahim
+    @Override
+    public boolean addPatientRecord(int patientID, String record) throws RemoteException {
+        return db.addPatientRecord(patientID, record);
+    }
+    
+    // Ibrahim
+    @Override
+    public String getAllRecords(int patientID) throws RemoteException {
+        List<String> records = db.getRecordsForPatient(patientID);
+        return String.join("\n", records);
+    }
+    
 
+    // ---------- Getters & Setters ----------
     public int getPatientID() { return patientID; }
     public void setPatientID(int patientID) { this.patientID = patientID; }
 
@@ -85,4 +244,19 @@ public class Patient implements Serializable {
 
     public Prescription getReadOnlyPrescription() { return readOnly; }
     public void setReadOnlyPrescription(Prescription readOnly) { this.readOnly = readOnly; }
+    
+    public String getDateOfBirth() { return dateOfBirth; }
+    public void setDateOfBirth(String dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+    
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+    
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    
+    // Mahmoud
+    @Override
+    public List<String> getAllPatientNames() throws RemoteException {
+        return db.getAllPatientNames();
+    }
 }

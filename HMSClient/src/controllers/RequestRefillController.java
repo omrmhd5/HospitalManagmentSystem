@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rmi.PharmacistInterface;
+import rmi.PharmacyInterface;
 /**
  *
  * @author omarm
@@ -34,8 +34,8 @@ public class RequestRefillController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                // 1) Lookup pharmacist remote object
-                PharmacistInterface ph = (PharmacistInterface) registry.lookup("pharmacist");
+                // 1) Lookup pharmacy remote object
+                PharmacyInterface pharmacy = (PharmacyInterface) registry.lookup("pharmacy");
 
                 // 2) Read values from GUI
                 int pharmacistID = Integer.parseInt(gui.getTxtPharmacistID().getText().trim());
@@ -43,7 +43,7 @@ public class RequestRefillController {
                 int quantity = Integer.parseInt(gui.getTxtQuantity().getText().trim());
 
                 // 3) Call remote method
-                String result = ph.requestMedicineRefill(pharmacistID, medName, quantity);
+                String result = pharmacy.requestMedicineRefill(pharmacistID, medName, quantity);
 
                 // 4) Show result to user
                 gui.setOutputMessage(result);

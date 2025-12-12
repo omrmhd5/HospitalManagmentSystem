@@ -1,6 +1,6 @@
 package model;
 
-import DesignPattern.DoctorRequestStrategy;
+import DesignPattern.Strategy.DoctorRequestStrategy;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -46,4 +46,6 @@ public class Doctor extends User implements Serializable {
     }
 
     public int getDoctorID() { return doctorID; }
+    public String getSpecialization() { return specialization; }
+    public String getAvailabilitySchedule() { return availabilitySchedule; }
 }
