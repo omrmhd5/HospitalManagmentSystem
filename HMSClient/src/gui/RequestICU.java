@@ -50,6 +50,7 @@ public class RequestICU extends javax.swing.JFrame {
      */
     private void initializeUrgencyComboBox() {
         cmbUrgency.removeAllItems();
+        cmbUrgency.addItem("Low");
         cmbUrgency.addItem("Normal");
         cmbUrgency.addItem("High");
         cmbUrgency.addItem("Emergency");
@@ -152,7 +153,7 @@ public JComboBox<String> getUrgencyField() {
 
         cmbPatientName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loading patients..." }));
 
-        cmbUrgency.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "High", "Emergency" }));
+        cmbUrgency.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Low", "Normal", "High", "Emergency" }));
 
         // Initialize time picker (hours: 00-23, minutes: 00-59)
         String[] hours = new String[24];
