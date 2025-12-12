@@ -16,6 +16,8 @@ import com.toedter.calendar.JDateChooser;
 public class RequestICU extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RequestICU.class.getName());
+    private String doctorName;
+    private String doctorEmail;
 
     /**
      * Creates new form RequestICU
@@ -23,6 +25,24 @@ public class RequestICU extends javax.swing.JFrame {
     public RequestICU() {
         initComponents();
         initializeUrgencyComboBox();
+    }
+    
+    /**
+     * Creates new form RequestICU with doctor information
+     */
+    public RequestICU(String doctorName, String doctorEmail) {
+        this.doctorName = doctorName;
+        this.doctorEmail = doctorEmail;
+        initComponents();
+        initializeUrgencyComboBox();
+    }
+    
+    public String getDoctorName() {
+        return doctorName;
+    }
+    
+    public String getDoctorEmail() {
+        return doctorEmail;
     }
     
     /**

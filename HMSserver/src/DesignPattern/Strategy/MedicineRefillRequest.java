@@ -1,4 +1,4 @@
-package DesignPattern;
+package DesignPattern.Strategy;
 
 import model.Appointment;
 import model.Doctor;

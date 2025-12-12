@@ -64,7 +64,7 @@ public class RequestICUController {
 
                 // Collect and format all fields from GUI
                 int requestID = (int) (Math.random() * 100000);
-                String doctorName = "Dr. ICU";
+                String doctorName = gui.getDoctorName(); // Use logged-in doctor's name
                 String selectedPatient = (String) gui.getCmbPatientName().getSelectedItem();
                 String urgency = gui.getUrgencyField().getSelectedItem().toString();
                 String diagnosis = gui.getDiagnosisField().getText().trim();

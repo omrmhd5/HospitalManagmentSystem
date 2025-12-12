@@ -114,7 +114,7 @@ public class DoctorDashboardController {
     class RequestICUAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            RequestICU requestICUGui = new RequestICU();
+            RequestICU requestICUGui = new RequestICU(gui.getDoctorName(), gui.getDoctorEmail());
             RequestICUController requestICUController = new RequestICUController(requestICUGui, registry);
         }
     }
