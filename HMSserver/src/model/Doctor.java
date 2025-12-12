@@ -3,7 +3,6 @@ package model;
 import DesignPattern.Strategy.DoctorRequestStrategy;
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import ObserverDesignPattern.AppointmentObserver;
 
 public class Doctor extends User implements Serializable, AppointmentObserver  {
@@ -14,8 +13,6 @@ public class Doctor extends User implements Serializable, AppointmentObserver  {
 
     private DoctorRequestStrategy requestStrategy;  // FIXED
 
-    private ArrayList<Appointment> appointments = new ArrayList<>();
-
     public Doctor() throws RemoteException{}
 
     public Doctor(int userID, String name, String email, String password,
@@ -24,10 +21,6 @@ public class Doctor extends User implements Serializable, AppointmentObserver  {
         this.doctorID = doctorID;
         this.specialization = specialization;
         this.availabilitySchedule = availabilitySchedule;
-    }
-
-    public ArrayList<Appointment> viewAppointment() {
-        return appointments;
     }
 
     public void setRequestStrategy(DoctorRequestStrategy strategy) {
