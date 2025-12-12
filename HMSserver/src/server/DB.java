@@ -369,13 +369,63 @@ public class DB {
     
     // Rana
     public List<Appointment> getAppointmentsForDoctor(int doctorID) {
-        List<Appointment> list = new ArrayList<>();
-        for (Document doc : appointment.find(Filters.eq("doctor.doctorID", doctorID))) {
-            Appointment a = gson.fromJson(doc.toJson(), Appointment.class);
+    List<Appointment> list = new ArrayList<>();
+
+    for (Document doc : appointment.find(Filters.eq("doctor.doctorID", doctorID))) {
+
+        try {
+            Appointment a = new Appointment(
+                doc.getInteger("appointmentID"),
+                null,
+                null,
+                doc.getString("date"),
+                doc.getString("time"),
+                this
+            );
+            a.setStatus(doc.getString("status"));
+
+            // Patient
+            Document pDoc = (Document) doc.get("patient");
+            if (pDoc != null) {
+                Patient p = new Patient(
+                    0,
+                    pDoc.getString("name"),
+                    "", "",
+                    pDoc.getInteger("patientID", 0),
+                    pDoc.getString("contactInfo"),
+                    pDoc.getString("gender"),
+                    pDoc.getInteger("age", 0),
+                    pDoc.getString("medicalHistory"),
+                    "", "", "",
+                    this
+                );
+                a.setPatient(p);
+            }
+
+            // Doctor
+            Document dDoc = (Document) doc.get("doctor");
+            if (dDoc != null) {
+                Doctor d = new Doctor(
+                    0,
+                    dDoc.getString("name"),
+                    "", "",
+                    dDoc.getInteger("doctorID", 0),
+                    dDoc.getString("specialization"),
+                    dDoc.getString("availabilitySchedule")
+                );
+                a.setDoctor(d);
+            }
+
             list.add(a);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return list;
     }
+
+    return list;
+}
+
     
         public int getNextAppointmentID() {
         int maxID = 0;
