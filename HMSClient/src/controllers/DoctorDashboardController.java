@@ -61,6 +61,8 @@ public class DoctorDashboardController {
                     JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
+        System.out.println("View Appointments clicked");
+
     }
 }
 
