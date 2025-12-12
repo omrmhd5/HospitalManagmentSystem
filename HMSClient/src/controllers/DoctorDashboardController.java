@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
+import rmi.AppointmentInterface;
 
 public class DoctorDashboardController {
     
@@ -35,12 +36,36 @@ public class DoctorDashboardController {
     }
     
     class ViewAppointmentsAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            ViewAppointment viewAppointmentGui = new ViewAppointment();
-            ViewAppointmentController viewAppointmentController = new ViewAppointmentController(viewAppointmentGui, registry);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            AppointmentInterface service =(AppointmentInterface) registry.lookup("appointment");
+
+            int doctorID = service.getDoctorIDByEmail(gui.getDoctorEmail());
+
+            if (doctorID == -1) {
+                JOptionPane.showMessageDialog(gui,
+                        "Doctor ID not found.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            ViewAppointment viewAppointmentGui = new ViewAppointment(doctorID);
+            new ViewAppointmentController(viewAppointmentGui, registry);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(gui,
+                    "Error opening appointments.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
+        System.out.println("View Appointments clicked");
+
     }
+}
+
     
     class RecordDiagnosisAction implements ActionListener {
         @Override

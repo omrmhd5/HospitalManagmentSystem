@@ -21,6 +21,10 @@ public class RecordDiagnosis extends javax.swing.JFrame {
      */
     public RecordDiagnosis() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);  // FIX
+        this.setVisible(true);
+        this.toFront();   
     }
     
     public JButton getSubmitButton() {
