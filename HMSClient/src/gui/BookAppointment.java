@@ -9,16 +9,28 @@ public class BookAppointment extends javax.swing.JFrame {
     
     private String patientName;
     private String patientEmail;
+    private boolean isReceptionistMode;
     
     // Mahmoud
     public BookAppointment() {
-        this("Guest", "guest@example.com");
+        this("Guest", "guest@example.com", false);
     }
     
     // Mahmoud
     public BookAppointment(String patientName, String patientEmail) {
+        this(patientName, patientEmail, false);
+    }
+    
+    // Receptionist mode constructor
+    public BookAppointment(boolean isReceptionistMode) {
+        this("", "", isReceptionistMode);
+    }
+    
+    // Mahmoud
+    public BookAppointment(String patientName, String patientEmail, boolean isReceptionistMode) {
         this.patientName = patientName;
         this.patientEmail = patientEmail;
+        this.isReceptionistMode = isReceptionistMode;
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -38,6 +50,8 @@ public class BookAppointment extends javax.swing.JFrame {
         btnConfirmBooking = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         lblPatientName = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        cmbPatient = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Hospital Management System - Book Appointment");
@@ -73,6 +87,25 @@ public class BookAppointment extends javax.swing.JFrame {
         lblPatientName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPatientName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblPatientName.setText("Patient: John Doe");
+        
+        jLabel5.setText("Select Patient:");
+        
+        cmbPatient.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loading patients..." }));
+        
+        // Configure patient dropdown based on mode
+        if (isReceptionistMode) {
+            // Receptionist mode: show dropdown, hide label
+            lblPatientName.setVisible(false);
+            jLabel5.setVisible(true);
+            cmbPatient.setVisible(true);
+            cmbPatient.setEnabled(true);
+        } else {
+            // Patient mode: hide dropdown, show label
+            lblPatientName.setVisible(true);
+            jLabel5.setVisible(false);
+            cmbPatient.setVisible(false);
+            cmbPatient.setEnabled(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -83,6 +116,8 @@ public class BookAppointment extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addComponent(lblPatientName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbPatient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbDoctor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -100,7 +135,11 @@ public class BookAppointment extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(lblPatientName)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbDoctor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -133,11 +172,13 @@ public class BookAppointment extends javax.swing.JFrame {
     public JComboBox<String> getCmbDoctor() { return cmbDoctor; }
     public JDateChooser getDateChooser() { return dateChooser; }
     public JComboBox<String> getCmbTimeSlot() { return cmbTimeSlot; }
+    public JComboBox<String> getCmbPatient() { return cmbPatient; }
     public JButton getBtnConfirmBooking() { return btnConfirmBooking; }
     public JButton getBtnCancel() { return btnCancel; }
     public JLabel getLblPatientName() { return lblPatientName; }
     public String getPatientName() { return patientName; }
     public String getPatientEmail() { return patientEmail; }
+    public boolean isReceptionistMode() { return isReceptionistMode; }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new BookAppointment("John Doe", "john@example.com"));
@@ -147,12 +188,14 @@ public class BookAppointment extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnConfirmBooking;
     private javax.swing.JComboBox<String> cmbDoctor;
+    private javax.swing.JComboBox<String> cmbPatient;
     private javax.swing.JComboBox<String> cmbTimeSlot;
     private com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lblPatientName;
     // End of variables declaration//GEN-END:variables
 }

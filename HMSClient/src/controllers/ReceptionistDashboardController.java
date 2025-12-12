@@ -28,9 +28,8 @@ public class ReceptionistDashboardController {
     class BookAppointmentAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Open BookAppointment GUI - receptionist can book for any patient
-            // We'll use a generic patient name or allow selection
-            BookAppointment bookAppointmentGui = new BookAppointment();
+            // Open BookAppointment GUI in receptionist mode - can select patient from dropdown
+            BookAppointment bookAppointmentGui = new BookAppointment(true);
             BookAppointmentController bookAppointmentController = new BookAppointmentController(bookAppointmentGui, registry);
         }
     }

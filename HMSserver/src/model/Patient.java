@@ -230,6 +230,14 @@ public class Patient extends User implements PatientInterface {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getContactInfo() { return contactInfo; }
     public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
 

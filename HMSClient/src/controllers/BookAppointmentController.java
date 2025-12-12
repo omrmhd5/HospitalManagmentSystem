@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import rmi.AppointmentInterface;
+import rmi.PatientInterface;
 
 public class BookAppointmentController {
     
@@ -25,14 +26,21 @@ public class BookAppointmentController {
         this.gui = gui;
         this.registry = registry;
         
-        // Mahmoud
-        gui.getLblPatientName().setText("Patient: " + gui.getPatientName());
+        // Set patient label for patient mode
+        if (!gui.isReceptionistMode()) {
+            gui.getLblPatientName().setText("Patient: " + gui.getPatientName());
+        }
         
         gui.getBtnConfirmBooking().addActionListener(new ConfirmBookingAction());
         gui.getBtnCancel().addActionListener(new CancelAction());
         
         // Mahmoud
         loadDoctors();
+        
+        // Load patients if in receptionist mode
+        if (gui.isReceptionistMode()) {
+            loadPatients();
+        }
     }
     
     // Mahmoud
@@ -56,6 +64,24 @@ public class BookAppointmentController {
         }
     }
     
+    // Load patients for receptionist mode
+    private void loadPatients() {
+        try {
+            PatientInterface patientService = (PatientInterface) registry.lookup("patient");
+            List<String> patients = patientService.getAllPatientNames();
+            
+            if (patients.isEmpty()) {
+                gui.getCmbPatient().setModel(new DefaultComboBoxModel<>(new String[]{"No patients available"}));
+            } else {
+                gui.getCmbPatient().setModel(new DefaultComboBoxModel<>(patients.toArray(new String[0])));
+            }
+            
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(BookAppointmentController.class.getName()).log(Level.SEVERE, null, ex);
+            gui.getCmbPatient().setModel(new DefaultComboBoxModel<>(new String[]{"Error loading patients"}));
+        }
+    }
+    
     // Mahmoud
     class ConfirmBookingAction implements ActionListener {
         @Override
@@ -67,6 +93,21 @@ public class BookAppointmentController {
                 String selectedDoctor = (String) gui.getCmbDoctor().getSelectedItem();
                 Date selectedDate = gui.getDateChooser().getDate();
                 String selectedTimeSlot = (String) gui.getCmbTimeSlot().getSelectedItem();
+                
+                // Get patient name based on mode
+                String patientNameToUse;
+                if (gui.isReceptionistMode()) {
+                    // Receptionist mode: get from dropdown
+                    String selectedPatient = (String) gui.getCmbPatient().getSelectedItem();
+                    if (selectedPatient == null || selectedPatient.equals("No patients available") || selectedPatient.equals("Error loading patients")) {
+                        JOptionPane.showMessageDialog(gui, "Please select a patient", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    patientNameToUse = selectedPatient;
+                } else {
+                    // Patient mode: use logged-in patient
+                    patientNameToUse = gui.getPatientName();
+                }
                 
                 if (selectedDoctor == null || selectedDoctor.equals("No doctors available") || selectedDoctor.equals("Error loading doctors")) {
                     JOptionPane.showMessageDialog(gui, "Please select a valid doctor", "Error", JOptionPane.ERROR_MESSAGE);
@@ -91,7 +132,7 @@ public class BookAppointmentController {
                 
                 // Mahmoud - Book appointment
                 String response = appointmentService.bookAppointment(
-                    gui.getPatientName(),
+                    patientNameToUse,
                     doctorName,
                     formattedDate,
                     selectedTimeSlot
