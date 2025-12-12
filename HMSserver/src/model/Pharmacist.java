@@ -109,6 +109,12 @@ public class Pharmacist extends User implements PharmacyInterface {
         }
         return drugList;
     }
+    
+    // Get all pharmacists - returns formatted strings
+    @Override
+    public java.util.List<String> getAllPharmacists() throws RemoteException {
+        return db.getAllPharmacists();
+    }
 
     // Ibrahim
     @Override

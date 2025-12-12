@@ -17,6 +17,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
     }
     
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         lblWelcome = new javax.swing.JLabel();
@@ -77,7 +78,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         );
 
         pack();
-    }
+    }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageDrugInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDrugInventoryActionPerformed
     }//GEN-LAST:event_btnManageDrugInventoryActionPerformed

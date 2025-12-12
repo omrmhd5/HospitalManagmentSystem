@@ -16,6 +16,7 @@ import model.Doctor;
 import model.Drug;
 import model.ICURequest;
 import model.LabTest;
+import model.MedicineRefillRequest;
 import model.Patient;
 import model.Pharmacist;
 import model.Prescription;
@@ -38,6 +39,7 @@ public class DB {
     private final MongoCollection<Document> drug;
     private final MongoCollection<Document> doctor;
     private final MongoCollection<Document> user;
+    private final MongoCollection<Document> refillRequest;
     
     public DB() {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
@@ -56,6 +58,7 @@ public class DB {
         drug = database.getCollection("drug");
         doctor = database.getCollection("doctor");
         user = database.getCollection("user");
+        refillRequest = database.getCollection("refillRequest");
     }
     
     // ========================================
@@ -483,10 +486,58 @@ public class DB {
     // Pharmacist DB
     // ========================================
     
-    // Omar Mo
+    // Omar Mo - Ibrahim
     public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity) {
-        return "Refill request submitted successfully for " 
-                + medicineName + " (Quantity: " + quantity + ")";
+        try {
+            // Validate inputs
+            if (medicineName == null || medicineName.trim().isEmpty()) {
+                return "Error: Medicine name cannot be empty.";
+            }
+            
+            if (quantity <= 0) {
+                return "Error: Quantity must be greater than 0.";
+            }
+            
+            // Check if pharmacist exists
+            Document pharmacistDoc = pharmacist.find(Filters.eq("pharmacistID", pharmacistID)).first();
+            if (pharmacistDoc == null) {
+                return "Error: Pharmacist with ID " + pharmacistID + " not found.";
+            }
+            
+            // Check if medicine exists in drug inventory
+            Document drugDoc = drug.find(Filters.eq("name", medicineName)).first();
+            if (drugDoc == null) {
+                return "Warning: Medicine '" + medicineName + "' not found in inventory. Request will be submitted for procurement.";
+            }
+            
+            // Create refill request
+            int requestID = MedicineRefillRequest.getNextRequestID();
+            MedicineRefillRequest refillReq = new MedicineRefillRequest(requestID, pharmacistID, medicineName, quantity);
+            
+            // Save to database
+            Document doc = new Document()
+                    .append("requestID", refillReq.getRequestID())
+                    .append("pharmacistID", refillReq.getPharmacistID())
+                    .append("medicineName", refillReq.getMedicineName())
+                    .append("quantity", refillReq.getQuantity())
+                    .append("status", refillReq.getStatus())
+                    .append("requestDate", refillReq.getRequestDate())
+                    .append("requestTime", refillReq.getRequestTime());
+            
+            refillRequest.insertOne(doc);
+            System.out.println("Medicine refill request inserted: ID=" + requestID);
+            
+            return "Refill request submitted successfully!\n" +
+                   "Request ID: " + requestID + "\n" +
+                   "Medicine: " + medicineName + "\n" +
+                   "Quantity: " + quantity + "\n" +
+                   "Status: Pending";
+                   
+        } catch (Exception e) {
+            System.err.println("Error processing refill request: " + e.getMessage());
+            e.printStackTrace();
+            return "Error: Failed to submit refill request. Please try again.";
+        }
     }
     
     // ========================================
@@ -684,6 +735,23 @@ public class DB {
             }
         }
         return drugs;
+    }
+    
+    // Get all pharmacists - returns list of formatted strings "ID - Name"
+    public List<String> getAllPharmacists() {
+        List<String> pharmacists = new ArrayList<>();
+        for (Document doc : pharmacist.find()) {
+            try {
+                Integer pharmacistID = doc.getInteger("pharmacistID");
+                String name = doc.getString("name");
+                if (pharmacistID != null && name != null) {
+                    pharmacists.add(pharmacistID + " - " + name);
+                }
+            } catch (Exception e) {
+                System.err.println("Error parsing pharmacist document: " + e.getMessage());
+            }
+        }
+        return pharmacists;
     }
     
     // Salma

@@ -13,13 +13,15 @@ import javax.swing.JOptionPane;
  */
 public class RequestRefill extends javax.swing.JFrame {
     
-    private static final RequestRefill.util.logging.Logger logger = RequestRefill.util.logging.Logger.getLogger(RequestRefill.class.getName());
+    private static final Logger logger = Logger.getLogger(RequestRefill.class.getName());
 
     /**
      * Creates new form java
      */
     public RequestRefill() {
         initComponents();
+        setLocationRelativeTo(null); // Center the window
+        setTitle("Request Medicine Refill");
     }
 
     /**
@@ -32,65 +34,84 @@ public class RequestRefill extends javax.swing.JFrame {
     private void initComponents() {
 
         btnSendRequest = new javax.swing.JButton();
-        txtPharmacistID = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        cmbPharmacist = new javax.swing.JComboBox<>();
+        cmbMedicine = new javax.swing.JComboBox<>();
+        txtQuantity = new javax.swing.JTextField();
+        lblPharmacist = new javax.swing.JLabel();
+        lblMedicine = new javax.swing.JLabel();
+        lblQuantity = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Request Medicine Refill");
 
+        btnSendRequest.setText("Send Request");
         btnSendRequest.addActionListener(this::btnSendRequestActionPerformed);
 
-        txtPharmacistID.setText("Enter pharmacist ID");
+        cmbPharmacist.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loading..." }));
+        cmbPharmacist.setToolTipText("Select a pharmacist");
 
-        jTextField1.setText("Enter medicine name");
+        cmbMedicine.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loading..." }));
+        cmbMedicine.setToolTipText("Select a medicine");
 
-        jTextField2.setText("Enter refill quantity");
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        txtQuantity.setToolTipText("Enter refill quantity");
+
+        lblPharmacist.setText("Pharmacist:");
+
+        lblMedicine.setText("Medicine:");
+
+        lblQuantity.setText("Quantity:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPharmacistID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(btnSendRequest)))
-                .addContainerGap(255, Short.MAX_VALUE))
+                    .addComponent(lblPharmacist)
+                    .addComponent(lblMedicine)
+                    .addComponent(lblQuantity))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmbPharmacist, 0, 250, Short.MAX_VALUE)
+                    .addComponent(cmbMedicine, 0, 250, Short.MAX_VALUE)
+                    .addComponent(txtQuantity)
+                    .addComponent(btnSendRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(txtPharmacistID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSendRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPharmacist)
+                    .addComponent(cmbPharmacist, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMedicine)
+                    .addComponent(cmbMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblQuantity)
+                    .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(btnSendRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   public javax.swing.JTextField getTxtPharmacistID() {
-        return txtPharmacistID;
+    public javax.swing.JComboBox<String> getCmbPharmacist() {
+        return cmbPharmacist;
     }
 
-    public javax.swing.JTextField getTxtMedicineName() {
-        return jTextField1;
+    public javax.swing.JComboBox<String> getCmbMedicine() {
+        return cmbMedicine;
     }
 
     public javax.swing.JTextField getTxtQuantity() {
-        return jTextField2;
+        return txtQuantity;
     }
 
     public javax.swing.JButton getBtnSendRequest() {
@@ -109,19 +130,13 @@ public class RequestRefill extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSendRequestActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendRequest;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField txtPharmacistID;
+    private javax.swing.JComboBox<String> cmbPharmacist;
+    private javax.swing.JComboBox<String> cmbMedicine;
+    private javax.swing.JLabel lblMedicine;
+    private javax.swing.JLabel lblPharmacist;
+    private javax.swing.JLabel lblQuantity;
+    private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
 }

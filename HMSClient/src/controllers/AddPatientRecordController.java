@@ -37,16 +37,16 @@ public class AddPatientRecordController {
                         (PatientInterface) registry.lookup("patient");
 
                 int patientID = Integer.parseInt(gui.getTxtPatientID().getText());
-                String name = gui.getTxtName().getText();               // ✅ FIX
+                String name = gui.getTxtName().getText();
                 String contactInfo = gui.getTxtContactInfo().getText();
                 String gender = gui.getTxtGender().getText();
                 int age = Integer.parseInt(gui.getTxtAge().getText());
                 String medicalHistory = gui.getTxtMedicalHistory().getText();
 
                 // Call RMI with individual fields (no object!)
-                boolean ok = service.addPatient(id, name, contact, gender, age, history);
+                boolean ok = patientService.addPatient(patientID, name, contactInfo, gender, age, medicalHistory);
 
-                if (success) {
+                if (ok) {
                     gui.setOutputMessage("Patient added successfully.");
                 } else {
                     gui.setOutputMessage("Failed to add patient.");

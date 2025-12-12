@@ -107,6 +107,7 @@ public class DoctorDashboardController {
         @Override
         public void actionPerformed(ActionEvent e) {
             RequestRefill requestRefillGui = new RequestRefill();
+            requestRefillGui.setVisible(true);
             RequestRefillController requestRefillController = new RequestRefillController(requestRefillGui, registry);
         }
     }

@@ -27,6 +27,9 @@ public interface PharmacyInterface extends Remote {
     // Get all drugs - returns list of formatted strings "ID - Name"
     java.util.List<String> getAllDrugs() throws RemoteException;
     
+    // Get all pharmacists - returns list of formatted strings "ID - Name"
+    java.util.List<String> getAllPharmacists() throws RemoteException;
+    
     // Ibrahim
     String requestMedicineRefill(int pharmacistID, String medicineName, int quantity) throws RemoteException;
 }
