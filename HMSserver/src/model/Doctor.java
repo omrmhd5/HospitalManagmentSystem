@@ -45,14 +45,10 @@ public class Doctor extends User implements Serializable, AppointmentObserver  {
 //    public void updateAppointment(Appointment appointment, String message) {
 //        appointment.updateStatus(message);
 //    }
-        @Override
-    public void update(Appointment appointment, String message) {
-        System.out.println(
-            "Doctor " + getName() +
-            " notified about Appointment ID " +
-            appointment.getAppointmentID() +
-            ": " + message
-        );
+    @Override
+    public void update(String appointmentInfo, String message) {
+        System.out.println("Doctor " + getName() + " notified: " + message);
+        System.out.println("Appointment: " + appointmentInfo);
     }
 
     public int getDoctorID() { return doctorID; }

@@ -29,7 +29,7 @@ public class Login extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         btnSwitchToRegister = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Hospital Management System - Login");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N

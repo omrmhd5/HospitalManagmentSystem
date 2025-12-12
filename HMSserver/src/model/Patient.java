@@ -73,12 +73,10 @@ public class Patient extends User implements PatientInterface, AppointmentObserv
 //    }
     //Tasnim
     @Override
-    public void update(Appointment appointment, String message) {
-    System.out.println(
-        "Patient " + getName() +
-        " notified: " + message
-    );
-}
+    public void update(String appointmentInfo, String message) {
+        System.out.println("Patient " + getName() + " notified: " + message);
+        System.out.println("Appointment: " + appointmentInfo);
+    }
     
     // Mahmoud
     @Override

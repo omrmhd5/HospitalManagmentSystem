@@ -45,7 +45,7 @@ public class AddPatientRecord extends javax.swing.JFrame {
         btnAddPatient = new javax.swing.JButton();
         btnAddRecord = new javax.swing.JToggleButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Patient ID");
 

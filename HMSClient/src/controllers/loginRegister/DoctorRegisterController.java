@@ -10,7 +10,7 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import rmi.AuthInterface;
+import rmi.UserInterface;
 
 public class DoctorRegisterController {
     
@@ -32,7 +32,7 @@ public class DoctorRegisterController {
         public void actionPerformed(ActionEvent e) {
             try {
                 // Mahmoud
-                AuthInterface authService = (AuthInterface) registry.lookup("auth");
+                UserInterface userService = (UserInterface) registry.lookup("user");
                 
                 String userIDStr = gui.getTxtUserID().getText().trim();
                 String name = gui.getTxtName().getText().trim();
@@ -56,14 +56,14 @@ public class DoctorRegisterController {
                 }
                 
                 // Mahmoud
-                boolean emailExists = authService.emailExists(email);
+                boolean emailExists = userService.emailExists(email);
                 if (emailExists) {
                     JOptionPane.showMessageDialog(gui, "Email already exists", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
                 // Mahmoud
-                boolean success = authService.registerDoctor(userID, name, email, password, specialization, schedule, phone);
+                boolean success = userService.registerDoctor(userID, name, email, password, specialization, schedule, phone);
                 
                 if (success) {
                     JOptionPane.showMessageDialog(gui, "Registration successful! You can now login.", "Success", JOptionPane.INFORMATION_MESSAGE);

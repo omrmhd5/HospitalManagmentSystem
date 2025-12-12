@@ -28,7 +28,7 @@ public class PatientDashboard extends javax.swing.JFrame {
         btnLogout = new javax.swing.JButton();
         btnManageAppointment = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Hospital Management System - Patient Dashboard");
 
         lblWelcome.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N

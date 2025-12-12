@@ -61,7 +61,7 @@ public class ManageDrugInventory extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         cmbCategory = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 153));
 

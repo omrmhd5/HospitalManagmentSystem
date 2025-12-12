@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.Document;
 import rmi.ICUInterface;
 import server.DB;
 import StateDesignPattern.ICUState;
@@ -85,18 +86,19 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
     @Override
     public String getCurrentICUState() throws RemoteException {
         return getState(); // returns state.getStateName()
-      
+    }
+    
     // Salma - Chain of Responsibility - Get all pending ICU requests as formatted strings
     @Override
     public List<String> getPendingICURequests() throws RemoteException {
-        List<org.bson.Document> pendingDocs = db.getPendingICURequests();
+        List<Document> pendingDocs = db.getPendingICURequests();
         List<String> formattedRequests = new ArrayList<>();
         
-        for (org.bson.Document doc : pendingDocs) {
+        for (Document doc : pendingDocs) {
             StringBuilder sb = new StringBuilder();
             Integer requestID = doc.getInteger("requestID");
-            org.bson.Document patientDoc = (org.bson.Document) doc.get("patient");
-            org.bson.Document doctorDoc = (org.bson.Document) doc.get("doctor");
+            Document patientDoc = (Document) doc.get("patient");
+            Document doctorDoc = (Document) doc.get("doctor");
             
             String patientName = patientDoc != null ? patientDoc.getString("name") : "N/A";
             String doctorName = doctorDoc != null ? doctorDoc.getString("name") : "N/A";
@@ -126,13 +128,13 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
     // Chain of Responsibility - Get ICU request details by ID as formatted string
     @Override
     public String getICURequestDetails(int requestID) throws RemoteException {
-        org.bson.Document doc = db.getICURequestByID(requestID);
+        Document doc = db.getICURequestByID(requestID);
         if (doc == null) {
             return "ICU Request not found with ID: " + requestID;
         }
         
-        org.bson.Document patientDoc = (org.bson.Document) doc.get("patient");
-        org.bson.Document doctorDoc = (org.bson.Document) doc.get("doctor");
+        Document patientDoc = (Document) doc.get("patient");
+        Document doctorDoc = (Document) doc.get("doctor");
         
         StringBuilder result = new StringBuilder();
         result.append("ICU Request Details\n");
@@ -159,15 +161,15 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
     // Chain of Responsibility - Process request through chain and return result
     @Override
     public String processRequestThroughChain(int requestID, String handlerRole) throws RemoteException {
-        org.bson.Document doc = db.getICURequestByID(requestID);
+        Document doc = db.getICURequestByID(requestID);
         if (doc == null) {
             return "ERROR: ICU Request not found with ID: " + requestID;
         }
         
         // Extract request data
         Integer reqID = doc.getInteger("requestID");
-        org.bson.Document patientDoc = (org.bson.Document) doc.get("patient");
-        org.bson.Document doctorDoc = (org.bson.Document) doc.get("doctor");
+        Document patientDoc = (Document) doc.get("patient");
+        Document doctorDoc = (Document) doc.get("doctor");
         
         String patientName = patientDoc != null ? patientDoc.getString("name") : "N/A";
         String doctorName = doctorDoc != null ? doctorDoc.getString("name") : "N/A";
@@ -247,7 +249,7 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
     // Chain of Responsibility - Check if handler can reject request based on urgency
     @Override
     public String canRejectRequest(int requestID, String handlerRole) throws RemoteException {
-        org.bson.Document doc = db.getICURequestByID(requestID);
+        Document doc = db.getICURequestByID(requestID);
         if (doc == null) {
             return "ERROR: ICU Request not found with ID: " + requestID;
         }

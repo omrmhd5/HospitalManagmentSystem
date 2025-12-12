@@ -21,7 +21,7 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import rmi.AuthInterface;
+import rmi.UserInterface;
 
 public class LoginController {
     
@@ -43,7 +43,7 @@ public class LoginController {
         public void actionPerformed(ActionEvent e) {
             try {
                 // Mahmoud
-                AuthInterface authService = (AuthInterface) registry.lookup("auth");
+                UserInterface userService = (UserInterface) registry.lookup("user");
                 
                 String email = gui.getTxtEmail().getText().trim();
                 String password = new String(gui.getTxtPassword().getPassword());
@@ -55,7 +55,7 @@ public class LoginController {
                 }
                 
                 // Mahmoud
-                String result = authService.login(email, password, role);
+                String result = userService.login(email, password, role);
                 
                 if (result.contains("successful")) {
                     // Mahmoud - Extract name from result: "Login successful! Welcome Name (Role)"

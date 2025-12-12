@@ -132,7 +132,7 @@ public JComboBox<String> getUrgencyField() {
         cmbDurationHour = new javax.swing.JComboBox<>();
         cmbDurationMinute = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Request ICU");

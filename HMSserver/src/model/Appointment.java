@@ -96,8 +96,10 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
 
     @Override
     public void notifyObservers(String message) throws RemoteException {
+        // Convert appointment to string representation to avoid RMI serialization issues
+        String appointmentInfo = toReadableString();
         for (AppointmentObserver o : observers) {
-            o.update(this, message);
+            o.update(appointmentInfo, message);
         }
     }
 

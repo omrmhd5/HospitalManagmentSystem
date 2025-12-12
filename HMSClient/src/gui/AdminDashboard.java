@@ -68,7 +68,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         btnHandleICURequests = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblWelcome.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

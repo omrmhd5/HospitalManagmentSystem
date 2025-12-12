@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Admin;
 import model.Appointment;
-import model.AuthService;
 import model.Diagnosis;
 import model.ICURoom;
 import model.LabTechnician;
@@ -16,9 +15,9 @@ import model.Patient;
 import model.DoctorRequestService;
 import model.Pharmacist;
 import model.Prescription;
+import model.UserImpl;
 import rmi.AdminInterface;
 import rmi.AppointmentInterface;
-import rmi.AuthInterface;
 import rmi.DiagnosisInterface;
 import rmi.DoctorRequestInterface;
 import rmi.ICUInterface;
@@ -27,6 +26,7 @@ import rmi.LabTestInterface;
 import rmi.PatientInterface;
 import rmi.PharmacyInterface;
 import rmi.PrescriptionInterface;
+import rmi.UserInterface;
 
 public class RMIServer {
     // Mahmoud
@@ -47,7 +47,7 @@ public class RMIServer {
         PharmacyInterface pharmacyService = new Pharmacist(db);
         ICUInterface icuService = new ICURoom(db);
         DiagnosisInterface diagnosisService = new Diagnosis(db);
-        AuthInterface authService = new AuthService(db);
+        UserInterface userService = new UserImpl(db);
         DoctorRequestInterface doctorRequestService = new DoctorRequestService(
             db, labTestService, pharmacyService, icuService
         );
@@ -65,7 +65,7 @@ public class RMIServer {
         registry.bind("pharmacy", pharmacyService);
         registry.bind("icu", icuService);
         registry.bind("diagnosis", diagnosisService);
-        registry.bind("auth", authService);
+        registry.bind("user", userService);
         registry.bind("doctorrequest", doctorRequestService);
         
         System.out.println("The server is ready");

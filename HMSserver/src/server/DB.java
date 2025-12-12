@@ -40,6 +40,8 @@ public class DB {
     private final MongoCollection<Document> doctor;
     private final MongoCollection<Document> user;
     private final MongoCollection<Document> refillRequest;
+    private final MongoCollection<Document> admin;
+    private final MongoCollection<Document> receptionist;
     
     public DB() {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
@@ -59,6 +61,8 @@ public class DB {
         doctor = database.getCollection("doctor");
         user = database.getCollection("user");
         refillRequest = database.getCollection("refillRequest");
+        admin = database.getCollection("admin");
+        receptionist = database.getCollection("receptionist");
     }
     
     // ========================================
@@ -907,8 +911,10 @@ public class DB {
                     labtest.deleteOne(Filters.eq("userID", userID));
                     break;
                 case "Admin":
+                    admin.deleteOne(Filters.eq("userID", userID));
+                    break;
                 case "Receptionist":
-                    // Only in user collection
+                    receptionist.deleteOne(Filters.eq("userID", userID));
                     break;
             }
         }
@@ -1087,8 +1093,27 @@ public class DB {
                 break;
                 
             case "Admin":
+                Document adminDoc = new Document()
+                        .append("userID", userID)
+                        .append("adminID", userID)
+                        .append("name", name)
+                        .append("email", email)
+                        .append("password", password)
+                        .append("role", "Admin")
+                        .append("accessLevel", "Full");
+                admin.insertOne(adminDoc);
+                break;
+                
             case "Receptionist":
-                // Mahmoud - Admin and Receptionist only in user collection
+                Document receptionistDoc = new Document()
+                        .append("userID", userID)
+                        .append("receptionistID", userID)
+                        .append("name", name)
+                        .append("email", email)
+                        .append("password", password)
+                        .append("role", "Receptionist")
+                        .append("department", "General");
+                receptionist.insertOne(receptionistDoc);
                 break;
         }
         
@@ -1153,6 +1178,115 @@ public class DB {
                 .append("availabilitySchedule", schedule)
                 .append("phoneNumber", phone);
         doctor.insertOne(doctorDoc);
+        
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean registerPharmacistExtended(int userID, String name, String email, String password,
+                                               String phone, String department) {
+        // Mahmoud - Create in user collection
+        Document userDoc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Pharmacist");
+        user.insertOne(userDoc);
+        
+        // Mahmoud - Create in pharmacist collection with extended info
+        Document pharmacistDoc = new Document()
+                .append("userID", userID)
+                .append("pharmacistID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Pharmacist")
+                .append("phoneNumber", phone)
+                .append("department", department)
+                .append("inventoryList", new java.util.ArrayList<String>());
+        pharmacist.insertOne(pharmacistDoc);
+        
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean registerLabTechnicianExtended(int userID, String name, String email, String password,
+                                                  String phone, String labDepartment) {
+        // Mahmoud - Create in user collection
+        Document userDoc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Lab Technician");
+        user.insertOne(userDoc);
+        
+        // Mahmoud - Create in labtest collection with extended info
+        Document labTechDoc = new Document()
+                .append("userID", userID)
+                .append("technicianID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Lab Technician")
+                .append("phoneNumber", phone)
+                .append("labDepartment", labDepartment);
+        labtest.insertOne(labTechDoc);
+        
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean registerReceptionistExtended(int userID, String name, String email, String password,
+                                                String phone, String department) {
+        // Mahmoud - Create in user collection
+        Document userDoc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Receptionist");
+        user.insertOne(userDoc);
+        
+        // Mahmoud - Create in receptionist collection with extended info
+        Document receptionistDoc = new Document()
+                .append("userID", userID)
+                .append("receptionistID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Receptionist")
+                .append("phoneNumber", phone)
+                .append("department", department);
+        receptionist.insertOne(receptionistDoc);
+        
+        return true;
+    }
+    
+    // Mahmoud
+    public boolean registerAdminExtended(int userID, String name, String email, String password,
+                                        String phone, String accessLevel) {
+        // Mahmoud - Create in user collection
+        Document userDoc = new Document()
+                .append("userID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Admin");
+        user.insertOne(userDoc);
+        
+        // Mahmoud - Create in admin collection with extended info
+        Document adminDoc = new Document()
+                .append("userID", userID)
+                .append("adminID", userID)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("role", "Admin")
+                .append("phoneNumber", phone)
+                .append("accessLevel", accessLevel);
+        admin.insertOne(adminDoc);
         
         return true;
     }

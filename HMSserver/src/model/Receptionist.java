@@ -34,12 +34,9 @@ public class Receptionist extends User implements Serializable, AppointmentObser
 //    }
     
     @Override
-    public void update(Appointment appointment, String message) {
-        System.out.println(
-            "Receptionist notified for Appointment ID " +
-            appointment.getAppointmentID() +
-            ": " + message
-        );
+    public void update(String appointmentInfo, String message) {
+        System.out.println("Receptionist notified: " + message);
+        System.out.println("Appointment: " + appointmentInfo);
     }
 
     public int getReceptionistID() { return receptionistID; }

@@ -27,7 +27,7 @@ public class ReceptionistDashboard extends javax.swing.JFrame {
         btnHandleICURequests = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Hospital Management System - Receptionist Dashboard");
 
         lblWelcome.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N

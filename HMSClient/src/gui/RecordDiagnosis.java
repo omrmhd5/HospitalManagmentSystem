@@ -78,7 +78,7 @@ public JTextArea getDiagnosisField() {
         txtDiagnosis = new javax.swing.JTextArea();
         btnSubmit = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Record Diagnosis");

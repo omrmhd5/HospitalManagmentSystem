@@ -33,7 +33,7 @@ public class Register extends javax.swing.JFrame {
         btnRegister = new javax.swing.JButton();
         btnSwitchToLogin = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Hospital Management System - Register");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
