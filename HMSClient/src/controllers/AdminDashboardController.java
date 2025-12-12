@@ -21,6 +21,7 @@ public class AdminDashboardController {
         
         gui.getBtnManageUsers().addActionListener(new ManageUsersAction());
         gui.getBtnGenerateReports().addActionListener(new GenerateReportsAction());
+        gui.getBtnHandleICURequests().addActionListener(new HandleICURequestsAction());
         gui.getBtnLogout().addActionListener(new LogoutAction());
     }
     
@@ -38,6 +39,15 @@ public class AdminDashboardController {
         public void actionPerformed(ActionEvent e) {
             GenerateReport generateReportGui = new GenerateReport();
             GenerateReportController generateReportController = new GenerateReportController(generateReportGui, registry);
+        }
+    }
+    
+    class HandleICURequestsAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            gui.HandleICURequests handleICURequestsGui = new gui.HandleICURequests("Admin");
+            HandleICURequestsController handleICURequestsController = 
+                new HandleICURequestsController(handleICURequestsGui, registry);
         }
     }
     
