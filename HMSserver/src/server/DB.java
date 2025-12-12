@@ -37,28 +37,25 @@ public class DB {
 
         patientCollection = database.getCollection("Patients");
         pharmacistCollection = database.getCollection("Pharmacists");
-        labTestCollection = database.getCollection("LabTests");   // <--- NEW COLLECTION
+        labTestCollection = database.getCollection("LabTests");
     }
 
-    // ---------------------------------------------------------
-    // Insert new patient
+    //  PATIENT
+
     public void insertPatient(Patient p) {
         patientCollection.insertOne(Document.parse(gson.toJson(p)));
         System.out.println("Patient inserted: " + p.getPatientID());
     }
 
-    // Get patient by ID
     public Patient getPatientByID(int id) {
         Document doc = patientCollection.find(Filters.eq("patientID", id)).first();
         if (doc == null) return null;
         return gson.fromJson(doc.toJson(), Patient.class);
     }
 
-    // Add patient record
     public boolean addPatientRecord(int patientID, String record) {
 
         Patient p = getPatientByID(patientID);
-
         if (p == null) return false;
 
         p.addRecord(record);
@@ -71,19 +68,19 @@ public class DB {
         return true;
     }
 
-    // Get patient records list
     public List<String> getRecordsForPatient(int patientID) {
 
         Patient p = getPatientByID(patientID);
-
         if (p == null) return new ArrayList<>();
 
         return p.getRecords();
     }
 
-    // ---------------------------------------------------------
-    // PHARMACIST REQUEST REFILL
-    public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity) {
+    // PHARMACIST 
+
+    public String requestMedicineRefill(int pharmacistID,
+                                        String medicineName,
+                                        int quantity) {
 
         if (medicineName == null || medicineName.isBlank()) {
             return "Medicine name cannot be empty.";
@@ -93,43 +90,50 @@ public class DB {
             return "Invalid quantity. Must be greater than zero.";
         }
 
-        Document doc = pharmacistCollection.find(Filters.eq("pharmacistID", pharmacistID)).first();
+        Document doc = pharmacistCollection
+                .find(Filters.eq("pharmacistID", pharmacistID))
+                .first();
 
         if (doc == null) {
             return "Pharmacist not found in database.";
         }
 
-        Pharmacist pharmacist = gson.fromJson(doc.toJson(), Pharmacist.class);
+        Pharmacist pharmacist =
+                gson.fromJson(doc.toJson(), Pharmacist.class);
 
         return pharmacist.requestMedicineRefill(medicineName, quantity);
     }
 
-    // ---------------------------------------------------------
-    // LAB TECHNICIAN – RECORD LAB TEST RESULT
+    //  LAB TECHNICIAN 
+
     public String recordLabTestResult(int testID, String result) {
 
         if (result == null || result.isBlank()) {
-            return "Invalid result.";
+            return "Result cannot be empty.";
         }
 
-        Document doc = labTestCollection.find(Filters.eq("testID", testID)).first();
+        Document doc = labTestCollection
+                .find(Filters.eq("testID", testID))
+                .first();
 
         if (doc == null) {
-            return "Test not found in database.";
+            return "Test not found.";
         }
 
         LabTest test = gson.fromJson(doc.toJson(), LabTest.class);
         test.setResult(result);
+        test.recordTestResult();
 
         labTestCollection.replaceOne(
                 Filters.eq("testID", testID),
                 Document.parse(gson.toJson(test))
         );
 
-        return "Test result saved successfully.";
+        return "Test result recorded successfully.";
     }
 
-    // ---------------------------------------------------------
+    
+
     public void close() {
         mongoClient.close();
     }

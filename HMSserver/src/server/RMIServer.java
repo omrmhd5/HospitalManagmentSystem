@@ -16,6 +16,7 @@ public class RMIServer {
 
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
 
+        // Disable MongoDB logs
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
 
@@ -33,25 +34,28 @@ public class RMIServer {
         PharmacistInterface pharmacistInterface = new PharmacistInterface() {
 
             @Override
-            public String requestMedicineRefill(int pharmacistID, String medicineName, int quantity)
+            public String requestMedicineRefill(int pharmacistID,
+                                                String medicineName,
+                                                int quantity)
                     throws RemoteException {
-                return db.requestMedicineRefill(pharmacistID, medicineName, quantity);
+                return db.requestMedicineRefill(
+                        pharmacistID, medicineName, quantity);
             }
         };
-
         registry.bind("pharmacist", pharmacistInterface);
 
-       
+        //  LAB TECHNICIAN BINDING 
         LabTechnicianInterface labTechInterface = new LabTechnicianInterface() {
 
             @Override
-            public String recordLabTestResult(int testID, String result) throws RemoteException {
+            public String recordLabTestResult(int testID,
+                                              String result)
+                    throws RemoteException {
                 return db.recordLabTestResult(testID, result);
             }
         };
-
         registry.bind("labtech", labTechInterface);
 
-        System.out.println("The server is ready");
+        System.out.println("RMI Server is ready...");
     }
 }
