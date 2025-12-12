@@ -15,6 +15,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import rmi.DoctorRequestInterface;
 import rmi.PatientInterface;
+import rmi.ICUInterface;
+
 
 public class RequestICUController {
 
@@ -96,12 +98,19 @@ public class RequestICUController {
                 );
 
                 if (ok) {
-                    JOptionPane.showMessageDialog(gui, 
-                        "ICU Request Submitted Successfully!", 
-                        "Success", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                    
-                    // Clear form after successful submission
+                     // 🔹 Get ICU service
+                    ICUInterface icuService = (ICUInterface) registry.lookup("icu");
+
+                    // 🔹 Fetch current ICU state
+                    String currentState = icuService.getCurrentICUState();
+
+                    JOptionPane.showMessageDialog(gui,
+                        "ICU Request Submitted Successfully!\n" +
+                        "Current ICU State: " + currentState,
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+
                     clearForm();
                 } else {
                     JOptionPane.showMessageDialog(gui, 
