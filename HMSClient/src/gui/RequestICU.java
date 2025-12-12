@@ -7,6 +7,7 @@ package gui;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import com.toedter.calendar.JDateChooser;
 
 /**
  *
@@ -21,31 +22,53 @@ public class RequestICU extends javax.swing.JFrame {
      */
     public RequestICU() {
         initComponents();
+        initializeUrgencyComboBox();
+    }
+    
+    /**
+     * Initialize the urgency combo box with proper values
+     */
+    private void initializeUrgencyComboBox() {
+        cmbUrgency.removeAllItems();
+        cmbUrgency.addItem("Normal");
+        cmbUrgency.addItem("High");
+        cmbUrgency.addItem("Emergency");
     }
     // ---- BUTTON ----
 public JButton getSubmitButton() {
     return btnSubmit;
 }
 
-// ---- TEXT FIELDS ----
-public JTextField getPatientIDField() {
-    return txtPatientID;
+// ---- COMBO BOXES ----
+public JComboBox<String> getCmbPatientName() {
+    return cmbPatientName;
 }
 
-public JTextField getDateField() {
-    return txtDate;
+// ---- DATE CHOOSER ----
+public JDateChooser getDateChooser() {
+    return jDateChooser1;
 }
 
-public JTextField getTimeField() {
-    return txtTime;
+// ---- TIME PICKER ----
+public JComboBox<String> getCmbTimeHour() {
+    return cmbTimeHour;
+}
+
+public JComboBox<String> getCmbTimeMinute() {
+    return cmbTimeMinute;
 }
 
 public JTextField getDiagnosisField() {
     return txtDiagnosis;
 }
 
-public JTextField getDurationField() {
-    return txtDuration;
+// ---- DURATION PICKER ----
+public JComboBox<String> getCmbDurationHour() {
+    return cmbDurationHour;
+}
+
+public JComboBox<String> getCmbDurationMinute() {
+    return cmbDurationMinute;
 }
 
 // ---- COMBO BOX ----
@@ -72,20 +95,24 @@ public JComboBox<String> getUrgencyField() {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         btnSubmit = new javax.swing.JButton();
-        txtPatientID = new javax.swing.JTextField();
-        txtDate = new javax.swing.JTextField();
-        txtTime = new javax.swing.JTextField();
+        cmbPatientName = new javax.swing.JComboBox<>();
         cmbUrgency = new javax.swing.JComboBox<>();
         txtDiagnosis = new javax.swing.JTextField();
-        txtDuration = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        cmbTimeHour = new javax.swing.JComboBox<>();
+        cmbTimeMinute = new javax.swing.JComboBox<>();
+        cmbDurationHour = new javax.swing.JComboBox<>();
+        cmbDurationMinute = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Request ICU");
 
-        jLabel2.setText("Patient ID:");
+        jLabel2.setText("Patient:");
 
         jLabel3.setText("Date:");
 
@@ -97,9 +124,39 @@ public JComboBox<String> getUrgencyField() {
 
         jLabel7.setText("Expected Duration:");
 
+        jLabel8.setText("Hours:");
+
+        jLabel9.setText("Minutes:");
+
         btnSubmit.setText("Submit");
 
-        cmbUrgency.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPatientName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Loading patients..." }));
+
+        cmbUrgency.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "High", "Emergency" }));
+
+        // Initialize time picker (hours: 00-23, minutes: 00-59)
+        String[] hours = new String[24];
+        String[] minutes = new String[60];
+        for (int i = 0; i < 24; i++) {
+            hours[i] = String.format("%02d", i);
+        }
+        for (int i = 0; i < 60; i++) {
+            minutes[i] = String.format("%02d", i);
+        }
+        cmbTimeHour.setModel(new javax.swing.DefaultComboBoxModel<>(hours));
+        cmbTimeMinute.setModel(new javax.swing.DefaultComboBoxModel<>(minutes));
+
+        // Initialize duration picker (hours: 0-24, minutes: 0-59)
+        String[] durationHours = new String[25];
+        String[] durationMinutes = new String[60];
+        for (int i = 0; i < 25; i++) {
+            durationHours[i] = String.valueOf(i);
+        }
+        for (int i = 0; i < 60; i++) {
+            durationMinutes[i] = String.valueOf(i);
+        }
+        cmbDurationHour.setModel(new javax.swing.DefaultComboBoxModel<>(durationHours));
+        cmbDurationMinute.setModel(new javax.swing.DefaultComboBoxModel<>(durationMinutes));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,13 +173,24 @@ public JComboBox<String> getUrgencyField() {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtPatientID)
-                    .addComponent(txtDate)
-                    .addComponent(txtTime)
-                    .addComponent(cmbUrgency, 0, 131, Short.MAX_VALUE)
-                    .addComponent(txtDiagnosis)
-                    .addComponent(txtDuration))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cmbPatientName, 0, 131, Short.MAX_VALUE)
+                        .addComponent(cmbUrgency, 0, 131, Short.MAX_VALUE)
+                        .addComponent(txtDiagnosis)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cmbTimeHour, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbTimeMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cmbDurationHour, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbDurationMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(143, Short.MAX_VALUE)
@@ -142,15 +210,16 @@ public JComboBox<String> getUrgencyField() {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtPatientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbPatientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbTimeHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbTimeMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -162,7 +231,10 @@ public JComboBox<String> getUrgencyField() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txtDuration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbDurationHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(cmbDurationMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addGap(18, 18, 18)
                 .addComponent(btnSubmit)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -170,6 +242,7 @@ public JComboBox<String> getUrgencyField() {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
 
     /**
      * @param args the command line arguments
@@ -198,7 +271,13 @@ public JComboBox<String> getUrgencyField() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;
+    private javax.swing.JComboBox<String> cmbPatientName;
     private javax.swing.JComboBox<String> cmbUrgency;
+    private javax.swing.JComboBox<String> cmbTimeHour;
+    private javax.swing.JComboBox<String> cmbTimeMinute;
+    private javax.swing.JComboBox<String> cmbDurationHour;
+    private javax.swing.JComboBox<String> cmbDurationMinute;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -206,10 +285,8 @@ public JComboBox<String> getUrgencyField() {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField txtDate;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField txtDiagnosis;
-    private javax.swing.JTextField txtDuration;
-    private javax.swing.JTextField txtPatientID;
-    private javax.swing.JTextField txtTime;
     // End of variables declaration//GEN-END:variables
 }

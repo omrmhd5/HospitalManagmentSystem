@@ -392,7 +392,46 @@ public class DB {
     
     // Rana
     public void addICURequest(ICURequest req) {
-        icu.insertOne(Document.parse(gson.toJson(req)));
+        try {
+            // Manually create Document to avoid Gson serialization issues with RMI objects
+            Document patientDoc = new Document();
+            if (req.getPatient() != null) {
+                Patient p = req.getPatient();
+                patientDoc.append("patientID", p.getPatientID())
+                        .append("name", p.getName() != null ? p.getName() : "")
+                        .append("contactInfo", p.getContactInfo() != null ? p.getContactInfo() : "")
+                        .append("gender", p.getGender() != null ? p.getGender() : "")
+                        .append("age", p.getAge())
+                        .append("medicalHistory", p.getMedicalHistory() != null ? p.getMedicalHistory() : "");
+            }
+            
+            Document doctorDoc = new Document();
+            if (req.getDoctor() != null) {
+                Doctor d = req.getDoctor();
+                doctorDoc.append("doctorID", d.getDoctorID())
+                        .append("name", d.getName() != null ? d.getName() : "")
+                        .append("specialization", d.getSpecialization() != null ? d.getSpecialization() : "")
+                        .append("availabilitySchedule", d.getAvailabilitySchedule() != null ? d.getAvailabilitySchedule() : "");
+            }
+            
+            Document doc = new Document()
+                    .append("requestID", req.getRequestID())
+                    .append("date", req.getDate() != null ? req.getDate() : "")
+                    .append("time", req.getTime() != null ? req.getTime() : "")
+                    .append("urgency", req.getUrgency() != null ? req.getUrgency() : "")
+                    .append("diagnosis", req.getDiagnosis() != null ? req.getDiagnosis() : "")
+                    .append("expectedDuration", req.getExpectedDuration() != null ? req.getExpectedDuration() : "")
+                    .append("status", req.getStatus() != null ? req.getStatus() : "Pending")
+                    .append("patient", patientDoc)
+                    .append("doctor", doctorDoc);
+            
+            icu.insertOne(doc);
+            System.out.println("ICU Request is inserted.");
+        } catch (Exception e) {
+            System.err.println("Error saving ICU request to database: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save ICU request to database", e);
+        }
     }
     
     // Rana
