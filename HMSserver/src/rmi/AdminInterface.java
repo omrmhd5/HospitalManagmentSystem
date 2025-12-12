@@ -22,6 +22,9 @@ public interface AdminInterface extends Remote {
     // Update user: parameters (userID, fullName, email, role)
     boolean updateUser(int userID, String fullName, String email, String role) throws RemoteException;
     
+    // Salma - Report Generation
+    String generateReport(String reportType) throws RemoteException;
+    
     // Legacy method
     void print() throws RemoteException;
 }

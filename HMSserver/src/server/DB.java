@@ -686,6 +686,52 @@ public class DB {
         return drugs;
     }
     
+    // Salma
+    // Get all patients
+    public List<Patient> getAllPatients() {
+        List<Patient> patients = new ArrayList<>();
+        for (Document doc : patient.find()) {
+            try {
+                patients.add(gson.fromJson(doc.toJson(), Patient.class));
+            } catch (Exception e) {
+                System.err.println("Error parsing patient document: " + e.getMessage());
+            }
+        }
+        return patients;
+    }
+    
+    // Salma - Get patient collection for direct document access
+    public MongoCollection<Document> getPatientCollection() {
+        return patient;
+    }
+    
+    // Salma - Get all appointments
+    public List<Document> getAllAppointments() {
+        List<Document> appointments = new ArrayList<>();
+        for (Document doc : appointment.find()) {
+            appointments.add(doc);
+        }
+        return appointments;
+    }
+    
+    // Salma - Get all ICU requests 
+    public List<Document> getAllICURequests() {
+        List<Document> icuRequests = new ArrayList<>();
+        for (Document doc : icu.find()) {
+            icuRequests.add(doc);
+        }
+        return icuRequests;
+    }
+    
+    // Salma - Get all lab tests
+    public List<Document> getAllLabTests() {
+        List<Document> labTests = new ArrayList<>();
+        for (Document doc : labtest.find()) {
+            labTests.add(doc);
+        }
+        return labTests;
+    }
+    
     // ========================================
     // User DB
     // ========================================

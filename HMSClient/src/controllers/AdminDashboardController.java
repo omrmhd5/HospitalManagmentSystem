@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.loginRegister.RoleSelectController;
 import gui.AdminDashboard;
+import gui.GenerateReport;
 import gui.ManageUsers;
 import gui.loginRegister.RoleSelect;
 import java.awt.event.ActionEvent;
@@ -35,10 +36,8 @@ public class AdminDashboardController {
     class GenerateReportsAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JOptionPane.showMessageDialog(gui, 
-                "Generate Reports feature is coming soon!", 
-                "Info", 
-                JOptionPane.INFORMATION_MESSAGE);
+            GenerateReport generateReportGui = new GenerateReport();
+            GenerateReportController generateReportController = new GenerateReportController(generateReportGui, registry);
         }
     }
     
