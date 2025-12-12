@@ -809,6 +809,39 @@ public class DB {
         return icuRequests;
     }
     
+    // Chain of Responsibility - Get pending ICU requests
+    public List<Document> getPendingICURequests() {
+        List<Document> pendingRequests = new ArrayList<>();
+        for (Document doc : icu.find(Filters.eq("status", "Pending"))) {
+            pendingRequests.add(doc);
+        }
+        return pendingRequests;
+    }
+    
+    // Chain of Responsibility - Get ICU request by ID
+    public Document getICURequestByID(int requestID) {
+        return icu.find(Filters.eq("requestID", requestID)).first();
+    }
+    
+    // Chain of Responsibility - Update ICU request status
+    public boolean updateICURequestStatus(int requestID, String status) {
+        try {
+            Document doc = icu.find(Filters.eq("requestID", requestID)).first();
+            if (doc == null) {
+                return false;
+            }
+            
+            doc.put("status", status);
+            icu.replaceOne(Filters.eq("requestID", requestID), doc);
+            System.out.println("ICU Request " + requestID + " status updated to: " + status);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error updating ICU request status: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     // Salma - Get all lab tests
     public List<Document> getAllLabTests() {
         List<Document> labTests = new ArrayList<>();

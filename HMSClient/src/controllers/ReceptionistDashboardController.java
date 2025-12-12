@@ -48,13 +48,9 @@ public class ReceptionistDashboardController {
     class HandleICURequestsAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Placeholder for future implementation
-            JOptionPane.showMessageDialog(
-                gui,
-                "ICU Request handling will be implemented later.",
-                "Coming Soon",
-                JOptionPane.INFORMATION_MESSAGE
-            );
+            gui.HandleICURequests handleICURequestsGui = new gui.HandleICURequests("Receptionist");
+            HandleICURequestsController handleICURequestsController = 
+                new HandleICURequestsController(handleICURequestsGui, registry);
         }
     }
     

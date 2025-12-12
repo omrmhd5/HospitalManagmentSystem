@@ -44,6 +44,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         return btnLogout;
     }
     
+    public JButton getBtnHandleICURequests() {
+        return btnHandleICURequests;
+    }
+    
     public JLabel getLblWelcome() {
         return lblWelcome;
     }
@@ -61,6 +65,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnManageUsers = new javax.swing.JButton();
         btnGenerateReports = new javax.swing.JButton();
+        btnHandleICURequests = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,6 +92,13 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
+        btnHandleICURequests.setText("Handle ICU Requests");
+        btnHandleICURequests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHandleICURequestsActionPerformed(evt);
+            }
+        });
+
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +117,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnManageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnGenerateReports, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnHandleICURequests, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
@@ -122,7 +135,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addComponent(btnManageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(btnGenerateReports, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addGap(36, 36, 36)
+                .addComponent(btnHandleICURequests, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
@@ -137,6 +152,10 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void btnGenerateReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGenerateReportsActionPerformed
+
+    private void btnHandleICURequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHandleICURequestsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHandleICURequestsActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
@@ -179,6 +198,7 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerateReports;
+    private javax.swing.JButton btnHandleICURequests;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnManageUsers;
     private javax.swing.JLabel jLabel1;
