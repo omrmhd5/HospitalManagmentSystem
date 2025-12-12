@@ -267,18 +267,100 @@ public class DB {
     }
     
     // Rana
-    public Appointment getAppointmentByID(int id) {
-        Document doc = appointment.find(Filters.eq("appointmentID", id)).first();
-        return gson.fromJson(doc.toJson(), Appointment.class);
+    public Appointment getAppointmentByID(int id) throws RemoteException {
+    Document doc = appointment.find(Filters.eq("appointmentID", id)).first();
+
+    if (doc == null) {
+        return null;
     }
+
+    Appointment a = new Appointment(
+    doc.getInteger("appointmentID"),
+    null,
+    null,
+    doc.getString("date"),
+    doc.getString("time"),
+    this
+    );
+    a.setStatus(doc.getString("status"));
+
+
+    // Patient
+    Document pDoc = (Document) doc.get("patient");
+    if (pDoc != null) {
+        Patient p = new Patient(
+            0,
+            pDoc.getString("name"),
+            "", "",
+            pDoc.getInteger("patientID", 0),
+            pDoc.getString("contactInfo"),
+            pDoc.getString("gender"),
+            pDoc.getInteger("age", 0),
+            pDoc.getString("medicalHistory"),
+            "", "", "",
+            this
+        );
+        a.setPatient(p);
+    }
+
+    // Doctor
+    Document dDoc = (Document) doc.get("doctor");
+    if (dDoc != null) {
+        Doctor d = new Doctor(
+            0,
+            dDoc.getString("name"),
+            "", "",
+            dDoc.getInteger("doctorID", 0),
+            dDoc.getString("specialization"),
+            dDoc.getString("availabilitySchedule")
+        );
+        a.setDoctor(d);
+    }
+
+    return a;
+}
+
+
     
     // Rana
-    public void updateAppointment(Appointment a) {
-        appointment.replaceOne(
-            Filters.eq("appointmentID", a.getAppointmentID()),
-            Document.parse(gson.toJson(a))
-        );
+    public boolean updateAppointment(Appointment a) {
+
+    Document updateDoc = new Document("$set", new Document()
+        .append("date", a.getDate())
+        .append("time", a.getTime())
+        .append("status", a.getStatus())
+    );
+
+    // patient
+    if (a.getPatient() != null) {
+        updateDoc.get("$set", Document.class)
+            .append("patient", new Document()
+                .append("patientID", a.getPatient().getPatientID())
+                .append("name", a.getPatient().getName())
+                .append("contactInfo", a.getPatient().getContactInfo())
+                .append("gender", a.getPatient().getGender())
+                .append("age", a.getPatient().getAge())
+                .append("medicalHistory", a.getPatient().getMedicalHistory())
+            );
     }
+
+    // doctor
+    if (a.getDoctor() != null) {
+        updateDoc.get("$set", Document.class)
+            .append("doctor", new Document()
+                .append("doctorID", a.getDoctor().getDoctorID())
+                .append("name", a.getDoctor().getName())
+                .append("specialization", a.getDoctor().getSpecialization())
+                .append("availabilitySchedule", a.getDoctor().getAvailabilitySchedule())
+            );
+    }
+
+    return appointment.updateOne(
+        Filters.eq("appointmentID", a.getAppointmentID()),
+        updateDoc
+    ).getModifiedCount() > 0;
+}
+
     
     // Rana
     public void deleteAppointment(int id) {
@@ -293,6 +375,19 @@ public class DB {
             list.add(a);
         }
         return list;
+    }
+    
+        public int getNextAppointmentID() {
+        int maxID = 0;
+
+        for (Document doc : appointment.find()) {
+            Integer id = doc.getInteger("appointmentID");
+            if (id != null && id > maxID) {
+                maxID = id;
+            }
+        }
+
+        return maxID + 1;
     }
     
     // ========================================
@@ -403,6 +498,16 @@ public class DB {
         }
         return list;
     }
+    public int getDoctorIDByEmail(String email) {
+        Document doc = doctor.find(Filters.eq("email", email)).first();
+
+        if (doc == null) {
+            return -1; // Not found
+        }
+
+        Integer doctorID = doc.getInteger("doctorID");
+        return doctorID != null ? doctorID : -1;
+}
     
     
     // ========================================

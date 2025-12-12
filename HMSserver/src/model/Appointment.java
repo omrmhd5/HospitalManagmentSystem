@@ -45,20 +45,28 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     
     // Mahmoud
     @Override
-    public String bookAppointment(String patientName, String doctorName, String date, String time) throws RemoteException {
-        // Mahmoud - Get actual patient from database
+    public String bookAppointment(String patientName, String doctorName, String date, String time)
+            throws RemoteException {
+
         Patient patient = db.getPatientByName(patientName);
-        
-        // Mahmoud - Get actual doctor from database
         Doctor doctor = db.getDoctorByName(doctorName);
-        
-        // Mahmoud - Create Appointment object with actual patient and doctor data
-        Appointment appointment = new Appointment(0, patient, doctor, date, time, db);
-        
-        // Mahmoud
+
+        int newID = db.getNextAppointmentID();
+
+        Appointment appointment = new Appointment(
+                newID,
+                patient,
+                doctor,
+                date,
+                time,
+                db
+        );
+
         db.insertAppointment(appointment);
-        return "Appointment booked with " + doctorName + " on " + date + " at " + time;
+
+        return "Appointment booked successfully.\nAppointment ID: " + newID;
     }
+
 
     // Getters / setters
     public int getAppointmentID() { return appointmentID; }
@@ -81,24 +89,22 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     
     // Rana
     @Override
-    public String getAppointmentByID(int appointmentID) throws RemoteException {
-        Appointment appointment = db.getAppointmentByID(appointmentID);
-        
-        if (appointment == null) {
-            return "Appointment not found";
-        }
-        
-        String result = "Appointment Details\n" +
-                        "====================\n" +
-                        "Appointment ID: " + appointment.getAppointmentID() + "\n" +
-                        "Patient: " + appointment.getPatient().getName() + "\n" +
-                        "Doctor: " + appointment.getDoctor().getName() + "\n" +
-                        "Date: " + appointment.getDate() + "\n" +
-                        "Time: " + appointment.getTime() + "\n" +
-                        "Status: " + appointment.getStatus();
-        
-        return result;
+public String getAppointmentByID(int appointmentID) throws RemoteException {
+    Appointment a = db.getAppointmentByID(appointmentID);
+
+    if (a == null) {
+        return "Appointment not found.";
     }
+
+    return
+        "Appointment ID: " + a.getAppointmentID() + "\n" +
+        "Date: " + a.getDate() + "\n" +
+        "Time: " + a.getTime() + "\n" +
+        "Status: " + a.getStatus() + "\n" +
+        "Patient: " + (a.getPatient() != null ? a.getPatient().getName() : "N/A") + "\n" +
+        "Doctor: " + (a.getDoctor() != null ? a.getDoctor().getName() : "N/A");
+}
+
     
     // Rana
     @Override
@@ -133,29 +139,25 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     
     //Rana
     @Override
+    
     public boolean cancelAppointment(int appointmentID) throws RemoteException {
+
         Appointment appointment = db.getAppointmentByID(appointmentID);
-        
+
         if (appointment == null) {
             return false;
         }
-        
-        // Cannot cancel if already cancelled or completed
-        if (appointment.getStatus().equals("Cancelled") || appointment.getStatus().equals("Completed")) {
-            System.out.println("Appointment is already " + appointment.getStatus());
-            return false;
-        }
 
-        // Example rule: cannot cancel within 2 hours of appointment
-        if (!isCancellationAllowed()) {
-            System.out.println("Too late to cancel the appointment.");
+        if ("Cancelled".equalsIgnoreCase(appointment.getStatus()) ||
+            "Completed".equalsIgnoreCase(appointment.getStatus())) {
             return false;
         }
 
         appointment.setStatus("Cancelled");
-        db.updateAppointment(appointment);
-        return true;
+
+        return db.updateAppointment(appointment);  // ✅ REAL result
     }
+
 
     //Rana
     @Override
@@ -201,6 +203,12 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
             return false;
         }
     }
+   
+    @Override
+    public int getDoctorIDByEmail(String email) throws RemoteException {
+        return db.getDoctorIDByEmail(email);
+    }
+
 
     //Rana
     @Override
