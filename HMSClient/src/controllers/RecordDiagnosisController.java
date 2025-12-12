@@ -27,27 +27,39 @@ public class RecordDiagnosisController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-
                 DiagnosisInterface service =
                         (DiagnosisInterface) registry.lookup("diagnosis");
 
-                int diagnosisID = (int)(Math.random() * 100000);
-                int appointmentID = Integer.parseInt(gui.getAppointmentIDField().getText());
-                String patientName = gui.getPatientIDField().getText();
-                String doctorName = gui.getDoctorIDField().getText();
+                int diagnosisID = (int) (Math.random() * 100000);
+
+                // ✅ ONLY appointmentID
+                int appointmentID =
+                        Integer.parseInt(gui.getAppointmentIDField().getText());
+
                 String notes = gui.getClinicalNotesField().getText();
                 String diagnosisText = gui.getDiagnosisField().getText();
 
-                // Pass individual fields (no object!)
-                boolean ok = service.recordDiagnosis(diagnosisID, appointmentID, patientName, 
-                                                     doctorName, notes, diagnosisText);
+                // ✅ Option 1 call
+                boolean ok = service.recordDiagnosis(
+                        diagnosisID,
+                        appointmentID,
+                        notes,
+                        diagnosisText
+                );
 
-                JOptionPane.showMessageDialog(gui, ok ?
-                    "Diagnosis successfully recorded!" :
-                    "Failed to record diagnosis.");
+                JOptionPane.showMessageDialog(gui,
+                        ok ? "Diagnosis successfully recorded!"
+                           : "Failed to record diagnosis.");
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(gui,
+                        "Appointment ID must be a number",
+                        "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
 
             } catch (RemoteException | NotBoundException ex) {
-                Logger.getLogger(RecordDiagnosisController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RecordDiagnosisController.class.getName())
+                      .log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -566,8 +566,27 @@ public class DB {
     
     // Tasneem
     public void addDiagnosis(Diagnosis d) {
-        diagnosis.insertOne(Document.parse(gson.toJson(d)));
-    }
+
+    Document patientDoc = new Document()
+            .append("patientID", d.getPatient().getPatientID())
+            .append("name", d.getPatient().getName());
+
+    Document doctorDoc = new Document()
+            .append("doctorID", d.getDoctor().getDoctorID())
+            .append("name", d.getDoctor().getName());
+
+    Document doc = new Document()
+            .append("diagnosisID", d.getDiagnosisID())
+            .append("appointmentID", d.getAppointmentID())
+            .append("clinicalNotes", d.getClinicalNotes())
+            .append("diagnosis", d.getDiagnosis())
+            .append("patient", patientDoc)
+            .append("doctor", doctorDoc);
+
+    diagnosis.insertOne(doc);
+}
+
+
     
     // Tasneem
     public List<Diagnosis> getDiagnosesForPatient(int patientID) {
@@ -577,6 +596,7 @@ public class DB {
         }
         return list;
     }
+    
     
     // ========================================
     // Drug DB

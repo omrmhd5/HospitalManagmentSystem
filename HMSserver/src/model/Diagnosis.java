@@ -15,15 +15,17 @@ public class Diagnosis extends UnicastRemoteObject implements DiagnosisInterface
     private String diagnosis;
     private final DB db;
 
-    // Tasneem
+    // Constructor for RMI binding
     public Diagnosis(DB db) throws RemoteException {
         this.db = db;
     }
 
-    // Tasneem
+    // Internal constructor
     public Diagnosis(int diagnosisID, int appointmentID,
                      Patient patient, Doctor doctor,
-                     String clinicalNotes, String diagnosis, DB db) throws RemoteException {
+                     String clinicalNotes, String diagnosis, DB db)
+            throws RemoteException {
+
         this.db = db;
         this.diagnosisID = diagnosisID;
         this.appointmentID = appointmentID;
@@ -33,17 +35,47 @@ public class Diagnosis extends UnicastRemoteObject implements DiagnosisInterface
         this.diagnosis = diagnosis;
     }
 
-    // Tasneem
+    // ✅ OPTION 1 IMPLEMENTATION
     @Override
-    public boolean recordDiagnosis(int diagnosisID, int appointmentID, String patientName, 
-                                    String doctorName, String clinicalNotes, String diagnosis) throws RemoteException {
-        Patient patient = new Patient(0, patientName, "", "", 0, patientName, "", 0, "", "", "", "", db);
-        Doctor doctor = new Doctor(0, doctorName, "", "", 0, "", "");
-        Diagnosis diag = new Diagnosis(diagnosisID, appointmentID, patient, doctor, clinicalNotes, diagnosis, db);
+    public boolean recordDiagnosis(
+            int diagnosisID,
+            int appointmentID,
+            String clinicalNotes,
+            String diagnosisText
+    ) throws RemoteException {
+
+        // 1️⃣ Load appointment
+        Appointment appointment = db.getAppointmentByID(appointmentID);
+
+        if (appointment == null) {
+            return false;
+        }
+
+        // 2️⃣ Extract patient & doctor
+        Patient patient = appointment.getPatient();
+        Doctor doctor   = appointment.getDoctor();
+
+        if (patient == null || doctor == null) {
+            return false;
+        }
+
+        // 3️⃣ Create diagnosis
+        Diagnosis diag = new Diagnosis(
+                diagnosisID,
+                appointmentID,
+                patient,
+                doctor,
+                clinicalNotes,
+                diagnosisText,
+                db
+        );
+
+        // 4️⃣ Save
         db.addDiagnosis(diag);
         return true;
     }
 
+    // Getters
     public int getDiagnosisID() { return diagnosisID; }
     public int getAppointmentID() { return appointmentID; }
     public Patient getPatient() { return patient; }
