@@ -6,18 +6,20 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import rmi.ICUInterface;
 import server.DB;
+import StateDesignPattern.ICUState;
+import StateDesignPattern.PendingState;
 
 public class ICURoom extends UnicastRemoteObject implements ICUInterface {
 
     private int roomID;
     private String roomNumber;
-    private String state;
+    private ICUState state;
     private final DB db;
 
     // Rana
     public ICURoom(DB db) throws RemoteException {
         this.db = db;
-        this.state = "Available";
+         this.state = new PendingState();
     }
 
     // Rana
@@ -25,12 +27,12 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
         this.db = db;
         this.roomID = roomID;
         this.roomNumber = roomNumber;
-        this.state = "Available";
+        this.state = new PendingState();
     }
 
     // Rana
-    public void handleRequest(int doctorID) {
-        this.state = "Requested";
+    public void handleRequest() {
+          state.handleRequest(this);
     }
 
     // Rana
@@ -53,6 +55,7 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
         
         ICURequest req = new ICURequest(requestID, doctor, patient, date, time, urgency, diagnosis, expectedDuration);
         db.addICURequest(req);
+        handleRequest();
         return true;
     }
 
@@ -76,6 +79,11 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
         
         return result.toString();
     }
+    
+    @Override
+    public String getCurrentICUState() throws RemoteException {
+        return getState(); // returns state.getStateName()
+    }
 
     public int getRoomID() { return roomID; }
     public void setRoomID(int roomID) { this.roomID = roomID; }
@@ -83,6 +91,12 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
     public String getRoomNumber() { return roomNumber; }
     public void setRoomNumber(String roomNumber) { this.roomNumber = roomNumber; }
     
-    public String getState() { return state; }
-    public void setState(String state) { this.state = state; }
+   public void setState(ICUState state) {
+    this.state = state;
+}
+
+public String getState() {
+    return state.getStateName();
+}
+
 }
