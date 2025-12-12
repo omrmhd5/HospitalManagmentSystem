@@ -25,6 +25,8 @@ public class RequestICU extends javax.swing.JFrame {
     public RequestICU() {
         initComponents();
         initializeUrgencyComboBox();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
     
     /**
@@ -35,6 +37,8 @@ public class RequestICU extends javax.swing.JFrame {
         this.doctorEmail = doctorEmail;
         initComponents();
         initializeUrgencyComboBox();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
     
     public String getDoctorName() {

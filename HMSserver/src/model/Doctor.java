@@ -4,8 +4,9 @@ import DesignPattern.Strategy.DoctorRequestStrategy;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import ObserverDesignPattern.AppointmentObserver;
 
-public class Doctor extends User implements Serializable {
+public class Doctor extends User implements Serializable, AppointmentObserver  {
 
     private int doctorID;
     private String specialization;
@@ -41,8 +42,17 @@ public class Doctor extends User implements Serializable {
         }
     }
 
-    public void updateAppointment(Appointment appointment, String message) {
-        appointment.updateStatus(message);
+//    public void updateAppointment(Appointment appointment, String message) {
+//        appointment.updateStatus(message);
+//    }
+        @Override
+    public void update(Appointment appointment, String message) {
+        System.out.println(
+            "Doctor " + getName() +
+            " notified about Appointment ID " +
+            appointment.getAppointmentID() +
+            ": " + message
+        );
     }
 
     public int getDoctorID() { return doctorID; }

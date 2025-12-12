@@ -4,8 +4,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import rmi.AppointmentInterface;
 import server.DB;
+import  ObserverDesignPattern.AppointmentSubject;
+import  ObserverDesignPattern.AppointmentObserver;
+import java.util.ArrayList;
 
-public class Appointment extends UnicastRemoteObject implements AppointmentInterface {
+public class Appointment extends UnicastRemoteObject implements AppointmentInterface, AppointmentSubject  {
 
     private int appointmentID;
     private Patient patient;
@@ -14,6 +17,8 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     private String time;
     private String status;
     private final DB db;
+    private List<AppointmentObserver> observers = new ArrayList<>();
+
   
    // Mahmoud
     public Appointment(DB db) throws RemoteException{
@@ -39,9 +44,11 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
     }
 
 
-    public void updateStatus(String status) {
-        this.status = status;
-    }
+   public void updateStatus(String status) throws RemoteException {
+    this.status = status;
+    notifyObservers("Appointment status changed to: " + status);
+}
+
     
     // Mahmoud
     @Override
@@ -63,9 +70,37 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
         );
 
         db.insertAppointment(appointment);
+        appointment.addObserver(patient);
+        appointment.addObserver(doctor);
+        AppointmentObserver receptionist = null;
+        appointment.addObserver(receptionist);
+
+            
+
 
         return "Appointment booked successfully.\nAppointment ID: " + newID;
     }
+    
+    //Tasneem
+    @Override
+    public void addObserver(AppointmentObserver o) {
+        if (!observers.contains(o)) {
+            observers.add(o);
+        }
+    }
+
+    @Override
+    public void removeObserver(AppointmentObserver o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(String message) throws RemoteException {
+        for (AppointmentObserver o : observers) {
+            o.update(this, message);
+        }
+    }
+
 
 
     // Getters / setters

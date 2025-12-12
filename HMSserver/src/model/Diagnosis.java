@@ -35,7 +35,7 @@ public class Diagnosis extends UnicastRemoteObject implements DiagnosisInterface
         this.diagnosis = diagnosis;
     }
 
-    // ✅ OPTION 1 IMPLEMENTATION
+  
     @Override
     public boolean recordDiagnosis(
             int diagnosisID,
