@@ -5,8 +5,9 @@ import server.DB;
 
 import java.util.ArrayList;
 import java.util.List;
+import ObserverDesignPattern.AppointmentObserver;
 
-public class Patient extends User implements PatientInterface {
+public class Patient extends User implements PatientInterface, AppointmentObserver {
 
     private int patientID;
     private String name;
@@ -67,9 +68,17 @@ public class Patient extends User implements PatientInterface {
         return readOnly;
     }
 
-    public void updateAppointment(Appointment appointment, String message) {
-        appointment.updateStatus(message);
-    }
+//    public void updateAppointment(Appointment appointment, String message) {
+//        appointment.updateStatus(message);
+//    }
+    //Tasnim
+    @Override
+    public void update(Appointment appointment, String message) {
+    System.out.println(
+        "Patient " + getName() +
+        " notified: " + message
+    );
+}
     
     // Mahmoud
     @Override

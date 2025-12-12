@@ -2,8 +2,9 @@ package model;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import ObserverDesignPattern.AppointmentObserver;
 
-public class Receptionist extends User implements Serializable {
+public class Receptionist extends User implements Serializable, AppointmentObserver  {
 
     private int receptionistID;
     private String department;
@@ -28,8 +29,17 @@ public class Receptionist extends User implements Serializable {
         return a;
     }
 
-    public void updateAppointment(Appointment appointment, String message) {
-        appointment.updateStatus(message);
+//    public void updateAppointment(Appointment appointment, String message) {
+//        appointment.updateStatus(message);
+//    }
+    
+    @Override
+    public void update(Appointment appointment, String message) {
+        System.out.println(
+            "Receptionist notified for Appointment ID " +
+            appointment.getAppointmentID() +
+            ": " + message
+        );
     }
 
     public int getReceptionistID() { return receptionistID; }
