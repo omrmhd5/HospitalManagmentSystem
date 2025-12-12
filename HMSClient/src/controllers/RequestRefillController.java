@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import rmi.DoctorRequestInterface;
 import rmi.PharmacyInterface;
 /**
  *
@@ -144,12 +145,23 @@ public class RequestRefillController {
                     return;
                 }
                 
-                PharmacyInterface pharmacy = (PharmacyInterface) registry.lookup("pharmacy");
-                String result = pharmacy.requestMedicineRefill(pharmacistID, medicineName, quantity);
-                gui.setOutputMessage(result);
+                // Use Strategy Pattern via DoctorRequestInterface
+                DoctorRequestInterface doctorRequestService = (DoctorRequestInterface) registry.lookup("doctorrequest");
                 
-                if (result.contains("successfully")) {
+                // Execute medicine refill request using strategy pattern
+                boolean success = doctorRequestService.executeMedicineRefillRequest(
+                    gui.getDoctorEmail(),
+                    "", // prescriptionID (can be empty for refill requests)
+                    medicineName,
+                    pharmacistID,
+                    quantity
+                );
+                
+                if (success) {
+                    gui.setOutputMessage("Medicine refill request submitted successfully!");
                     gui.getTxtQuantity().setText("");
+                } else {
+                    gui.setOutputMessage("Failed to submit medicine refill request. Please try again.");
                 }
 
             } catch (RemoteException | NotBoundException ex) {

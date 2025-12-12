@@ -14,7 +14,7 @@ import model.Appointment;
 import model.Diagnosis;
 import model.Doctor;
 import model.Drug;
-import model.ICURequest;
+import DesignPattern.Strategy.ICURequest;
 import model.LabTest;
 import model.MedicineRefillRequest;
 import model.Patient;

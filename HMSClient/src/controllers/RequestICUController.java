@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import rmi.ICUInterface;
+import rmi.DoctorRequestInterface;
 import rmi.PatientInterface;
 
 public class RequestICUController {
@@ -60,11 +60,11 @@ public class RequestICUController {
                     return;
                 }
 
-                ICUInterface service = (ICUInterface) registry.lookup("icu");
+                // Use Strategy Pattern via DoctorRequestInterface
+                DoctorRequestInterface doctorRequestService = (DoctorRequestInterface) registry.lookup("doctorrequest");
 
                 // Collect and format all fields from GUI
-                int requestID = (int) (Math.random() * 100000);
-                String doctorName = gui.getDoctorName(); // Use logged-in doctor's name
+                String doctorEmail = gui.getDoctorEmail(); // Use logged-in doctor's email
                 String selectedPatient = (String) gui.getCmbPatientName().getSelectedItem();
                 String urgency = gui.getUrgencyField().getSelectedItem().toString();
                 String diagnosis = gui.getDiagnosisField().getText().trim();
@@ -84,10 +84,16 @@ public class RequestICUController {
                 String durationMinute = (String) gui.getCmbDurationMinute().getSelectedItem();
                 String expectedDuration = durationHour + " hours " + durationMinute + " minutes";
 
-                // Submit the request
-                boolean ok = service.createICURequest(requestID, doctorName, selectedPatient, 
-                                                      formattedDate, formattedTime, urgency, 
-                                                      diagnosis, expectedDuration);
+                // Execute ICU request using strategy pattern
+                boolean ok = doctorRequestService.executeICURequest(
+                    doctorEmail,
+                    selectedPatient,
+                    formattedDate,
+                    formattedTime,
+                    urgency,
+                    diagnosis,
+                    expectedDuration
+                );
 
                 if (ok) {
                     JOptionPane.showMessageDialog(gui, 

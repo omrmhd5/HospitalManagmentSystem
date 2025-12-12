@@ -1,5 +1,6 @@
 package model;
 
+import DesignPattern.Strategy.ICURequest;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;

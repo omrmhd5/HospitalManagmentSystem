@@ -33,9 +33,9 @@ public class Doctor extends User implements Serializable {
         this.requestStrategy = strategy;
     }
 
-    public void executeRequest(Appointment appointment) {
+    public void executeRequest() {
         if (requestStrategy != null) {
-            requestStrategy.executeRequest(this, appointment);
+            requestStrategy.executeRequest(this);
         } else {
             System.out.println("No request strategy assigned.");
         }

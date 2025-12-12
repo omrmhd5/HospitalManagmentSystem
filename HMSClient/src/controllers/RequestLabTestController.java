@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import rmi.AppointmentInterface;
+import rmi.DoctorRequestInterface;
 import rmi.LabTestInterface;
 import rmi.PatientInterface;
 
@@ -309,18 +310,18 @@ public class RequestLabTestController {
                 patientDOB = sdf.format(selectedDate);
             }
             
-            // Mahmoud
-            LabTestInterface labTest = (LabTestInterface) registry.lookup("labtest");
-            // Mahmoud
-            boolean success = labTest.submitLabTestRequest(
-                doctorName,
+            // Use Strategy Pattern via DoctorRequestInterface
+            DoctorRequestInterface doctorRequestService = (DoctorRequestInterface) registry.lookup("doctorrequest");
+            
+            // Execute lab test request using strategy pattern
+            boolean success = doctorRequestService.executeLabTestRequest(
                 doctorEmail,
-                doctorPhone,
                 testType,
                 selectedPatient,
                 patientAge,
                 patientGender,
-                patientDOB
+                patientDOB,
+                doctorPhone
             );
             
             if (success) {

@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 public class RequestRefill extends javax.swing.JFrame {
     
     private static final Logger logger = Logger.getLogger(RequestRefill.class.getName());
+    private String doctorName;
+    private String doctorEmail;
 
     /**
      * Creates new form java
@@ -22,6 +24,25 @@ public class RequestRefill extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null); // Center the window
         setTitle("Request Medicine Refill");
+    }
+    
+    /**
+     * Creates new form with doctor information
+     */
+    public RequestRefill(String doctorName, String doctorEmail) {
+        this.doctorName = doctorName;
+        this.doctorEmail = doctorEmail;
+        initComponents();
+        setLocationRelativeTo(null); // Center the window
+        setTitle("Request Medicine Refill");
+    }
+    
+    public String getDoctorName() {
+        return doctorName;
+    }
+    
+    public String getDoctorEmail() {
+        return doctorEmail;
     }
 
     /**

@@ -13,12 +13,14 @@ import model.ICURoom;
 import model.LabTechnician;
 import model.LabTest;
 import model.Patient;
+import model.DoctorRequestService;
 import model.Pharmacist;
 import model.Prescription;
 import rmi.AdminInterface;
 import rmi.AppointmentInterface;
 import rmi.AuthInterface;
 import rmi.DiagnosisInterface;
+import rmi.DoctorRequestInterface;
 import rmi.ICUInterface;
 import rmi.LabTechnicianInterface;
 import rmi.LabTestInterface;
@@ -46,6 +48,9 @@ public class RMIServer {
         ICUInterface icuService = new ICURoom(db);
         DiagnosisInterface diagnosisService = new Diagnosis(db);
         AuthInterface authService = new AuthService(db);
+        DoctorRequestInterface doctorRequestService = new DoctorRequestService(
+            db, labTestService, pharmacyService, icuService
+        );
         
         // Create registry
         Registry registry = LocateRegistry.createRegistry(1099);
@@ -61,6 +66,7 @@ public class RMIServer {
         registry.bind("icu", icuService);
         registry.bind("diagnosis", diagnosisService);
         registry.bind("auth", authService);
+        registry.bind("doctorrequest", doctorRequestService);
         
         System.out.println("The server is ready");
     }

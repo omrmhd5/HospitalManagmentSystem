@@ -106,7 +106,7 @@ public class DoctorDashboardController {
     class RequestRefillAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            RequestRefill requestRefillGui = new RequestRefill();
+            RequestRefill requestRefillGui = new RequestRefill(gui.getDoctorName(), gui.getDoctorEmail());
             requestRefillGui.setVisible(true);
             RequestRefillController requestRefillController = new RequestRefillController(requestRefillGui, registry);
         }
