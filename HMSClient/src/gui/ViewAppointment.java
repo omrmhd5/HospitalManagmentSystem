@@ -23,12 +23,10 @@ public class ViewAppointment extends javax.swing.JFrame {
     initComponents();
     txtDoctorID.setText(String.valueOf(doctorID));
     txtDoctorID.setEditable(false);
-    this.setLocationRelativeTo(null);
     this.setVisible(true);
 }
     public ViewAppointment() {
     initComponents();
-    this.setLocationRelativeTo(null);
     this.setVisible(true);
 }
 
@@ -109,6 +107,24 @@ public void setOutput(String txt) {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(500, 400);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        btnSearch.setBackground(new java.awt.Color(0, 0, 153));
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        
+        // Set title label color (dark blue background, white text) with expanded size
+        jLabel1.setBackground(new java.awt.Color(0, 0, 153));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setOpaque(true);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     /**

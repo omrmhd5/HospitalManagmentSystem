@@ -241,6 +241,18 @@ public class ManageDrugInventory extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(700, 600);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Ensure title label is opaque with expanded size (already has dark blue background and white text)
+        jLabel1.setOpaque(true);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbDrugIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDrugIDActionPerformed

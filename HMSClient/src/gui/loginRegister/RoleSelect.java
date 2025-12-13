@@ -18,9 +18,8 @@ public class RoleSelect extends javax.swing.JFrame {
      * Creates new form RoleSelect
      */
     public RoleSelect() {
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
         initComponents();
+        this.setVisible(true);
     }
     
 //    public JTextField getjTextField1() {
@@ -65,9 +64,15 @@ public class RoleSelect extends javax.swing.JFrame {
         ContinueButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hospital Management System - Select Role");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Log in as");
+        jLabel1.setBackground(new java.awt.Color(0, 0, 153));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setOpaque(true);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
         Options.add(jRadioButton1);
         jRadioButton1.setText("Patient");
@@ -93,20 +98,39 @@ public class RoleSelect extends javax.swing.JFrame {
         jRadioButton6.setText("Admin");
 
         ContinueButton.setText("Continue");
+        ContinueButton.setBackground(new java.awt.Color(0, 0, 153));
+        ContinueButton.setForeground(new java.awt.Color(255, 255, 255));
         ContinueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ContinueButtonActionPerformed(evt);
             }
         });
+        
+        // Set background color for each radio button option (light blue)
+        jRadioButton1.setBackground(new java.awt.Color(153, 204, 255));
+        jRadioButton2.setBackground(new java.awt.Color(153, 204, 255));
+        jRadioButton3.setBackground(new java.awt.Color(153, 204, 255));
+        jRadioButton4.setBackground(new java.awt.Color(153, 204, 255));
+        jRadioButton5.setBackground(new java.awt.Color(153, 204, 255));
+        jRadioButton6.setBackground(new java.awt.Color(153, 204, 255));
+        jRadioButton1.setOpaque(true);
+        jRadioButton2.setOpaque(true);
+        jRadioButton3.setOpaque(true);
+        jRadioButton4.setOpaque(true);
+        jRadioButton5.setOpaque(true);
+        jRadioButton6.setOpaque(true);
 
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(133, 133, 133)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, 50)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(50, 50))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -148,6 +172,10 @@ public class RoleSelect extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(500, 400);
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed

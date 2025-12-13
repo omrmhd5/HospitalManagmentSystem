@@ -6,6 +6,11 @@ package gui;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -19,14 +24,12 @@ public class ViewProfile extends javax.swing.JFrame {
     private String patientEmail;
     
     public ViewProfile() {
-        this.setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
     }
     
     public ViewProfile(String patientEmail) {
         this.patientEmail = patientEmail;
-        this.setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
     }
@@ -44,8 +47,20 @@ public class ViewProfile extends javax.swing.JFrame {
         return jTextField2;
     }
     
-    public JTextField getGenderField() {
-        return jTextField3;
+    public String getGender() {
+        if (rdbMale.isSelected()) return "Male";
+        if (rdbFemale.isSelected()) return "Female";
+        return null;
+    }
+    
+    public void setGender(String gender) {
+        if (gender != null) {
+            if (gender.equalsIgnoreCase("Male")) {
+                rdbMale.setSelected(true);
+            } else if (gender.equalsIgnoreCase("Female")) {
+                rdbFemale.setSelected(true);
+            }
+        }
     }
     
     public JTextField getAddressField() {
@@ -59,6 +74,58 @@ public class ViewProfile extends javax.swing.JFrame {
     public JButton getEditButton() {
         return jButton1;
     }
+    
+    // Validation methods
+    public boolean validateForm() {
+        // Validate name
+        if (jTextField1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name cannot be empty!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            jTextField1.requestFocus();
+            return false;
+        }
+        
+        // Validate date of birth
+        if (jTextField2.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Date of Birth cannot be empty!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            jTextField2.requestFocus();
+            return false;
+        }
+        
+        // Validate gender
+        if (!rdbMale.isSelected() && !rdbFemale.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Please select a gender!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        // Validate address
+        if (jTextField4.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Address cannot be empty!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            jTextField4.requestFocus();
+            return false;
+        }
+        
+        // Validate phone number
+        if (!validatePhoneNumber()) {
+            JOptionPane.showMessageDialog(this, "Phone number must be a valid number!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            jTextField5.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private boolean validatePhoneNumber() {
+        String phoneNumber = jTextField5.getText().trim();
+        if (phoneNumber.isEmpty()) {
+            return false;
+        }
+        try {
+            Long.parseLong(phoneNumber);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,6 +136,7 @@ public class ViewProfile extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        genderGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -78,24 +146,40 @@ public class ViewProfile extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        rdbMale = new javax.swing.JRadioButton();
+        rdbFemale = new javax.swing.JRadioButton();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Name:");
+        jLabel1.setForeground(new java.awt.Color(64, 64, 64));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12));
 
         jLabel2.setText("Date of Birth");
+        jLabel2.setForeground(new java.awt.Color(64, 64, 64));
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12));
 
         jLabel3.setText("Gender:");
+        jLabel3.setForeground(new java.awt.Color(64, 64, 64));
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12));
 
         jLabel4.setText("Address:");
+        jLabel4.setForeground(new java.awt.Color(64, 64, 64));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12));
 
         jLabel5.setText("Phone Number:");
+        jLabel5.setForeground(new java.awt.Color(64, 64, 64));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setText("View Profile");
+        jLabel7.setBackground(new java.awt.Color(0, 0, 153));
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setOpaque(true);
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
         jButton1.setText("Edit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -105,19 +189,61 @@ public class ViewProfile extends javax.swing.JFrame {
         });
 
         jTextField1.setEnabled(false);
+        jTextField1.setPreferredSize(new java.awt.Dimension(200, 30));
+        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
+        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 12));
 
         jTextField2.setEnabled(false);
+        jTextField2.setPreferredSize(new java.awt.Dimension(200, 30));
+        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
+        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 12));
 
-        jTextField3.setEnabled(false);
+        genderGroup.add(rdbMale);
+        rdbMale.setText("Male");
+        rdbMale.setEnabled(false);
+        rdbMale.setBackground(new java.awt.Color(153, 204, 255));
+        rdbMale.setOpaque(true);
+        
+        genderGroup.add(rdbFemale);
+        rdbFemale.setText("Female");
+        rdbFemale.setEnabled(false);
+        rdbFemale.setBackground(new java.awt.Color(153, 204, 255));
+        rdbFemale.setOpaque(true);
 
         jTextField4.setEnabled(false);
+        jTextField4.setPreferredSize(new java.awt.Dimension(200, 30));
+        jTextField4.setForeground(new java.awt.Color(0, 0, 0));
+        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 12));
 
         jTextField5.setEnabled(false);
+        jTextField5.setPreferredSize(new java.awt.Dimension(200, 30));
+        jTextField5.setForeground(new java.awt.Color(0, 0, 0));
+        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        
+        // Add phone number validation
+        jTextField5.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validatePhoneNumberField();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validatePhoneNumberField();
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validatePhoneNumberField();
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(30, 30)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(30, 30))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,13 +256,15 @@ public class ViewProfile extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(159, Short.MAX_VALUE))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rdbMale)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdbFemale))
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(30, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1)
@@ -158,7 +286,8 @@ public class ViewProfile extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rdbMale)
+                    .addComponent(rdbFemale))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
@@ -173,11 +302,40 @@ public class ViewProfile extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Minimize the window size and center
+        setSize(400, 450);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        jButton1.setBackground(new java.awt.Color(0, 0, 153));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // Validate form before proceeding
+        if (validateForm()) {
+            // Form is valid, proceed with edit action
+            // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void validatePhoneNumberField() {
+        String phoneNumber = jTextField5.getText().trim();
+        if (!phoneNumber.isEmpty()) {
+            try {
+                Long.parseLong(phoneNumber);
+                jTextField5.setForeground(new java.awt.Color(0, 0, 0));
+            } catch (NumberFormatException e) {
+                jTextField5.setForeground(new java.awt.Color(255, 0, 0));
+            }
+        } else {
+            jTextField5.setForeground(new java.awt.Color(0, 0, 0));
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -215,6 +373,7 @@ public class ViewProfile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup genderGroup;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -222,9 +381,10 @@ public class ViewProfile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JRadioButton rdbFemale;
+    private javax.swing.JRadioButton rdbMale;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables

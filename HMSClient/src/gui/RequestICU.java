@@ -25,7 +25,6 @@ public class RequestICU extends javax.swing.JFrame {
     public RequestICU() {
         initComponents();
         initializeUrgencyComboBox();
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     
@@ -37,7 +36,6 @@ public class RequestICU extends javax.swing.JFrame {
         this.doctorEmail = doctorEmail;
         initComponents();
         initializeUrgencyComboBox();
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     
@@ -266,6 +264,24 @@ public JComboBox<String> getUrgencyField() {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(550, 500);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        btnSubmit.setBackground(new java.awt.Color(0, 0, 153));
+        btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
+        
+        // Set title label color (dark blue background, white text) with expanded size
+        jLabel1.setBackground(new java.awt.Color(0, 0, 153));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setOpaque(true);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
     }// </editor-fold>//GEN-END:initComponents
 
 

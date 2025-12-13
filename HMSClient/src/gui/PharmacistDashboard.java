@@ -12,7 +12,6 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         this.pharmacistEmail = pharmacistEmail;
         initComponents();
         lblWelcome.setText("Welcome, " + pharmacistName);
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     
@@ -78,6 +77,26 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(600, 500);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        btnManageDrugInventory.setBackground(new java.awt.Color(0, 0, 153));
+        btnManageDrugInventory.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setBackground(new java.awt.Color(0, 0, 153));
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        
+        // Set title label color (dark blue background, white text) with expanded size
+        lblWelcome.setBackground(new java.awt.Color(0, 0, 153));
+        lblWelcome.setForeground(new java.awt.Color(255, 255, 255));
+        lblWelcome.setOpaque(true);
+        lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblWelcome.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageDrugInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDrugInventoryActionPerformed

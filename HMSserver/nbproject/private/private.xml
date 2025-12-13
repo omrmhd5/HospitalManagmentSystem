@@ -3,13 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/omarm/OneDrive/Documents/GitHub/HospitalManagmentSystem/HMSserver/src/model/Patient.java</file>
-            <file>file:/C:/Users/omarm/OneDrive/Documents/GitHub/HospitalManagmentSystem/HMSserver/src/server/DB.java</file>
-            <file>file:/C:/Users/omarm/OneDrive/Documents/GitHub/HospitalManagmentSystem/HMSserver/src/server/RMIServer.java</file>
-            <file>file:/C:/Users/omarm/OneDrive/Documents/GitHub/HospitalManagmentSystem/HMSserver/src/rmi/PatientInterface.java</file>
-            <file>file:/C:/Users/omarm/OneDrive/Documents/GitHub/HospitalManagmentSystem/HMSserver/src/model/Pharmacist.java</file>
-            <file>file:/C:/Users/omarm/OneDrive/Documents/GitHub/HospitalManagmentSystem/HMSserver/src/model/LabTechnician.java</file>
-            <file>file:/C:/Users/omarm/OneDrive/Documents/GitHub/HospitalManagmentSystem/HMSserver/src/model/LabTest.java</file>
+            <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/server/RMIServer.java</file>
         </group>
     </open-files>
 </project-private>

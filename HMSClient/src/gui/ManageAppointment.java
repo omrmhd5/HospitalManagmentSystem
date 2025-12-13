@@ -27,7 +27,6 @@ public class ManageAppointment extends javax.swing.JFrame {
     lblNewTime.setVisible(false);
     btnConfirm.setVisible(false);
 
-    this.setLocationRelativeTo(null);
     this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);  // FIX
     this.setVisible(true);
     this.toFront();           
@@ -142,10 +141,6 @@ public void showRescheduleFields() {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(Cancel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -165,9 +160,6 @@ public void showRescheduleFields() {
                                 .addComponent(Search)))
                         .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNewDate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblNewTime, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -177,7 +169,14 @@ public void showRescheduleFields() {
                             .addComponent(txtNewTime, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnConfirm)
-                        .addGap(51, 51, 51))))
+                        .addGap(51, 51, 51))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(50, 50)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(50, 50))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,6 +209,32 @@ public void showRescheduleFields() {
         );
 
         pack();
+        
+        // Enlarge the window size
+        setSize(650, 550);
+        
+        // Center the window
+        setLocationRelativeTo(null);
+        
+        // Set consistent styling
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        Search.setBackground(new java.awt.Color(0, 0, 153));
+        Search.setForeground(new java.awt.Color(255, 255, 255));
+        Cancel.setBackground(new java.awt.Color(0, 0, 153));
+        Cancel.setForeground(new java.awt.Color(255, 255, 255));
+        Reschedule.setBackground(new java.awt.Color(0, 0, 153));
+        Reschedule.setForeground(new java.awt.Color(255, 255, 255));
+        btnConfirm.setBackground(new java.awt.Color(0, 0, 153));
+        btnConfirm.setForeground(new java.awt.Color(255, 255, 255));
+        
+        // Set title label color (dark blue background, white text) with expanded size
+        jLabel1.setBackground(new java.awt.Color(0, 0, 153));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setOpaque(true);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtAppointmentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAppointmentIDActionPerformed

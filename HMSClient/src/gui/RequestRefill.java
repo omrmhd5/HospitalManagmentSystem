@@ -22,7 +22,6 @@ public class RequestRefill extends javax.swing.JFrame {
      */
     public RequestRefill() {
         initComponents();
-        setLocationRelativeTo(null); // Center the window
         setTitle("Request Medicine Refill");
     }
     
@@ -33,7 +32,6 @@ public class RequestRefill extends javax.swing.JFrame {
         this.doctorName = doctorName;
         this.doctorEmail = doctorEmail;
         initComponents();
-        setLocationRelativeTo(null); // Center the window
         setTitle("Request Medicine Refill");
     }
     
@@ -121,6 +119,17 @@ public class RequestRefill extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(450, 350);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        btnSendRequest.setBackground(new java.awt.Color(0, 0, 153));
+        btnSendRequest.setForeground(new java.awt.Color(255, 255, 255));
     }// </editor-fold>//GEN-END:initComponents
 
     public javax.swing.JComboBox<String> getCmbPharmacist() {

@@ -12,7 +12,6 @@ public class HandleICURequests extends javax.swing.JFrame {
         this.handlerRole = handlerRole;
         initComponents();
         lblTitle.setText("Handle ICU Requests - " + handlerRole);
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     
@@ -196,6 +195,32 @@ public class HandleICURequests extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        btnRefresh.setBackground(new java.awt.Color(0, 0, 153));
+        btnRefresh.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewDetails.setBackground(new java.awt.Color(0, 0, 153));
+        btnViewDetails.setForeground(new java.awt.Color(255, 255, 255));
+        btnApprove.setBackground(new java.awt.Color(0, 0, 153));
+        btnApprove.setForeground(new java.awt.Color(255, 255, 255));
+        btnReject.setBackground(new java.awt.Color(0, 0, 153));
+        btnReject.setForeground(new java.awt.Color(255, 255, 255));
+        btnClose.setBackground(new java.awt.Color(0, 0, 153));
+        btnClose.setForeground(new java.awt.Color(255, 255, 255));
+        
+        // Set title label color (dark blue background, white text) with expanded size
+        lblTitle.setBackground(new java.awt.Color(0, 0, 153));
+        lblTitle.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitle.setOpaque(true);
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed

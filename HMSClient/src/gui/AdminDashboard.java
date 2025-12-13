@@ -13,7 +13,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         this.adminEmail = adminEmail;
         initComponents();
         lblWelcome.setText("Welcome, " + adminName);
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     
@@ -143,6 +142,30 @@ public class AdminDashboard extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(600, 500);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        btnManageUsers.setBackground(new java.awt.Color(0, 0, 153));
+        btnManageUsers.setForeground(new java.awt.Color(255, 255, 255));
+        btnGenerateReports.setBackground(new java.awt.Color(0, 0, 153));
+        btnGenerateReports.setForeground(new java.awt.Color(255, 255, 255));
+        btnHandleICURequests.setBackground(new java.awt.Color(0, 0, 153));
+        btnHandleICURequests.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setBackground(new java.awt.Color(0, 0, 153));
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        
+        // Set title label color (dark blue background, white text) with expanded size
+        lblWelcome.setBackground(new java.awt.Color(0, 0, 153));
+        lblWelcome.setForeground(new java.awt.Color(255, 255, 255));
+        lblWelcome.setOpaque(true);
+        lblWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblWelcome.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageUsersActionPerformed

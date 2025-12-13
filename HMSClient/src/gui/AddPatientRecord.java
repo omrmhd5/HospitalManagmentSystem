@@ -162,6 +162,19 @@ public class AddPatientRecord extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(600, 600);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
+        
+        // Set button colors (dark blue background, white text)
+        btnAddPatient.setBackground(new java.awt.Color(0, 0, 153));
+        btnAddPatient.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddRecord.setBackground(new java.awt.Color(0, 0, 153));
+        btnAddRecord.setForeground(new java.awt.Color(255, 255, 255));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtPatientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatientIDActionPerformed
