@@ -208,8 +208,17 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
         String newStatus = request.getStatus();
         String resultMessage;
         
-        // Check if the current handler role matches the handler that processed the request
-        if (handlerThatProcessed != null && handlerThatProcessed.equalsIgnoreCase(handlerRole)) {
+        // Admin has final authority and can approve/reject any urgency type
+        if (handlerRole.equalsIgnoreCase("Admin")) {
+            if ("Approved".equals(newStatus)) {
+                db.updateICURequestStatus(requestID, "Approved");
+                resultMessage = "SUCCESS: Request approved by " + handlerRole + " handler.";
+            } else {
+                db.updateICURequestStatus(requestID, newStatus);
+                resultMessage = "PROCESSED: Request status updated to: " + newStatus;
+            }
+        } else if (handlerThatProcessed != null && handlerThatProcessed.equalsIgnoreCase(handlerRole)) {
+            // Check if the current handler role matches the handler that processed the request
             if ("Approved".equals(newStatus)) {
                 db.updateICURequestStatus(requestID, "Approved");
                 resultMessage = "SUCCESS: Request approved by " + handlerRole + " handler.";
