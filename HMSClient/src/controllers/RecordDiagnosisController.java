@@ -32,14 +32,14 @@ public class RecordDiagnosisController {
 
                 int diagnosisID = (int) (Math.random() * 100000);
 
-                // ✅ ONLY appointmentID
+                
                 int appointmentID =
                         Integer.parseInt(gui.getAppointmentIDField().getText());
 
                 String notes = gui.getClinicalNotesField().getText();
                 String diagnosisText = gui.getDiagnosisField().getText();
 
-                // ✅ Option 1 call
+               
                 boolean ok = service.recordDiagnosis(
                         diagnosisID,
                         appointmentID,

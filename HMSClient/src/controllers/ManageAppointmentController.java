@@ -26,7 +26,7 @@ public class ManageAppointmentController {
         gui.getConfirmButton().addActionListener(new ConfirmRescheduleAction());
     }
 
-    /** ------------------- SEARCH ------------------- **/
+    
     class SearchAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -56,7 +56,7 @@ public class ManageAppointmentController {
         }
     }
 
-    /** ------------------- CANCEL APPOINTMENT ------------------- **/
+    
     class CancelAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -79,7 +79,7 @@ public class ManageAppointmentController {
                 JOptionPane.showMessageDialog(gui,
                         "Appointment cancelled successfully.");
 
-                // 🔄 REFRESH DETAILS AREA
+               
                 String updatedDetails = service.getAppointmentByID(id);
                 gui.setDetailsText(updatedDetails);
 
@@ -98,7 +98,7 @@ public class ManageAppointmentController {
 }
 
 
-    /** ------------------- SHOW RESCHEDULE FIELDS ------------------- **/
+   
     class ShowRescheduleAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -106,7 +106,7 @@ public class ManageAppointmentController {
         }
     }
 
-    /** ------------------- CONFIRM RESCHEDULE ------------------- **/
+    
     class ConfirmRescheduleAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -118,7 +118,7 @@ public class ManageAppointmentController {
             String newDate = gui.getNewDateField().getText().trim();
             String newTime = gui.getNewTimeField().getText().trim();
 
-            // Validation
+           
             if (idText.isEmpty()) {
                 JOptionPane.showMessageDialog(gui, "Enter Appointment ID.", 
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -145,7 +145,7 @@ public class ManageAppointmentController {
                 JOptionPane.showMessageDialog(gui,
                         "Appointment rescheduled successfully.");
 
-                // 🔄 REFRESH DETAILS AREA
+                
                 String updatedDetails = service.getAppointmentByID(id);
                 gui.setDetailsText(updatedDetails);
 

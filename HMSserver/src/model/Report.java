@@ -13,7 +13,7 @@ public class Report implements Serializable {
         this.type = type;
     }
 
-    // Logic that belongs to Report
+   
     public void generateReport() {
         this.content = "Report generated for: " + type;
     }

@@ -29,13 +29,11 @@ public class RequestICUController {
         gui.setVisible(true);
         gui.getSubmitButton().addActionListener(new SubmitAction());
         
-        // Load patients from database
+        
         loadPatients();
     }
     
-    /**
-     * Load all patients from the database into the combo box
-     */
+    
     private void loadPatients() {
         try {
             PatientInterface patientService = (PatientInterface) registry.lookup("patient");
@@ -57,36 +55,36 @@ public class RequestICUController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                // Validate all fields before submission
+               
                 if (!validateInput()) {
                     return;
                 }
 
-                // Use Strategy Pattern via DoctorRequestInterface
+               
                 DoctorRequestInterface doctorRequestService = (DoctorRequestInterface) registry.lookup("doctorrequest");
 
-                // Collect and format all fields from GUI
-                String doctorEmail = gui.getDoctorEmail(); // Use logged-in doctor's email
+              
+                String doctorEmail = gui.getDoctorEmail(); 
                 String selectedPatient = (String) gui.getCmbPatientName().getSelectedItem();
                 String urgency = gui.getUrgencyField().getSelectedItem().toString();
                 String diagnosis = gui.getDiagnosisField().getText().trim();
 
-                // Format date (already validated in validateInput())
+                
                 Date selectedDate = gui.getDateChooser().getDate();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String formattedDate = sdf.format(selectedDate);
 
-                // Format time
+               
                 String timeHour = (String) gui.getCmbTimeHour().getSelectedItem();
                 String timeMinute = (String) gui.getCmbTimeMinute().getSelectedItem();
                 String formattedTime = timeHour + ":" + timeMinute;
 
-                // Format duration
+               
                 String durationHour = (String) gui.getCmbDurationHour().getSelectedItem();
                 String durationMinute = (String) gui.getCmbDurationMinute().getSelectedItem();
                 String expectedDuration = durationHour + " hours " + durationMinute + " minutes";
 
-                // Execute ICU request using strategy pattern
+               
                 boolean ok = doctorRequestService.executeICURequest(
                     doctorEmail,
                     selectedPatient,
@@ -98,10 +96,10 @@ public class RequestICUController {
                 );
 
                 if (ok) {
-                     // 🔹 Get ICU service
+                    
                     ICUInterface icuService = (ICUInterface) registry.lookup("icu");
 
-                    // 🔹 Fetch current ICU state
+                   
                     String currentState = icuService.getCurrentICUState();
 
                     JOptionPane.showMessageDialog(gui,
@@ -129,11 +127,9 @@ public class RequestICUController {
         }
     }
 
-    /**
-     * Validate all input fields before submission
-     */
+    
     private boolean validateInput() {
-        // Validate Patient selection
+       
         String selectedPatient = (String) gui.getCmbPatientName().getSelectedItem();
         if (selectedPatient == null || selectedPatient.equals("No patients available") || 
             selectedPatient.equals("Error loading patients") || selectedPatient.equals("Loading patients...")) {
@@ -144,7 +140,7 @@ public class RequestICUController {
             return false;
         }
 
-        // Validate Date
+      
         Date selectedDate = gui.getDateChooser().getDate();
         if (selectedDate == null) {
             JOptionPane.showMessageDialog(gui, 
@@ -155,7 +151,7 @@ public class RequestICUController {
             return false;
         }
 
-        // Validate Time
+        
         Object timeHour = gui.getCmbTimeHour().getSelectedItem();
         Object timeMinute = gui.getCmbTimeMinute().getSelectedItem();
         if (timeHour == null || timeMinute == null) {
@@ -166,7 +162,7 @@ public class RequestICUController {
             return false;
         }
 
-        // Validate Urgency
+      
         Object urgency = gui.getUrgencyField().getSelectedItem();
         if (urgency == null) {
             JOptionPane.showMessageDialog(gui, 
@@ -176,7 +172,7 @@ public class RequestICUController {
             return false;
         }
 
-        // Validate Diagnosis
+       
         String diagnosis = gui.getDiagnosisField().getText().trim();
         if (diagnosis.isEmpty()) {
             JOptionPane.showMessageDialog(gui, 
@@ -187,7 +183,7 @@ public class RequestICUController {
             return false;
         }
 
-        // Validate Expected Duration
+       
         Object durationHour = gui.getCmbDurationHour().getSelectedItem();
         Object durationMinute = gui.getCmbDurationMinute().getSelectedItem();
         if (durationHour == null || durationMinute == null) {
@@ -203,9 +199,7 @@ public class RequestICUController {
 
 
 
-    /**
-     * Clear all form fields after successful submission
-     */
+    
     private void clearForm() {
         gui.getCmbPatientName().setSelectedIndex(0);
         gui.getDateChooser().setDate(null);

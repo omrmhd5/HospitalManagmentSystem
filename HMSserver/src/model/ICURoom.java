@@ -46,12 +46,12 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
         Patient patient = db.getPatientByName(patientName);
         Doctor doctor = db.getDoctorByName(doctorName);
         
-        // If doctor not found in database, create a basic doctor object (for cases like "Dr. ICU")
+        
         if (doctor == null) {
             doctor = new Doctor(0, doctorName, "", "", 0, "", "");
         }
         
-        // If patient not found, this is an error - should not happen
+        
         if (patient == null) {
             throw new RemoteException("Patient not found: " + patientName);
         }
@@ -85,7 +85,7 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
     
     @Override
     public String getCurrentICUState() throws RemoteException {
-        return getState(); // returns state.getStateName()
+        return getState(); 
     }
     
     // Salma - Chain of Responsibility - Get all pending ICU requests as formatted strings

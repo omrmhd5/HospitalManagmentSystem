@@ -96,7 +96,7 @@ public class Appointment extends UnicastRemoteObject implements AppointmentInter
 
     @Override
     public void notifyObservers(String message) throws RemoteException {
-        // Convert appointment to string representation to avoid RMI serialization issues
+      
         String appointmentInfo = toReadableString();
         for (AppointmentObserver o : observers) {
             o.update(appointmentInfo, message);
@@ -192,7 +192,7 @@ public String getAppointmentByID(int appointmentID) throws RemoteException {
 
         appointment.setStatus("Cancelled");
 
-        return db.updateAppointment(appointment);  // ✅ REAL result
+        return db.updateAppointment(appointment); 
     }
 
 
@@ -205,19 +205,19 @@ public String getAppointmentByID(int appointmentID) throws RemoteException {
             return false;
         }
         
-        //  cannot reschedule if already canceled or completed
+        
         if (appointment.getStatus().equals("Cancelled") || appointment.getStatus().equals("Completed")) {
             System.out.println("Cannot reschedule. Appointment is " + appointment.getStatus());
             return false;
         }
 
-        // Example rule: cannot reschedule last minute 
+      
         if (!isRescheduleAllowed()) {
             System.out.println("Rescheduling is not allowed this close to the appointment.");
             return false;
         }
 
-        // Update date/time
+       
         appointment.setDate(newDate);
         appointment.setTime(newTime);
         appointment.setStatus("Rescheduled");
@@ -268,12 +268,12 @@ public String getAppointmentByID(int appointmentID) throws RemoteException {
         return result.toString();
     }
 
-    /** Dummy rule: always allow for now */
+   
     private boolean isRescheduleAllowed() {
         return true;
     }
 
-    /** Dummy rule: always allow for now */
+   
     private boolean isCancellationAllowed() {
         return true;
     }

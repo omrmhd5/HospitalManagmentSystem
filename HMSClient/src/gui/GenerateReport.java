@@ -6,9 +6,7 @@ import javax.swing.JTextArea;
 
 public class GenerateReport extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GenerateReport
-     */
+   
     public GenerateReport() {
         initComponents();
     }
