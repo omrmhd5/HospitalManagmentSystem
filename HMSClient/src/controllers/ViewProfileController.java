@@ -60,7 +60,7 @@ public class ViewProfileController {
             // Populate GUI fields with profile data
             gui.getNameField().setText(name != null ? name : "");
             gui.getDateOfBirthField().setText(dob != null ? dob : "");
-            gui.getGenderField().setText(gender != null ? gender : "");
+            gui.setGender(gender != null ? gender : "");
             gui.getAddressField().setText(address != null ? address : "");
             gui.getPhoneNumberField().setText(phone != null ? phone : "");
             
@@ -85,7 +85,7 @@ public class ViewProfileController {
                     // Switch to edit mode - enable all fields
                     gui.getNameField().setEnabled(true);
                     gui.getDateOfBirthField().setEnabled(true);
-                    gui.getGenderField().setEnabled(true);
+                    gui.setGenderEnabled(true);
                     gui.getAddressField().setEnabled(true);
                     gui.getPhoneNumberField().setEnabled(true);
                     gui.getEditButton().setText("Save");
@@ -99,9 +99,14 @@ public class ViewProfileController {
                         return;
                     }
                     
+                    // Validate form before saving
+                    if (!gui.validateForm()) {
+                        return; // Don't proceed if validation fails
+                    }
+                    
                     String name = gui.getNameField().getText();
                     String dob = gui.getDateOfBirthField().getText();
-                    String gender = gui.getGenderField().getText();
+                    String gender = gui.getGender();
                     String address = gui.getAddressField().getText();
                     String phone = gui.getPhoneNumberField().getText();
                     
@@ -113,7 +118,7 @@ public class ViewProfileController {
                         // Switch back to view mode - disable all fields
                         gui.getNameField().setEnabled(false);
                         gui.getDateOfBirthField().setEnabled(false);
-                        gui.getGenderField().setEnabled(false);
+                        gui.setGenderEnabled(false);
                         gui.getAddressField().setEnabled(false);
                         gui.getPhoneNumberField().setEnabled(false);
                         gui.getEditButton().setText("Edit");

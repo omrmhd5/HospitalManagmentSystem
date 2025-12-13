@@ -63,6 +63,11 @@ public class ViewProfile extends javax.swing.JFrame {
         }
     }
     
+    public void setGenderEnabled(boolean enabled) {
+        rdbMale.setEnabled(enabled);
+        rdbFemale.setEnabled(enabled);
+    }
+    
     public JTextField getAddressField() {
         return jTextField4;
     }
@@ -316,11 +321,8 @@ public class ViewProfile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Validate form before proceeding
-        if (validateForm()) {
-            // Form is valid, proceed with edit action
-            // TODO add your handling code here:
-        }
+        // The Edit button action is handled by ViewProfileController
+        // This method is kept for compatibility but the actual logic is in the controller
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void validatePhoneNumberField() {
