@@ -132,9 +132,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(40, 40, 40)
                 .addComponent(btnManageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(20, 36, 36)
                 .addComponent(btnGenerateReports, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(20, 36, 36)
                 .addComponent(btnHandleICURequests, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,8 +143,11 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         pack();
         
-        // Set consistent window size and center
-        setSize(600, 500);
+        // Enlarge width slightly while keeping height from pack()
+        java.awt.Dimension size = getSize();
+        setSize(size.width + 100, size.height);
+        
+        // Center the window
         setLocationRelativeTo(null);
         
         // Set background color for content pane (light blue)
