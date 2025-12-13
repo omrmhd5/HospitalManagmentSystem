@@ -99,6 +99,7 @@ public class RoleSelect extends javax.swing.JFrame {
 
         ContinueButton.setText("Continue");
         ContinueButton.setBackground(new java.awt.Color(0, 0, 153));
+        ContinueButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         ContinueButton.setForeground(new java.awt.Color(255, 255, 255));
         ContinueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +177,9 @@ public class RoleSelect extends javax.swing.JFrame {
         // Set consistent window size and center
         setSize(500, 400);
         setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed

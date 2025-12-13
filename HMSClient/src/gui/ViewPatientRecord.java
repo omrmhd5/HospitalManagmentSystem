@@ -117,8 +117,10 @@ public class ViewPatientRecord extends javax.swing.JFrame {
         
         // Set button colors (dark blue background, white text)
         btnViewRecord.setBackground(new java.awt.Color(0, 0, 153));
+        btnViewRecord.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnViewRecord.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setBackground(new java.awt.Color(0, 0, 153));
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

@@ -174,6 +174,13 @@ public class RequestRefill extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // Set consistent window size and center
+        setSize(500, 400);
+        setLocationRelativeTo(null);
+        
+        // Set background color for content pane (light blue)
+        getContentPane().setBackground(new java.awt.Color(153, 204, 255));
     }// </editor-fold>//GEN-END:initComponents
 
     public javax.swing.JComboBox<String> getCmbPharmacist() {

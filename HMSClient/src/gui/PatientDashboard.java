@@ -105,12 +105,16 @@ public class PatientDashboard extends javax.swing.JFrame {
         
         // Set button colors (dark blue background, white text)
         btnBookAppointment.setBackground(new java.awt.Color(0, 0, 153));
+        btnBookAppointment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBookAppointment.setForeground(new java.awt.Color(255, 255, 255));
         btnViewProfile.setBackground(new java.awt.Color(0, 0, 153));
+        btnViewProfile.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnViewProfile.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setBackground(new java.awt.Color(0, 0, 153));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnManageAppointment.setBackground(new java.awt.Color(0, 0, 153));
+        btnManageAppointment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnManageAppointment.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

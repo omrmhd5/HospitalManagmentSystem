@@ -182,6 +182,7 @@ public JTextArea getDiagnosisField() {
         
         // Set button colors (dark blue background, white text)
         btnSubmit.setBackground(new java.awt.Color(0, 0, 153));
+        btnSubmit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

@@ -86,6 +86,8 @@ public class MyAppointment extends javax.swing.JFrame {
         jLabel1.setOpaque(true);
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        
+        // Note: No buttons in this form, only display
     }// </editor-fold>//GEN-END:initComponents
 
     /**

@@ -126,8 +126,10 @@ public class GenerateReport extends javax.swing.JFrame {
         
         // Set button colors (dark blue background, white text)
         btnGenerate.setBackground(new java.awt.Color(0, 0, 153));
+        btnGenerate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnGenerate.setForeground(new java.awt.Color(255, 255, 255));
         btnClose.setBackground(new java.awt.Color(0, 0, 153));
+        btnClose.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnClose.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

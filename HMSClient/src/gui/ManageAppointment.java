@@ -221,12 +221,16 @@ public void showRescheduleFields() {
         
         // Set button colors (dark blue background, white text)
         Search.setBackground(new java.awt.Color(0, 0, 153));
+        Search.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Search.setForeground(new java.awt.Color(255, 255, 255));
         Cancel.setBackground(new java.awt.Color(0, 0, 153));
+        Cancel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Cancel.setForeground(new java.awt.Color(255, 255, 255));
         Reschedule.setBackground(new java.awt.Color(0, 0, 153));
+        Reschedule.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Reschedule.setForeground(new java.awt.Color(255, 255, 255));
         btnConfirm.setBackground(new java.awt.Color(0, 0, 153));
+        btnConfirm.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnConfirm.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

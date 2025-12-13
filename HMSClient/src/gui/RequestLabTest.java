@@ -285,6 +285,7 @@ public class RequestLabTest extends javax.swing.JFrame {
         
         // Set button colors (dark blue background, white text)
         jButton1.setBackground(new java.awt.Color(0, 0, 153));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

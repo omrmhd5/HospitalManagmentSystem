@@ -152,12 +152,16 @@ public class AdminDashboard extends javax.swing.JFrame {
         
         // Set button colors (dark blue background, white text)
         btnManageUsers.setBackground(new java.awt.Color(0, 0, 153));
+        btnManageUsers.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnManageUsers.setForeground(new java.awt.Color(255, 255, 255));
         btnGenerateReports.setBackground(new java.awt.Color(0, 0, 153));
+        btnGenerateReports.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnGenerateReports.setForeground(new java.awt.Color(255, 255, 255));
         btnHandleICURequests.setBackground(new java.awt.Color(0, 0, 153));
+        btnHandleICURequests.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnHandleICURequests.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setBackground(new java.awt.Color(0, 0, 153));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

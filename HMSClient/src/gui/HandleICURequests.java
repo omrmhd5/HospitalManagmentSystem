@@ -205,14 +205,19 @@ public class HandleICURequests extends javax.swing.JFrame {
         
         // Set button colors (dark blue background, white text)
         btnRefresh.setBackground(new java.awt.Color(0, 0, 153));
+        btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRefresh.setForeground(new java.awt.Color(255, 255, 255));
         btnViewDetails.setBackground(new java.awt.Color(0, 0, 153));
+        btnViewDetails.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnViewDetails.setForeground(new java.awt.Color(255, 255, 255));
         btnApprove.setBackground(new java.awt.Color(0, 0, 153));
+        btnApprove.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnApprove.setForeground(new java.awt.Color(255, 255, 255));
         btnReject.setBackground(new java.awt.Color(0, 0, 153));
+        btnReject.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnReject.setForeground(new java.awt.Color(255, 255, 255));
         btnClose.setBackground(new java.awt.Color(0, 0, 153));
+        btnClose.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnClose.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size

@@ -153,20 +153,28 @@ public class DoctorDashboard extends javax.swing.JFrame {
         
         // Set button colors (dark blue background, white text)
         btnViewAppointments.setBackground(new java.awt.Color(0, 0, 153));
+        btnViewAppointments.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnViewAppointments.setForeground(new java.awt.Color(255, 255, 255));
         btnRecordDiagnosis.setBackground(new java.awt.Color(0, 0, 153));
+        btnRecordDiagnosis.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRecordDiagnosis.setForeground(new java.awt.Color(255, 255, 255));
         btnRecordPrescription.setBackground(new java.awt.Color(0, 0, 153));
+        btnRecordPrescription.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRecordPrescription.setForeground(new java.awt.Color(255, 255, 255));
         btnViewPatientRecords.setBackground(new java.awt.Color(0, 0, 153));
+        btnViewPatientRecords.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnViewPatientRecords.setForeground(new java.awt.Color(255, 255, 255));
         btnRequestLabTest.setBackground(new java.awt.Color(0, 0, 153));
+        btnRequestLabTest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRequestLabTest.setForeground(new java.awt.Color(255, 255, 255));
         btnRequestRefill.setBackground(new java.awt.Color(0, 0, 153));
+        btnRequestRefill.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRequestRefill.setForeground(new java.awt.Color(255, 255, 255));
         btnRequestICU.setBackground(new java.awt.Color(0, 0, 153));
+        btnRequestICU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRequestICU.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setBackground(new java.awt.Color(0, 0, 153));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         
         // Set title label color (dark blue background, white text) with expanded size
