@@ -1,4 +1,4 @@
-package ObserverDesignPattern;
+package DesignPattern.Observer;
 
 import java.rmi.RemoteException;
 

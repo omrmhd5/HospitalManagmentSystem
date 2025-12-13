@@ -5,7 +5,7 @@ import server.DB;
 
 import java.util.ArrayList;
 import java.util.List;
-import ObserverDesignPattern.AppointmentObserver;
+import DesignPattern.Observer.AppointmentObserver;
 
 public class Patient extends User implements PatientInterface, AppointmentObserver {
 

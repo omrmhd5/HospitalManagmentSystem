@@ -3,7 +3,7 @@ package model;
 import DesignPattern.Strategy.DoctorRequestStrategy;
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import ObserverDesignPattern.AppointmentObserver;
+import DesignPattern.Observer.AppointmentObserver;
 
 public class Doctor extends User implements Serializable, AppointmentObserver  {
 

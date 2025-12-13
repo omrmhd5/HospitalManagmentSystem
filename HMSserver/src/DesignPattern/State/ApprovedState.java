@@ -1,4 +1,4 @@
-package StateDesignPattern;
+package DesignPattern.State;
 
 import model.ICURoom;
 

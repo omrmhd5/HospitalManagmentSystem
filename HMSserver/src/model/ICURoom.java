@@ -9,8 +9,8 @@ import java.util.List;
 import org.bson.Document;
 import rmi.ICUInterface;
 import server.DB;
-import StateDesignPattern.ICUState;
-import StateDesignPattern.PendingState;
+import DesignPattern.State.ICUState;
+import DesignPattern.State.PendingState;
 
 public class ICURoom extends UnicastRemoteObject implements ICUInterface {
 

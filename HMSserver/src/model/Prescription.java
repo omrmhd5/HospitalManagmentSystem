@@ -1,14 +1,16 @@
 package model;
+import DesignPattern.ReadOnlyInterface.IReadOnlyPrescription;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import rmi.PrescriptionInterface;
 import server.DB;
 
-public class Prescription extends UnicastRemoteObject implements PrescriptionInterface {
+public class Prescription extends UnicastRemoteObject implements PrescriptionInterface, IReadOnlyPrescription {
     private int prescriptionID;
     private Patient patient;
     private Doctor doctor;
     private String medicine;
+    private String medicines;
     private String dosage;
     private String diagnosis;
     private final DB db;
@@ -70,4 +72,14 @@ public class Prescription extends UnicastRemoteObject implements PrescriptionInt
     
     public String getDiagnosis() { return diagnosis; }
     public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
+
+     //  FULL ACCESS (Doctor) 
+    public void updateMedicines(String medicines) {
+        this.medicines = medicines;
+    }
+    
+    //READ-ONLY ACCESS (Patient)
+    public String getMedicines() {
+        return medicines;
+    }
 }

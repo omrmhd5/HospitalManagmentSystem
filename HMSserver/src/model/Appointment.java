@@ -4,8 +4,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import rmi.AppointmentInterface;
 import server.DB;
-import  ObserverDesignPattern.AppointmentSubject;
-import  ObserverDesignPattern.AppointmentObserver;
+import  DesignPattern.Observer.AppointmentSubject;
+import  DesignPattern.Observer.AppointmentObserver;
 import java.util.ArrayList;
 
 public class Appointment extends UnicastRemoteObject implements AppointmentInterface, AppointmentSubject  {

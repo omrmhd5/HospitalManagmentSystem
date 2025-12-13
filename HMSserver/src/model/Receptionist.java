@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import ObserverDesignPattern.AppointmentObserver;
+import DesignPattern.Observer.AppointmentObserver;
 
 public class Receptionist extends User implements Serializable, AppointmentObserver  {
 
