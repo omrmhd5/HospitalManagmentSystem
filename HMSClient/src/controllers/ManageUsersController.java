@@ -66,8 +66,7 @@ public class ManageUsersController {
             // Lookup the admin remote object
             AdminInterface admin = (AdminInterface) r.lookup("admin");
             
-            // Get all users from server (returns List<Object[]>)
-            // Each Object[] contains: [userID, fullName, email, role]
+            // Get all users from server
             List<Object[]> users = admin.getAllUsers();
             
             // Clear existing rows
@@ -110,7 +109,7 @@ public class ManageUsersController {
             // Get data from text fields
             String fullName = gui.getFullNameField().getText().trim();
             String email = gui.getEmailField().getText().trim();
-            // Mahmoud
+        
             String role = (String) gui.getRoleComboBox().getSelectedItem();
             
             // Validate required fields
@@ -138,7 +137,7 @@ public class ManageUsersController {
                 // Clear input fields
                 gui.getFullNameField().setText("");
                 gui.getEmailField().setText("");
-                // Mahmoud
+             
                 gui.getRoleComboBox().setSelectedIndex(0);
             } else {
                 JOptionPane.showMessageDialog(gui, 

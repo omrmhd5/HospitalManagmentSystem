@@ -24,12 +24,11 @@ public class RequestLabTestController {
     private final RequestLabTest gui;
     private final Registry registry;
     
-    // Mahmoud
+    // Salma
     public RequestLabTestController(RequestLabTest gui, Registry registry) {
         this.gui = gui;
         this.registry = registry;
         
-        // Mahmoud
         gui.getLblDoctorName().setText("Doctor: " + gui.getDoctorName());
         
         // Populate doctor information if available
@@ -38,27 +37,27 @@ public class RequestLabTestController {
         }
         if (gui.getDoctorEmail() != null && !gui.getDoctorEmail().isEmpty()) {
             gui.getDoctorEmailField().setText(gui.getDoctorEmail());
-            // Mahmoud
+           
             loadDoctorPhone();
         }
         
-        // Mahmoud
+       
         loadPatients();
         
         // Load available test types into ComboBox
         loadTestTypes();
         
-        // Mahmoud - Disable patient fields initially
+        // Disable patient fields initially
         disablePatientFields();
         
-        // Mahmoud - Add listener to patient dropdown
+        // Add listener to patient dropdown
         gui.getCmbPatientName().addActionListener(new PatientSelectionAction());
         
         // Register the Submit button with our action listener
         gui.getSubmitButton().addActionListener(new SubmitButtonAction());
     }
     
-    // Mahmoud
+    // Salma
     private void disablePatientFields() {
         gui.getPatientAgeField().setEditable(false);
         gui.getPatientAgeField().setEnabled(false);
@@ -67,7 +66,7 @@ public class RequestLabTestController {
         gui.getPatientDateOfBirthChooser().setEnabled(false);
     }
     
-    // Mahmoud
+    // Salma
     class PatientSelectionAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -79,21 +78,21 @@ public class RequestLabTestController {
                 return;
             }
             
-            // Mahmoud - Load patient information
+            //  Load patient information
             loadPatientInfo(selectedPatient);
         }
     }
     
-    // Mahmoud
+    // Salma
     private void loadPatientInfo(String patientName) {
         try {
-            // Mahmoud
+            
             PatientInterface patientService = (PatientInterface) registry.lookup("patient");
             
-            // Mahmoud - Get patient record
+            // Get patient record
             String record = patientService.viewPatientRecord(patientName);
             
-            // Mahmoud - Parse patient record to extract information
+            // Parse patient record to extract information
             parseAndFillPatientInfo(record);
             
         } catch (RemoteException | NotBoundException ex) {
@@ -106,14 +105,14 @@ public class RequestLabTestController {
         }
     }
     
-    // Mahmoud
+    // Salma
     private void parseAndFillPatientInfo(String record) {
         if (record == null || record.isEmpty() || record.contains("not found")) {
             clearPatientFields();
             return;
         }
         
-        // Mahmoud - Parse the formatted record string
+        //  Parse the formatted record string
         String[] lines = record.split("\n");
         String age = "";
         String gender = "";
@@ -129,14 +128,14 @@ public class RequestLabTestController {
             }
         }
         
-        // Mahmoud - Fill age
+        // Fill age
         if (!age.isEmpty()) {
             gui.getPatientAgeField().setText(age);
         } else {
             gui.getPatientAgeField().setText("");
         }
         
-        // Mahmoud - Fill gender
+        //Fill gender
         if (gender.equalsIgnoreCase("Male")) {
             gui.getMaleRadioButton().setSelected(true);
             gui.getFemaleRadioButton().setSelected(false);
@@ -148,7 +147,7 @@ public class RequestLabTestController {
             gui.getFemaleRadioButton().setSelected(false);
         }
         
-        // Mahmoud - Fill date of birth
+        // Fill date of birth
         if (!dateOfBirth.isEmpty()) {
             try {
                 // Try yyyy-MM-dd format first
@@ -171,7 +170,7 @@ public class RequestLabTestController {
         }
     }
     
-    // Mahmoud
+    // Salma
     private void clearPatientFields() {
         gui.getPatientAgeField().setText("");
         gui.getMaleRadioButton().setSelected(false);
@@ -179,13 +178,13 @@ public class RequestLabTestController {
         gui.getPatientDateOfBirthChooser().setDate(null);
     }
     
-    // Mahmoud
+    // Salma
     private void loadPatients() {
         try {
-            // Mahmoud
+            // Salma
             PatientInterface patientService = (PatientInterface) registry.lookup("patient");
             
-            // Mahmoud
+            // Salma
             List<String> patients = patientService.getAllPatientNames();
             
             if (patients.isEmpty()) {
@@ -200,7 +199,7 @@ public class RequestLabTestController {
         }
     }
     
-    // Mahmoud
+    // Salma
     private void loadDoctorPhone() {
         try {
             String email = gui.getDoctorEmail();
@@ -208,7 +207,7 @@ public class RequestLabTestController {
                 return;
             }
             
-            // Mahmoud
+            // Salma
             AppointmentInterface appointmentService = (AppointmentInterface) registry.lookup("appointment");
             String phone = appointmentService.getDoctorPhoneByEmail(email);
             
@@ -222,16 +221,16 @@ public class RequestLabTestController {
         }
     }
     
-    // Mahmoud
+    // Salma
     private void loadTestTypes() {
         try {
-            // Mahmoud
+            // Salma
             LabTestInterface labTest = (LabTestInterface) registry.lookup("labtest");
             
-            // Mahmoud
+            // Salma
             String[] testTypes = labTest.getAvailableTestTypes();
             
-            // Mahmoud
+            // Salma
             gui.getTestTypeComboBox().setModel(new DefaultComboBoxModel<>(testTypes));
                         
         } catch (RemoteException | NotBoundException ex) {
@@ -258,11 +257,11 @@ public class RequestLabTestController {
             String doctorPhone = gui.getDoctorPhoneField().getText().trim();
             String testType = (String) gui.getTestTypeComboBox().getSelectedItem();
             
-            // Mahmoud
+            // Salma
             String selectedPatient = (String) gui.getCmbPatientName().getSelectedItem();
             String patientAgeStr = gui.getPatientAgeField().getText().trim();
             
-            // Mahmoud
+            // Salma
             if (selectedPatient == null || selectedPatient.equals("No patients available") || selectedPatient.equals("Error loading patients")) {
                 JOptionPane.showMessageDialog(gui, 
                     "Please select a valid patient", 
@@ -271,7 +270,7 @@ public class RequestLabTestController {
                 return;
             }
             
-            // Mahmoud - Get gender from radio buttons (already auto-filled)
+            // Get gender from radio buttons
             String patientGender = "";
             if (gui.getMaleRadioButton().isSelected()) {
                 patientGender = "Male";
@@ -279,7 +278,7 @@ public class RequestLabTestController {
                 patientGender = "Female";
             }
             
-            // Mahmoud - Validate that patient info was loaded
+            //  Validate that patient info was loaded
             if (patientGender.isEmpty()) {
                 JOptionPane.showMessageDialog(gui, 
                     "Please select a patient to load their information", 
