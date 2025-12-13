@@ -30,8 +30,40 @@ public class ManageDrugInventoryController {
         // Load drugs into combo box
         loadDrugs();
         
+        // Load categories into combo box
+        loadCategories();
+        
         // Add listener to load drug info when Drug ID is selected
         gui.getDrugIDField().addActionListener(new DrugIDActionListener());
+    }
+    
+    /**
+     * Load drug categories into the category combo box
+     */
+    private void loadCategories() {
+        String[] categories = {
+            "Select Category",
+            "Antibiotics",
+            "Analgesics",
+            "Antipyretics",
+            "Antihistamines",
+            "Vitamins",
+            "Cardiovascular",
+            "Respiratory",
+            "Gastrointestinal",
+            "Neurological",
+            "Dermatological",
+            "Antifungal",
+            "Antiviral",
+            "Hormonal",
+            "Immunosuppressants",
+            "Other"
+        };
+        
+        gui.getCategoryField().removeAllItems();
+        for (String category : categories) {
+            gui.getCategoryField().addItem(category);
+        }
     }
     
     /**
@@ -106,6 +138,19 @@ public class ManageDrugInventoryController {
                     gui.getNameField().setText(name);
                 } else if (line.contains("Category:")) {
                     String category = line.substring(line.indexOf(":") + 1).trim();
+                    // Try to set the category, if it doesn't exist in the list, add it
+                    javax.swing.DefaultComboBoxModel<String> model = (javax.swing.DefaultComboBoxModel<String>) gui.getCategoryField().getModel();
+                    boolean found = false;
+                    for (int i = 0; i < model.getSize(); i++) {
+                        if (model.getElementAt(i).equals(category)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found && !category.isEmpty()) {
+                        // Add the category if it's not in the list
+                        model.insertElementAt(category, 1); // Insert after "Select Category"
+                    }
                     gui.getCategoryField().setSelectedItem(category);
                 } else if (line.contains("Quantity:")) {
                     String quantity = line.substring(line.indexOf(":") + 1).trim();
@@ -395,7 +440,7 @@ public class ManageDrugInventoryController {
 
         // Validate Category
         String category = (String) gui.getCategoryField().getSelectedItem();
-        if (category == null || category.isEmpty() || category.equals("Select Category")) {
+        if (category == null || category.isEmpty() || category.equals("Select Category") || category.trim().isEmpty()) {
             JOptionPane.showMessageDialog(gui, 
                 "Please select a category", 
                 "Validation Error", 
@@ -484,7 +529,7 @@ public class ManageDrugInventoryController {
     private void clearForm() {
         gui.getDrugIDField().setSelectedIndex(0);
         gui.getNameField().setText("");
-        gui.getCategoryField().setSelectedIndex(0);
+        gui.getCategoryField().setSelectedIndex(0); // "Select Category"
         gui.getQuantityField().setText("");
         gui.getReorderField().setText("");
         gui.getExpiryField().setDate(null);

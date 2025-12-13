@@ -170,7 +170,7 @@ public class Register extends javax.swing.JFrame {
         pack();
         
         // Set consistent window size and center
-        setSize(500, 450);
+        setSize(500, 600);
         setLocationRelativeTo(null);
         
         // Set background color for content pane (light blue)
