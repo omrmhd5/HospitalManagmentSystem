@@ -49,16 +49,6 @@ public class Patient extends User implements PatientInterface, AppointmentObserv
         this.phoneNumber = phoneNumber;
     }
 
-    // ---------- Domain Logic From UML ----------
-
-    public void viewAvailableAppointment() {
-        System.out.println("Viewing available appointments...");
-    }
-
-    public void manageAppointment() {
-        System.out.println("Managing appointment...");
-    }
-
     public Appointment bookAppointment(Appointment a) {
         a.confirmReservation();
         return a;
