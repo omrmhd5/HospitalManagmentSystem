@@ -10,10 +10,12 @@ public interface ICUInterface extends Remote {
                              String date, String time, String urgency, 
                              String diagnosis, String expectedDuration) throws RemoteException;
     
-    // Rana - Returns formatted string of all requests
+    // Rana 
     String getICURequestsForPatient(int patientID) throws RemoteException;
   
     String getCurrentICUState() throws RemoteException;
+    String getICURequestStatus(int requestID) throws RemoteException;
+
     
     // Chain of Responsibility - Get all pending ICU requests as formatted strings
     List<String> getPendingICURequests() throws RemoteException;

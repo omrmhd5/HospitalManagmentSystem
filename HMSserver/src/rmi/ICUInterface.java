@@ -12,6 +12,8 @@ public interface ICUInterface extends Remote {
     
     // Rana 
     String getICURequestsForPatient(int patientID) throws RemoteException;
+    String getICURequestStatus(int requestID) throws RemoteException;
+
   
     String getCurrentICUState() throws RemoteException;
     

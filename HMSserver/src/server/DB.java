@@ -1025,6 +1025,19 @@ public class DB {
         user.insertOne(doc);
         return true;
     }
+    //Rana
+        public int getLastICURequestID() {
+        Document doc = icu.find()
+                .sort(new Document("requestID", -1))
+                .first();
+
+        if (doc == null) {
+            return -1;
+        }
+
+        return doc.getInteger("requestID");
+    }
+
     
     // Mahmoud
     public boolean registerUserWithRole(int userID, String name, String email, String password, String role) {

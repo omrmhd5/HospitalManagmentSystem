@@ -82,6 +82,15 @@ public class ICURoom extends UnicastRemoteObject implements ICUInterface {
         
         return result.toString();
     }
+    @Override
+    public String getICURequestStatus(int requestID) throws RemoteException {
+        Document doc = db.getICURequestByID(requestID);
+        if (doc == null) {
+            return "Unknown";
+        }
+        return doc.getString("status");
+    }
+
     
     @Override
     public String getCurrentICUState() throws RemoteException {
