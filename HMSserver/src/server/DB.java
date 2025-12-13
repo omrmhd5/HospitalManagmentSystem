@@ -611,7 +611,7 @@ public class DB {
     // Rana
     public void addICURequest(ICURequest req) {
         try {
-            // Manually create Document to avoid Gson serialization issues with RMI objects
+            
             Document patientDoc = new Document();
             if (req.getPatient() != null) {
                 Patient p = req.getPatient();
@@ -734,7 +734,7 @@ public class DB {
         return true;
     }
     
-    // Delete drug
+   
     public boolean deleteDrug(int drugID) {
         try {
             drug.deleteOne(Filters.eq("drugID", drugID));
@@ -745,21 +745,21 @@ public class DB {
         }
     }
     
-    // Get all drugs
+    
     public List<Drug> getAllDrugs() {
         List<Drug> drugs = new ArrayList<>();
         for (Document doc : drug.find()) {
             try {
                 drugs.add(gson.fromJson(doc.toJson(), Drug.class));
             } catch (Exception e) {
-                // Skip invalid documents
+                
                 System.err.println("Error parsing drug document: " + e.getMessage());
             }
         }
         return drugs;
     }
     
-    // Get all pharmacists - returns list of formatted strings "ID - Name"
+  
     public List<String> getAllPharmacists() {
         List<String> pharmacists = new ArrayList<>();
         for (Document doc : pharmacist.find()) {
@@ -1025,6 +1025,19 @@ public class DB {
         user.insertOne(doc);
         return true;
     }
+    //Rana
+        public int getLastICURequestID() {
+        Document doc = icu.find()
+                .sort(new Document("requestID", -1))
+                .first();
+
+        if (doc == null) {
+            return -1;
+        }
+
+        return doc.getInteger("requestID");
+    }
+
     
     // Mahmoud
     public boolean registerUserWithRole(int userID, String name, String email, String password, String role) {

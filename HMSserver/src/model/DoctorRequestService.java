@@ -80,6 +80,10 @@ public class DoctorRequestService extends UnicastRemoteObject implements DoctorR
             return false;
         }
     }
+    @Override
+    public int getLastICURequestID() throws RemoteException {
+        return db.getLastICURequestID();
+    }
     
     @Override
     public boolean executeICURequest(String doctorEmail, String patientName,

@@ -93,13 +93,13 @@ public class Pharmacist extends User implements PharmacyInterface {
         return db.updateDrug(drug);
     }
     
-    // Delete drug
+    
     @Override
     public boolean deleteDrug(int drugID) throws RemoteException {
         return db.deleteDrug(drugID);
     }
     
-    // Get all drugs - returns formatted strings
+   
     @Override
     public java.util.List<String> getAllDrugs() throws RemoteException {
         java.util.List<model.Drug> drugs = db.getAllDrugs();
@@ -110,7 +110,7 @@ public class Pharmacist extends User implements PharmacyInterface {
         return drugList;
     }
     
-    // Get all pharmacists - returns formatted strings
+    
     @Override
     public java.util.List<String> getAllPharmacists() throws RemoteException {
         return db.getAllPharmacists();

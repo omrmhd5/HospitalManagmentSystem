@@ -29,7 +29,7 @@ import rmi.PrescriptionInterface;
 import rmi.UserInterface;
 
 public class RMIServer {
-    // Mahmoud
+   
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
 
         // Disable MongoDB logs

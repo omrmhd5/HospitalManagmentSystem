@@ -15,12 +15,12 @@ public class Diagnosis extends UnicastRemoteObject implements DiagnosisInterface
     private String diagnosis;
     private final DB db;
 
-    // Constructor for RMI binding
+   
     public Diagnosis(DB db) throws RemoteException {
         this.db = db;
     }
 
-    // Internal constructor
+  
     public Diagnosis(int diagnosisID, int appointmentID,
                      Patient patient, Doctor doctor,
                      String clinicalNotes, String diagnosis, DB db)
@@ -44,14 +44,14 @@ public class Diagnosis extends UnicastRemoteObject implements DiagnosisInterface
             String diagnosisText
     ) throws RemoteException {
 
-        // 1️⃣ Load appointment
+       
         Appointment appointment = db.getAppointmentByID(appointmentID);
 
         if (appointment == null) {
             return false;
         }
 
-        // 2️⃣ Extract patient & doctor
+        
         Patient patient = appointment.getPatient();
         Doctor doctor   = appointment.getDoctor();
 
@@ -59,7 +59,7 @@ public class Diagnosis extends UnicastRemoteObject implements DiagnosisInterface
             return false;
         }
 
-        // 3️⃣ Create diagnosis
+      
         Diagnosis diag = new Diagnosis(
                 diagnosisID,
                 appointmentID,
@@ -70,12 +70,12 @@ public class Diagnosis extends UnicastRemoteObject implements DiagnosisInterface
                 db
         );
 
-        // 4️⃣ Save
+       
         db.addDiagnosis(diag);
         return true;
     }
 
-    // Getters
+    
     public int getDiagnosisID() { return diagnosisID; }
     public int getAppointmentID() { return appointmentID; }
     public Patient getPatient() { return patient; }

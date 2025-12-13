@@ -27,19 +27,17 @@ public class ManageDrugInventoryController {
         gui.getUpdateButton().addActionListener(new UpdateDrugAction());
         gui.getDeleteButton().addActionListener(new DeleteDrugAction());
         
-        // Load drugs into combo box
+       
         loadDrugs();
         
-        // Load categories into combo box
+       
         loadCategories();
         
-        // Add listener to load drug info when Drug ID is selected
+      
         gui.getDrugIDField().addActionListener(new DrugIDActionListener());
     }
     
-    /**
-     * Load drug categories into the category combo box
-     */
+    
     private void loadCategories() {
         String[] categories = {
             "Select Category",
@@ -66,9 +64,7 @@ public class ManageDrugInventoryController {
         }
     }
     
-    /**
-     * Load all drugs from database into the combo box
-     */
+    
     private void loadDrugs() {
         try {
             PharmacyInterface service = (PharmacyInterface) registry.lookup("pharmacy");
@@ -89,46 +85,40 @@ public class ManageDrugInventoryController {
         }
     }
     
-    /**
-     * Load drug information when Drug ID is selected
-     */
+    
     class DrugIDActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String selected = (String) gui.getDrugIDField().getSelectedItem();
             if (selected != null && !selected.equals("Select Drug")) {
                 try {
-                    // Extract drug ID from "ID - Name" format
+                   
                     int drugID = Integer.parseInt(selected.split(" - ")[0]);
                     loadDrugInfo(drugID);
                 } catch (Exception ex) {
-                    // Invalid selection, ignore
+                    
                 }
             }
         }
     }
     
-    /**
-     * Load drug information from database
-     */
+    
     private void loadDrugInfo(int drugID) {
         try {
             PharmacyInterface service = (PharmacyInterface) registry.lookup("pharmacy");
             String drugInfo = service.getDrugByID(drugID);
             
             if (drugInfo != null && !drugInfo.equals("Drug not found")) {
-                // Parse drug info and populate fields
+                
                 parseAndFillDrugInfo(drugInfo);
             }
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ManageDrugInventoryController.class.getName()).log(Level.SEVERE, null, ex);
-            // Silently fail - user can still enter data manually
+           
         }
     }
     
-    /**
-     * Parse drug info string and fill form fields
-     */
+   
     private void parseAndFillDrugInfo(String drugInfo) {
         try {
             String[] lines = drugInfo.split("\n");
@@ -138,7 +128,7 @@ public class ManageDrugInventoryController {
                     gui.getNameField().setText(name);
                 } else if (line.contains("Category:")) {
                     String category = line.substring(line.indexOf(":") + 1).trim();
-                    // Try to set the category, if it doesn't exist in the list, add it
+                  
                     javax.swing.DefaultComboBoxModel<String> model = (javax.swing.DefaultComboBoxModel<String>) gui.getCategoryField().getModel();
                     boolean found = false;
                     for (int i = 0; i < model.getSize(); i++) {
@@ -148,8 +138,8 @@ public class ManageDrugInventoryController {
                         }
                     }
                     if (!found && !category.isEmpty()) {
-                        // Add the category if it's not in the list
-                        model.insertElementAt(category, 1); // Insert after "Select Category"
+                       
+                        model.insertElementAt(category, 1); 
                     }
                     gui.getCategoryField().setSelectedItem(category);
                 } else if (line.contains("Quantity:")) {
@@ -165,12 +155,12 @@ public class ManageDrugInventoryController {
                         java.util.Date date = sdf.parse(expiryDate);
                         gui.getExpiryField().setDate(date);
                     } catch (Exception ex) {
-                        // If parsing fails, try other formats or leave empty
+                        System.out.println("Error");
                     }
                 }
             }
         } catch (Exception ex) {
-            // If parsing fails, just continue - user can enter manually
+             System.out.println("Error");
         }
     }
 
@@ -178,15 +168,14 @@ public class ManageDrugInventoryController {
         @Override 
         public void actionPerformed(ActionEvent e) {
             try {
-                // Validate input
+                
                 if (!validateDrugFields(true)) {
                     return;
                 }
 
                 PharmacyInterface service = (PharmacyInterface) registry.lookup("pharmacy");
 
-                // Collect and validate fields
-                // For Add, allow entering new ID manually
+               
                 int drugID;
                 try {
                     String drugIDInput = gui.getDrugIDField().getEditor().getItem().toString().trim();
@@ -204,7 +193,7 @@ public class ManageDrugInventoryController {
                 int reorderLevel = Integer.parseInt(gui.getReorderField().getText().trim());
                 String expiryDate = formatDate(gui.getExpiryField().getDate());
 
-                // Validate quantity and reorder level
+                
                 if (quantity < 0) {
                     JOptionPane.showMessageDialog(gui, 
                         "Quantity cannot be negative", 
@@ -261,7 +250,7 @@ public class ManageDrugInventoryController {
         @Override 
         public void actionPerformed(ActionEvent e) {
             try {
-                // Validate Drug ID
+                
                 String selected = (String) gui.getDrugIDField().getSelectedItem();
                 if (selected == null || selected.equals("Select Drug")) {
                     JOptionPane.showMessageDialog(gui, 
@@ -274,7 +263,7 @@ public class ManageDrugInventoryController {
                 
                 int drugID;
                 try {
-                    // Extract drug ID from "ID - Name" format
+                    
                     drugID = Integer.parseInt(selected.split(" - ")[0]);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(gui, 
@@ -285,7 +274,7 @@ public class ManageDrugInventoryController {
                     return;
                 }
                 
-                // Confirm deletion
+                
                 int confirm = JOptionPane.showConfirmDialog(gui, 
                     "Are you sure you want to delete drug with ID: " + drugID + "?", 
                     "Confirm Deletion", 
@@ -332,14 +321,14 @@ public class ManageDrugInventoryController {
         @Override 
         public void actionPerformed(ActionEvent e) {
             try {
-                // Validate input
+               
                 if (!validateDrugFields(false)) {
                     return;
                 }
 
                 PharmacyInterface service = (PharmacyInterface) registry.lookup("pharmacy");
 
-                // Collect and validate fields
+               
                 int drugID = getSelectedDrugID();
                 if (drugID == -1) {
                     JOptionPane.showMessageDialog(gui, 
@@ -354,7 +343,7 @@ public class ManageDrugInventoryController {
                 int reorderLevel = Integer.parseInt(gui.getReorderField().getText().trim());
                 String expiryDate = formatDate(gui.getExpiryField().getDate());
 
-                // Validate quantity and reorder level
+                
                 if (quantity < 0) {
                     JOptionPane.showMessageDialog(gui, 
                         "Quantity cannot be negative", 
@@ -406,28 +395,25 @@ public class ManageDrugInventoryController {
         }
     }
     
-    /**
-     * Validate drug fields for Add and Update operations
-     */
+    
     private boolean validateDrugFields(boolean isAdd) {
-        // Validate Drug ID
+        
         String selected = (String) gui.getDrugIDField().getSelectedItem();
         if (selected == null || selected.equals("Select Drug")) {
-            if (isAdd) {
-                // For Add, allow manual entry - check if it's a number
-                // But since it's a combo box now, we'll allow "Select Drug" for Add
-                // and require selection for Update
-            } else {
-                JOptionPane.showMessageDialog(gui, 
-                    "Please select a drug", 
-                    "Validation Error", 
-                    JOptionPane.ERROR_MESSAGE);
-                gui.getDrugIDField().requestFocus();
-                return false;
-            }
-        }
+    if (!isAdd) {
+        JOptionPane.showMessageDialog(
+            gui,
+            "Please select a drug",
+            "Validation Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        gui.getDrugIDField().requestFocus();
+        return false;
+    }
+}
 
-        // Validate Name
+
+        
         String name = gui.getNameField().getText().trim();
         if (name.isEmpty()) {
             JOptionPane.showMessageDialog(gui, 
@@ -438,7 +424,7 @@ public class ManageDrugInventoryController {
             return false;
         }
 
-        // Validate Category
+        
         String category = (String) gui.getCategoryField().getSelectedItem();
         if (category == null || category.isEmpty() || category.equals("Select Category") || category.trim().isEmpty()) {
             JOptionPane.showMessageDialog(gui, 
@@ -449,7 +435,7 @@ public class ManageDrugInventoryController {
             return false;
         }
 
-        // Validate Quantity
+      
         String quantityText = gui.getQuantityField().getText().trim();
         if (quantityText.isEmpty()) {
             JOptionPane.showMessageDialog(gui, 
@@ -479,7 +465,7 @@ public class ManageDrugInventoryController {
             return false;
         }
 
-        // Validate Reorder Level
+      
         String reorderText = gui.getReorderField().getText().trim();
         if (reorderText.isEmpty()) {
             JOptionPane.showMessageDialog(gui, 
@@ -509,7 +495,7 @@ public class ManageDrugInventoryController {
             return false;
         }
 
-        // Validate Expiry Date
+      
         java.util.Date expiryDate = gui.getExpiryField().getDate();
         if (expiryDate == null) {
             JOptionPane.showMessageDialog(gui, 
@@ -523,9 +509,7 @@ public class ManageDrugInventoryController {
         return true;
     }
     
-    /**
-     * Clear all form fields
-     */
+  
     private void clearForm() {
         gui.getDrugIDField().setSelectedIndex(0);
         gui.getNameField().setText("");
@@ -536,9 +520,7 @@ public class ManageDrugInventoryController {
         gui.getDrugIDField().requestFocus();
     }
     
-    /**
-     * Format date to string for database storage
-     */
+    
     private String formatDate(java.util.Date date) {
         if (date == null) {
             return "";
@@ -547,9 +529,7 @@ public class ManageDrugInventoryController {
         return sdf.format(date);
     }
     
-    /**
-     * Extract drug ID from combo box selection
-     */
+    
     private int getSelectedDrugID() {
         String selected = (String) gui.getDrugIDField().getSelectedItem();
         if (selected != null && !selected.equals("Select Drug")) {

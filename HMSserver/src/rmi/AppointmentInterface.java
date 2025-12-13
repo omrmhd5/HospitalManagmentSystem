@@ -8,19 +8,19 @@ public interface AppointmentInterface extends Remote {
     // Mahmoud - Book appointment
     String bookAppointment(String patientName, String doctorName, String date, String time) throws RemoteException;
 
-    // Rana - Get appointment by ID (returns formatted string)
+    // Rana 
     String getAppointmentByID(int appointmentID) throws RemoteException;
 
-    // Rana - Update appointment
+    // Rana 
     boolean updateAppointment(int appointmentID, String patientName, String doctorName, String date, String time, String status) throws RemoteException;
 
-    // Rana - Cancel appointment
+    // Rana 
     boolean cancelAppointment(int appointmentID) throws RemoteException;
 
-    // Rana - Reschedule appointment
+    // Rana 
     boolean rescheduleAppointment(int appointmentID, String newDate, String newTime) throws RemoteException;
 
-    // Rana - Main manage function (cancel or reschedule)
+    // Rana 
     boolean manageAppointment(int appointmentID, String operation, String newDate, String newTime) throws RemoteException;
     
 

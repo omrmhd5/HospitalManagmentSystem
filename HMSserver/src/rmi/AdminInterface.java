@@ -25,6 +25,6 @@ public interface AdminInterface extends Remote {
     // Salma - Report Generation
     String generateReport(String reportType) throws RemoteException;
     
-    // Legacy method
+   
     void print() throws RemoteException;
 }

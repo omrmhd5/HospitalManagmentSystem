@@ -4,7 +4,7 @@ import model.ICURoom;
 
 public class ApprovedState implements ICUState {
 
-    // ✅ REQUIRED constructor
+    
     public ApprovedState() {
     }
 

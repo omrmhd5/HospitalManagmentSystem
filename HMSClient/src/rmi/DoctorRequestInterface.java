@@ -19,5 +19,8 @@ public interface DoctorRequestInterface extends Remote {
     boolean executeICURequest(String doctorEmail, String patientName,
                              String date, String time, String urgency, String diagnosis,
                              String expectedDuration) throws RemoteException;
+    
+    //Rana
+    int getLastICURequestID() throws RemoteException;
 }
 
