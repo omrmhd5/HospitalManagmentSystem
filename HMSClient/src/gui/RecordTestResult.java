@@ -76,7 +76,7 @@ public class RecordTestResult extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -108,7 +108,7 @@ public class RecordTestResult extends javax.swing.JFrame {
         txtTestDetails.setEditable(false);
         txtTestDetails.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(txtTestDetails);
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 150));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(700, 200));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 153));
@@ -118,7 +118,7 @@ public class RecordTestResult extends javax.swing.JFrame {
         txtResult.setRows(5);
         txtResult.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
         jScrollPane2.setViewportView(txtResult);
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(500, 150));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(700, 200));
 
         btnSubmit.setText("Submit Result");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -167,11 +167,11 @@ public class RecordTestResult extends javax.swing.JFrame {
                     .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -193,7 +193,7 @@ public class RecordTestResult extends javax.swing.JFrame {
         pack();
         
         // Set consistent window size and center
-        setSize(600, 550);
+        setSize(900, 750);
         setLocationRelativeTo(null);
         
         // Set background color for content pane (light blue)

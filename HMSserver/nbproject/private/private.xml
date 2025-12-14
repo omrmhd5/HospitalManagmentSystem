@@ -3,7 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/DesignPattern/ChainOfResponsibility/ICURequestChain.java</file>
+            <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/DesignPattern/ChainOfResponsibility/AdminHandler.java</file>
             <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/server/RMIServer.java</file>
+            <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/rmi/ICUInterface.java</file>
+            <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/model/ICURoom.java</file>
+            <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/DesignPattern/ChainOfResponsibility/ICURequestHandler.java</file>
+            <file>file:/C:/Users/salma/OneDrive/Desktop/BUE/Salma%20Year%203%20SENIOR/AOOSE/HospitalManagmentSystem/HMSserver/src/DesignPattern/ChainOfResponsibility/ReceptionistHandler.java</file>
         </group>
     </open-files>
 </project-private>
